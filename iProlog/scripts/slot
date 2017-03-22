@@ -1,0 +1,4 @@
+population ako slot with
+	domain:	[city, country];
+	range:	integer;
+	units:	million;

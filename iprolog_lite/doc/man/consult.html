@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>consult</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>consult- read a Prolog program</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>consult(+<I>FileName</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P><B><I>FileName</I></B> must be the name of a file containing a Prolog
+program. Clauses in the file are read and interpreted just as they would
+be if typed directly to the interpreter.</P>
+
+<P><B>Consult </B>instructs the interpreter to read the program which is
+in file <B><I>FileName</I></B>. When a directive is read it is immediately
+executed. When a clause is read it is put after any clauses already read
+by the interpreter for that procedure. </P>
+
+<P>A side-effect of consulting a file is that Prolog asserts a clause of
+the form:</P>
+
+<UL>
+<P><B>file(<I>FileName</I>, <I>ProcList</I>) </B></P>
+</UL>
+
+<P>into the database. <B><I>ProcList </I></B>is a list of the names of
+procedures defined in <B><I>FileName</I></B>. </P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><B><A HREF="unconstul.html">unconsult</A>, <A HREF="load.html">load</A>,
+<A HREF="file.html">file</A></B></P>
+</UL>
+
+</BODY>
+</HTML>

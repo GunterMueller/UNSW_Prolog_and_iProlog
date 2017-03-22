@@ -1,0 +1,125 @@
+/************************************************************************/
+/*	Perform interactive RDR maintenance on frame rules		*/
+/************************************************************************/
+
+#include "prolog.h"
+#include "read_script.h"
+#include "rdr.h"
+
+
+/************************************************************************/
+/*		   The difference between property lists		*/
+/************************************************************************/
+
+static term
+plist_diff(term rule_slot, term old_case, term new_case)
+{
+	term p, q;
+	term conj = NULL, *x = &conj;
+
+	for (p = new_case; p != _nil; p = CDR(p))
+	{
+		term cond = NULL;
+
+		if (CAR(CAR(p)) == rule_slot)
+			continue;
+
+		for (q = old_case; q != _nil; q = CDR(q))
+			if (CAR(CAR(p)) == CAR(CAR(q)))
+			{
+				if (! unify(CDR(CAR(q)), NULL, CDR(CAR(p)), NULL))
+					cond = make_cond(CAR(CAR(p)), CDR(CAR(q)), CDR(CAR(p)));
+				break;
+			}
+		if (q == _nil)
+		{
+			cond = g_fn2(_eq, CAR(CAR(p)), CDR(CAR(p)));
+			if (! yes_no(cond, "correct?"))
+				cond = NULL;
+		}
+		if (cond != NULL)
+			if (*x == NULL)
+				*x = cond;
+			else
+			{
+				*x = g_fn2(_and, *x, cond);
+				x = &ARG(2, *x);
+			}
+	}
+	for (q = old_case; q != _nil; q = CDR(q))
+	{
+		term cond = NULL;
+
+		if (CAR(CAR(p)) == rule_slot)
+			continue;
+
+		for (p = new_case; p != _nil; p = CDR(p))
+			if (CAR(CAR(p)) == CAR(CAR(q)))
+				break;
+		if (p == _nil)
+		{
+			cond = g_fn2(_ne, CAR(CAR(q)), CDR(CAR(q)));
+			if (! yes_no(cond, "correct?"))
+				cond = NULL;
+		}
+		if (cond != NULL)
+			if (*x == NULL)
+				*x = cond;
+			else
+			{
+				*x = g_fn2(_and, *x, cond);
+				x = &ARG(2, *x);
+			}
+	}
+
+	if (conj == NULL)
+		fail("Conclusion was incorrect, but no distinguishing features were found");
+	return conj;
+}
+
+
+/************************************************************************/
+/*	Perform interactive RDR maintenance on property lists		*/
+/************************************************************************/
+
+static int
+rdr_plist(term old_case, term *new_case, term result, term *cond, term *conclusion)
+{
+	term rule_slot = ARG(0, *new_case);
+	*new_case = ARG(1, *new_case);
+
+	fprintf(output, "New case: "); print(PLIST(*new_case));
+	fprintf(output, "Old case: "); print(PLIST(old_case));
+
+	if (yes_no(result, "the correct conclusion?"))
+		return 1;
+
+	printf("What is the correct conclusion?\n");
+	*conclusion = get_atom();
+
+	*cond = plist_diff(rule_slot, PLIST(old_case), PLIST(*new_case));
+
+	return 0;
+}
+
+
+static int
+p_rdr_plist(term goal, term *frame)
+{
+	term x = copy(check_arg(1, goal, frame, FN, IN), frame);
+
+	fix_rdr(rdr_plist, x, frame);
+	return TRUE;
+}
+
+	
+
+/************************************************************************/
+/*				Initialisation				*/
+/************************************************************************/
+
+void
+rdr_plist_init(void)
+{
+	new_pred(p_rdr_plist, "rdr_plist");
+}

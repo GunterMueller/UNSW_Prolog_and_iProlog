@@ -1,0 +1,63 @@
+digit :: 
+
+	{0|1|2|3|4|5|6|7|8|9} ==> [^1]
+	zero	==> [0]
+	one	==> [1]
+	two	==> [2]
+	three	==> [3]
+	four	==> [4]
+	five	==> [5]
+	six	==> [6]
+	seven	==> [7]
+	eight	==> [8]
+	nine	==> [9]
+
+
+ask_name ::
+
+	init ==>
+	[
+		What is the patient's name?
+	]
+
+	* name is * ==>
+	[
+		Thank you.
+		#return(first(^2))
+	]
+	
+	* ==>
+	[
+		Please say the patient's name again.
+	|
+		Try again, please.
+	]
+
+
+ask_measure ::
+
+	pH_level ==>
+	[
+		What is the patient's pH level?
+	]
+
+	paCO2_level ==>
+	[
+		What is the patient's potassium carbonate level?
+	]
+
+	HCO3_level ==>
+	[
+		What is the patient's hydrogen carbonate level?
+	]
+
+	<digit> ==>
+	[
+		Thank you!
+		#return(first(^1))
+	]
+	
+	* ==>
+	[
+		Please {{ say | give me } that number | try } again.
+	]

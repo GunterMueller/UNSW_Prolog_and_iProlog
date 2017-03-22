@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>replace</title>
+  <meta name="Author" content="Claude Sammut">
+</head>
+
+<body>
+<h2>NAME</h2>
+<ul>
+  <p>replace - replace the value of a slot in a frame</p>
+</ul>
+
+<h2>SYNOPSIS</h2>
+<ul>
+  <p><i>slot(frame) </i><b>is_replaced_by </b><i>value</i></p>
+</ul>
+
+<h2>DESCRIPTION</h2>
+<ul>
+  <p>A predicate that replaces the current value of a slot with a new value.
+  If the slot does not exists, <b>replace</b> is the same as <b>add</b>.</p>
+
+  <p>If a slot has been declared <a href="multivalued.html">multivalued</a>,
+  a <b>replace</b> replaces <i>all</i> values by the new value. In this case,
+  the new value should be a list.</p>
+
+  <p>Triggers the if_replaced dæmon.</p>
+</ul>
+
+<h2>EXAMPLE</h2>
+<ul>
+  <p>Given the generic definition of <a href="cylinder.pro">cylinder</a>,
+  some instances can be defined as:</p>
+  <pre>c isa [cylinder] with [height: 2, radius: 4, colour: red]!
+colour(c) is_replaced_by blue?</pre>
+</ul>
+
+<h2>SEE ALSO</h2>
+<ul>
+  <p><a href="multivalued.html">multivalued</a>, if_replaced, add</p>
+</ul>
+</body>
+</html>

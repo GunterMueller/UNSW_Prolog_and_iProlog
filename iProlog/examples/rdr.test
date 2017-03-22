@@ -1,0 +1,62 @@
+p(A, B, C) is
+	if A = 1 and B = 2 then 3 because p(1, 2, 3) except
+		if C = A then 4 because p(1, 2, 1).
+
+
+q(A, B, C, D, E, F, G, H, I, J, K) is
+	if true then null because q(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?).
+
+
+go :-
+<<<<<<< rdr.test
+	rdr_fn(q(t, t, $, t, $, $, $, $, $, $, $)), % x
+	rdr_fn(q(t, t, t, $, t, $, $, $, $, $, $)), % y
+	rdr_fn(q(t, $, t, t, $, $, $, $, $, $, $)), % z
+	rdr_fn(q(t, t, t, t, $, t, $, $, $, $, $)), % x
+	rdr_fn(q(t, $, t, t, t, t, $, $, $, $, $)), % y
+	rdr_fn(q(t, t, t, t, $, t, t, t, $, $, $)), % z
+	rdr_fn(q(t, t, t, t, $, t, $, t, t, $, $)), % z
+	rdr_fn(q(t, t, t, t, $, $, $, t, t, $, $)), % z
+	rdr_fn(q(t, t, t, t, $, t, t, $, t, $, t)),
+	rdr_fn(q(t, $, t, t, t, $, $, $, $, $, $)).
+=======
+	rdr_fn(q(t, t, ?, t, ?, ?, ?, ?, ?, ?, ?)), % x
+	rdr_fn(q(t, t, t, ?, t, ?, ?, ?, ?, ?, ?)), % y
+	rdr_fn(q(t, ?, t, t, ?, ?, ?, ?, ?, ?, ?)), % z
+	rdr_fn(q(t, t, t, t, ?, t, ?, ?, ?, ?, ?)), % x
+	rdr_fn(q(t, ?, t, t, t, t, ?, ?, ?, ?, ?)), % y
+	rdr_fn(q(t, t, t, t, ?, t, t, t, ?, ?, ?)), % z
+	rdr_fn(q(t, t, t, t, ?, t, ?, t, t, ?, ?)), % z
+	rdr_fn(q(t, t, t, t, ?, ?, ?, t, t, ?, ?)), % z
+	rdr_fn(q(t, t, t, t, ?, t, t, ?, t, ?, t)),
+	rdr_fn(q(t, ?, t, t, t, ?, ?, ?, ?, ?, ?)).
+>>>>>>> 1.2
+
+lens(Age, Prescription, Astgmatism, TearProduction) is
+	if true then none because lens(?, ?, ?, ?).
+
+go1 :-
+	rdr_fn(lens(young, myope, not_astigmatic, reduced)),			% 1  none
+	rdr_fn(lens(young, myope, not_astigmatic, normal)),			% 2  soft
+	rdr_fn(lens(young, myope, astigmatic, reduced)),			% 3  none
+	rdr_fn(lens(young, myope, astigmatic, normal)),				% 4  hard
+	rdr_fn(lens(young, hypermetrope, not_astigmatic, reduced)),		% 5  none
+	rdr_fn(lens(young, hypermetrope, not_astigmatic, normal)),		% 6  soft
+	rdr_fn(lens(young, hypermetrope, astigmatic, reduced)),			% 7  none
+	rdr_fn(lens(young, hypermetrope, astigmatic, normal)),			% 8  hard
+	rdr_fn(lens(pre_presbyopic, myope, not_astigmatic, reduced)),		% 9  none
+	rdr_fn(lens(pre_presbyopic, myope, not_astigmatic, normal)),		% 10 soft
+	rdr_fn(lens(pre_presbyopic, myope, astigmatic, reduced)),		% 11 none
+	rdr_fn(lens(pre_presbyopic, myope, astigmatic, normal)),		% 12 hard
+	rdr_fn(lens(pre_presbyopic, hypermetrope, not_astigmatic, reduced)),	% 13 none
+	rdr_fn(lens(pre_presbyopic, hypermetrope, not_astigmatic, normal)),	% 14 soft
+	rdr_fn(lens(pre_presbyopic, hypermetrope, astigmatic, reduced)),	% 15 none
+	rdr_fn(lens(pre_presbyopic, hypermetrope, astigmatic, normal)),		% 16 none
+	rdr_fn(lens(presbyopic, myope, not_astigmatic, reduced)),		% 17 none
+	rdr_fn(lens(presbyopic, myope, not_astigmatic, normal)),		% 18 none
+	rdr_fn(lens(presbyopic, myope, astigmatic, reduced)),			% 19 none
+	rdr_fn(lens(presbyopic, myope, astigmatic, normal)),			% 20 hard
+	rdr_fn(lens(presbyopic, hypermetrope, not_astigmatic, reduced)),	% 21 none
+	rdr_fn(lens(presbyopic, hypermetrope, not_astigmatic, normal)),		% 22 soft
+	rdr_fn(lens(presbyopic, hypermetrope, astigmatic, reduced)),		% 23 none
+	rdr_fn(lens(presbyopic, hypermetrope, astigmatic, normal)).		% 24 none

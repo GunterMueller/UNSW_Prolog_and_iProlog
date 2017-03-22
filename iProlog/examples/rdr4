@@ -1,0 +1,139 @@
+load print_if!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Remove all propositions from database before starting rdr	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+try_retract(X) :- retract(X is _), !.
+try_retract(_).
+
+clear_all([]).
+clear_all([A|B]) :-
+	try_retract(A),
+	clear_all(B).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Put this cases propositions into database for rdr		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+assert_all([]).
+assert_all([A|B]) :- assert(A is true), assert_all(B).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Set up database and call rdr, returning conclusion only		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+run(Case) is rule :-
+	propositions(P),
+	clear_all(P),
+ 	case(Case, Attr, _),
+	assert_all(Attr).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				Case differences			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+case_diff(OldCase, NewCase, X) :-
+	member(X, NewCase),
+	not(member(X, OldCase)).
+case_diff(OldCase, NewCase, X \= true) :-
+	member(X, OldCase),
+	not(member(X, NewCase)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This routine is just an interactive hook to call "case_diff" and ask	%
+% if the condition that's been generated is wanted in the new rule.	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rdr_cond(OldCase, NewCase, Cond) :-
+	case(OldCase, OldAttr, _),
+	case(NewCase, NewAttr, _), !,
+	case_diff(OldAttr, NewAttr, Cond),
+	prin("Is ", Cond, " correct"),
+	ratom(y).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A call to "findall" will return a list of conditions for the new RDR.	%
+% "list2cond" turns this list into a conjunction.			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+list2cond([A], A) :- !.
+list2cond([A|B], A and C) :- list2cond(B, C).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	   Print an rdr. Requires "print_if" file to be loaded		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+show_rule :-
+	clause(rule is X, _),
+	print_if(X, 0),
+	nl.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	   	Interactive running and maintaining of rdr		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rdr(NewCase) :-
+	(Conclusion because _) is run(NewCase),
+	case(NewCase, _, Correct),
+	prin("Is ", Conclusion, " the correct conclusion (should be ", Correct, ")"),
+	(ratom(n) ->
+		prin("What is the correct conclusion"),
+		ratom(D),
+		corner_stone_case(OldCase),
+		case(OldCase, L, _),
+		print("Corner stone case is: ", L),
+		findall(Cond, rdr_cond(OldCase, NewCase, Cond), List),
+		list2cond(List, NewConditions),
+		add_rdr(if NewConditions then D because NewCase),
+		print("\nThe new rdr is:\n"),
+		show_rule
+	| true
+	).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Sample data for RDR				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+propositions([
+	young, pre_presbyopic, presbyopic,		% age
+	myope, hypermetrope,				% prescription
+	astigmatic, not_astigmatic,			% astigmatism
+	reduced, normal					% tear production
+]).
+
+case(0, [], none).
+case(1, [young, myope, not_astigmatic, reduced], none).
+case(2, [young, myope, not_astigmatic, normal], soft).
+case(3, [young, myope, astigmatic, reduced], none).
+case(4, [young, myope, astigmatic, normal], hard).
+case(5, [young, hypermetrope, not_astigmatic, reduced], none).
+case(6, [young, hypermetrope, not_astigmatic, normal], soft).
+case(7, [young, hypermetrope, astigmatic, reduced], none).
+case(8, [young, hypermetrope, astigmatic, normal], hard).
+case(9, [pre_presbyopic, myope, not_astigmatic, reduced], none).
+case(10, [pre_presbyopic, myope, not_astigmatic, normal], soft).
+case(11, [pre_presbyopic, myope, astigmatic, reduced], none).
+case(12, [pre_presbyopic, myope, astigmatic, normal], hard).
+case(13, [pre_presbyopic, hypermetrope, not_astigmatic, reduced], none).
+case(14, [pre_presbyopic, hypermetrope, not_astigmatic, normal], soft).
+case(15, [pre_presbyopic, hypermetrope, astigmatic, reduced], none).
+case(16, [pre_presbyopic, hypermetrope, astigmatic, normal], none).
+case(17, [presbyopic, myope, not_astigmatic, reduced], none).
+case(18, [presbyopic, myope, not_astigmatic, normal], none).
+case(19, [presbyopic, myope, astigmatic, reduced], none).
+case(20, [presbyopic, myope, astigmatic, normal], hard).
+case(21, [presbyopic, hypermetrope, not_astigmatic, reduced], none).
+case(22, [presbyopic, hypermetrope, not_astigmatic, normal], soft).
+case(23, [presbyopic, hypermetrope, astigmatic, reduced], none).
+case(24, [presbyopic, hypermetrope, astigmatic, normal], none).
+
+rule is
+	(if true then none because 0).
+
+
+go :-
+	case(N, Attr, _),
+	nl,
+	print("Case ", N, ": ", Attr),
+	rdr(N).

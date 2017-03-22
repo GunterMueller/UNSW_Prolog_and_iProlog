@@ -1,0 +1,67 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.5 [en] (X11; I; Linux 2.0.34 i586) [Netscape]">
+   <meta name="AUTHOR" content="Claude Sammut">
+   <meta name="CREATED" content="19980228;1113100">
+   <meta name="CHANGEDBY" content="Claude Sammut">
+   <meta name="CHANGED" content="19980228;1121300">
+   <title>Recursive Programs</title>
+</head>
+<body>
+
+<h2>
+RECURSIVE PROGRAMS</h2>
+In the library database example we saw how terms in Prolog can be used
+to represent objects such as books, library members, loans records, <i>etc</i>.
+Some complex terms contained other terms, for example, <tt>book</tt> contained
+<tt>name</tt>. The following term also contains another term , this time
+it is one similar to itself:
+<pre>&nbsp;tree(tree(_, jack, _), jim, tree(_, jill, _))</pre>
+
+<dl>
+<dt>
+The '_' symbol may be replaced by any other term, we don't care what it
+is. A structure like this could be used to represent a binary tree that
+looks like:</dt>
+</dl>
+
+<center><img SRC="intro2.gif" NAME="Graphic1" BORDER=1 height=157 width=320 align=BOTTOM></center>
+
+<p>A term which contains another term which has the same principal functor
+is said to be <i>recursive</i>.
+<p>The definition of a binary tree is that it is a structure which is either
+empty or it contains a left and right subtree. A non-empty tree may also
+contain some data. In Prolog we would express this definition as:
+<pre>&nbsp;is_tree(empty).
+&nbsp;is_tree(tree(Left, Data, Right)) :-
+&nbsp;is_tree(Left),
+&nbsp;some_data(Data),
+&nbsp;is_tree(Right).</pre>
+The empty tree is represented by the word empty. This is not some special
+word known to Prolog, it is just an arbitrary word that we choose to use
+by convention. A non-empty tree is represented by a 3-arity term. Two of
+the arguments are the left and right sub-trees which are also binary trees.
+The Data field is any data which we care to put in the tree. Now let us
+define the size of tree:
+<pre>&nbsp;tree_size(empty, 0).
+&nbsp;tree_size(tree(Left, _, Right), Total_Size) :-
+&nbsp;tree_size(Left, Left_Size),
+&nbsp;tree_size(Right, Right_Size),
+&nbsp;Total_Size is Left_Size + Right_Size + 1.</pre>
+That is, the size of an empty tree is zero and the size of a non-empty
+tree is the size of the left sub-tree plus the size of the right sub-tree
+plus one for the current tree node. The data does not contribute to the
+total size of the tree.
+<p>Notice that when there is a recursive relationship between terms ,we
+write recursive programs to describe these relationships. A recursive program
+is one which refers to itself, thus, <tt>tree_size</tt> contains goals
+which call <tt>tree_size</tt> recursively.
+<h2>
+See Also</h2>
+
+<ul><a href="lists.html">lists</a></ul>
+
+</body>
+</html>

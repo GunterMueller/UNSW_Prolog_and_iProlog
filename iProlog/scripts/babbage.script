@@ -1,0 +1,103 @@
+babbage ::
+
+	#new_topic(babbage, babbage_filter, babbage_backup)
+
+	* <aff> * ==> [OK, tell me. Why? #goto(babbage_yes)]
+
+	* {gears | complicated | mechanical} * ==> [#goto(babbage_yes, ^0)]
+
+	{ * why * | * <neg> * } ==> [#goto(babbage_no, [init])]
+
+	{ * charles * | * babbage * | * baggage *} ==>
+	[
+		In the mid 1800's, the English mathematician, Charles
+		Babbage, designed a general purpose mechanical calculating
+		machine that anticipated the principles and structure of
+		the modern computer. Do you know why he was never able to
+		finish building his Analytical Engine and why we didn't
+		have mechanical computers 100 years earlier?
+	]
+
+
+
+babbage_yes ::
+
+	* {gears | complicated | mechanical} * ==>
+	[
+		That's right. The only technology Babbage had available to
+		him consisted of wheels, gears and steam power. His
+		calculating engines were more complicated than anything
+		anyone had yet built.
+		#goto(babbage_spinoff)
+	]
+
+	* ==> [#goto(babbage_no, [init])]
+
+
+babbage_no ::
+
+	init ==>
+	[
+		The only technology Babbage had available to him
+		consisted of wheels, gears and steam power. His
+		calculating engines were more complicated than anything
+		anyone had yet built.
+		#goto(babbage_spinoff)
+	]
+
+
+babbage_spinoff ::
+
+	* ==>
+	[
+		Even though Babbage's work was never finished, there were
+		some important side-effects of his research. Machining and
+		manufacturing technology improved as a result of attempts
+		to build the calculating machines.
+		#goto(ada)
+	]	
+
+
+ada ::
+
+	init ==>
+	[
+		Apart from Charles Babbage, someone else connected with his
+		project interests me. Have you heard of Lady Lovelace?
+	]
+
+	<aff> ==>
+	[
+		So you know that she was the world's first programmer.
+	]
+
+	{* {Ada | Lovelace} * | <neg>} ==>
+	[
+		Lady Lovelace was Charles Babbage's assistant and the
+		world's first computer programmer. Her first name was "Ada"
+		and now there is a programming language called Ada, in here
+		honor.
+	]
+
+
+babbage_filter ::
+
+	* {boring | bored | not interested} * ==>
+	[
+		We're very proud to have a component of Babbage's
+		Difference Engine Number 1 in this museum. You can see
+		it, and an amazing digital reconstruction of the whole
+		machine, right here in this exhibition.
+		#pop_topic([init])
+	]
+
+	* something {else | different} * ==>
+	[
+		#goto(ada, [init])
+	|
+		#pop_topic([init])
+	]
+
+babbage_backup ::
+
+	* {Ada | Lovelace} * ==> #goto(ada, ^0)

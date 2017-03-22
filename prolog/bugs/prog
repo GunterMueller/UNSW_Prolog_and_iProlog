@@ -1,0 +1,10 @@
+run :-	see(data),
+	seeing(F), print("opening file",  F),
+	repeat,
+	read(Term),
+	echo(Term).
+
+echo(end_of_file).
+echo(Term) :-
+	print("next term: ", Term),
+	fail .

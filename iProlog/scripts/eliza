@@ -1,0 +1,353 @@
+[My name is * | * is my name]
+==>	[Nice to meet you, ^1.		#(assert(name(^1)))
+	|How are you ^1?		#(assert(name(^1)))
+	]
+
+* sorry *
+==>	[Please don't apologize.
+	|Apolgies are not necessary.
+	|What feelings do you have when you apologize?
+	|I've told you that apologies are not required.
+	]
+
+* I remember *
+==>	[Do you often think of ^2?
+	|Does thinking of ^2 bring anything else to mind?
+	|What else do you remember?
+	|Why do you remember ^2 just now?
+	|What, in the present situation, reminds you of ^2?
+	|What is the connection between me and ^2?
+	]
+
+* do you remember *
+==>	[Did you think I would forget ^2?
+	|Why do you think I should recall ^2 now?
+	|What about ^2?
+	|You mentioned ^2*.
+	]
+
+{* you remind me of *
+|* {am|is|are|was} like *
+|* alike *
+|* same *
+}
+==>	[In what way?
+	|What resemblance do you see?
+	|What does that similarity suggest to you?
+	|What other connections to you see?
+	|What do you suppose that resemblance means?
+	|What is the connection, do you suppose?
+	|Could there really be some connection?
+	|How?
+	]
+
+{* { you are | you're } * {, but | but} *
+|* { you are | you're } *
+}
+==>	[What makes you think I am ^3?
+	|Does it please you to believe I am ^3?
+	|Do you sometimes wish you were ^3?
+	|Perhaps you want to be ^3?
+	]
+
+* I {dreamt|dreamed} *
+==>	[You dreamed ^3?
+	|Really, ^3? Have you ever fantasized ^3 while you were awake?
+	|Have you dreamed ^3 before?
+	]
+
+* dream *
+==>	[What does that dream suggest to you?
+	|Do you dream often?
+	|What persons appear in your dreams?
+	|Don't you believe that dream has something to do with your problem?
+	]
+ 
+* hello *
+ ==>	[Hello. Please state your problem.]
+ 
+* {computer|computers|machine|machines} *
+ ==>	[Do computers worry you?
+	|Why do you mention computers?
+	|What do you think machines have to do with your problem?
+	|Don't you think computer can help people?
+	|What, about machines, worries you?
+	|What do you think about machines?
+	]
+
+{I {want|need|require} * , *
+|I {want|need|require} *
+}
+==>	[What would it mean to you if you had ^2?
+	|Why do you want ^2?
+	|Suppose you got ^2 soon.
+	|What if you never got ^2?
+	|What would getting ^2 mean to you?
+	|What does wanting ^2 have to do with this discussion?
+	]
+
+* {I am|I'm} {sad|unhappy|depressed|sick} *
+==>	[I am sorry to hear you are ^3.
+	|Do you think coming here will help you not to be ^3?
+	|I'm sure it's not pleasant
+	|Can you explain why?
+	]
+
+* I am * {happy|elated|glad|better} *
+==>	[I'm glad to hear that.
+	|How have I help you to be ^3?
+	|What makes you ^3, just now?
+	|Do you think coming here has helped you?
+	|Can you explain why you are suddenly ^3?
+	]
+
+* my * {father|dad|mother|mum|brother|sister|wife|husband|son|daughter|children} *
+==>	[Tell me more about your family.
+	|Who else in your family ^4?
+	|Your ^3?
+	|What else comes to mind when you think of your ^3?
+	]
+
+* I {believe|think|feel|wish} I *
+==>	[Do you really think so?
+	|But you're not sure you ^3?
+	|Do you really doubt you ^3?
+	]
+
+* I * {believe|think|feel|wish} I am *
+==>	[Is it because you are ^4 that you came here?
+	|How long have you been ^4?
+	|Do you believe it normal to be ^4?
+	|Do you enjoy being ^4?
+	]
+
+* I {can't|cant|cannot} *
+==>	[How do you know you can't ^3?
+	|Have you tried?
+	|Perhaps you could ^3 now?
+	|Do you really want to be able to ^3?
+	]
+
+* why {don't|dont} you *
+==>	[Do you believe I don't ^3?
+	|Perhaps I will ^3 in good time.
+	|Should you ^3 yourself?
+	|You want me to ^3?
+	]
+
+* why {can't|cant} I *
+==>	[Do you think you should be able to ^3?
+	|Do you want to be able to ^3?
+	|Do you believe this will help you to ^3?
+	|Do you have any idea why you can't ^3?
+	]
+
+* I {don't|dont} *
+==>	[Don't you really ^3?
+	|Have you tried?
+	|Why don't you ^3?
+	|Do you want to be able to ^3?
+	|Does that trouble you?
+	]
+
+* I feel *
+==>	[Tell me more about such feelings.
+	|Do you often feel ^2?
+	|Do you enjoy feeling ^2?
+	|What does feeling ^2 remind you of?
+	]
+
+* if *
+==>	[Do you think it is likely that ^2?
+	|Do you wish that ^2?
+	|What do you think about ^2?
+	Really, if ^2?
+	]
+
+* am I *
+==>	[Do you believe you are ^2?
+	|Would you want to be ^1?
+	|What would it mean if you were ^2?
+	]
+
+* am *
+==>	[Why do you say "am"?
+	|I don't understand that.
+	]
+
+* are you *
+==>	[Why are you interested in whether I am ^2 or not?
+	|Would you prefer it if I weren't ^2?
+	|Perhaps I am ^2 in your fantasies?
+	|Do you sometimes think I am ^2?
+	]
+
+* your *
+ ==>	[Why are you concerned about my ^2?
+	|What about your own ^2?
+	|Are you worried about someone's ^2?
+	|Really? Your ^2?
+	]
+
+* was I *
+==>	[What if you were ^2?
+	|Do you think you were ^2?
+	|Were you ^2?
+	|What would it mean if you were ^2?
+	|What does "^2" suggest to you?
+	]
+
+* I was *
+==>	[Were you really?
+	|Why do you tell me you were ^2, now?
+	|Perhaps I already knew you were ^2.
+	]
+
+* were you *
+==>	[Would you like to believe I was ^2?
+	|What suggests that I was ^2?
+	|What do you think?
+	|Perhaps I was ^2.
+	|What if I had been ^2?
+	]
+
+* you * me
+==>	[Why do you think I ^2 you?
+	|You like to think I ^2, don't you?
+	|What makes you think I ^2 you?
+	|Really, I ^2 you?
+	|Do you want to believe I ^2 you?
+	|Suppose I did ^2 you. What would that mean?
+	|Does someone else believe I ^2 you?
+	]
+
+* yes *
+==>	[You seem quite positive.
+	|You are sure.
+	|I see.
+	|I understand.
+	]
+
+* no *
+==>	[Are you saying no, just to be negative?
+	|You are being a bit negative.
+	|Why not?
+	|Why no?
+	]
+
+* my *
+==>	[
+		[Your ^2?
+		|Why do you say your ^2?
+		|Does that suggest anything else that belongs to you?
+		|Is it important to you that your ^2?
+		]
+		#assert(memory(^0))
+	]
+
+* can you *
+==>	[You believe I can ^2, don't you?
+	|You want me to be able to ^2.
+	|Perhaps you would like to be able to ^2 yourself?
+	]
+
+* can I *
+==>	[Whether or not you can ^2 depends more on you than me.
+	|YDo you want to be able to ^2?
+	|Perhaps you don't want to ^2?
+	]
+ 
+* what *
+ ==>	[Why do you ask?
+	|Does that question interest you?
+	|What is it you really want to know?
+	|Are such question on you rmind a lot?
+	|What answer would please you most?
+	|What do you think?
+	|What comes to mind when you ask that?
+	|Have you asked such questions before?
+	|Have you asked anyone else?
+	]
+
+* because *
+==>	[Is that the real reason?
+	|Don't any other reasons come to mind?
+	|Does that reason seem to explain anything else?
+	|What other reasons might there be?
+	]
+
+* {everyone|everybody|nobody|noone} *
+==>	[Really, ^2?
+	|Surely not ^2?
+	|Can you think of anyone in particular?
+	|Who, for example?
+	|Are you thinking of a special person?
+	|Who, may I ask?
+	|Someone special, perhaps?
+	|You have a particular person in mind, don't you?
+	|Who do you think your're talking about?
+	]
+
+* always *
+==>	[Can you think of a specific example?
+	|When?
+	|What incident are you thinking of?
+	|Really? Always?
+	]
+
+* I * you *
+==>	[Perhaps in your fantasies we ^2 each other.
+	|Do you want to ^2 me?
+	|You seem to need to ^2 me.
+	|Do you ^2 anyone else?
+	]
+
+* are *
+==>	[Do you think they might not be ^2?
+	|Would you like it if they were not ^2?
+	|What if they weren't ^2?
+	|Possibly they are ^2.
+	]
+
+* I *
+==>	[You say ^1 you ^2?
+	|Can you elaborate on that?
+	|Do you say ^1 you ^2 for some special reason?
+	|That's quite interesting.
+	]
+
+* you *
+==>	[We were discussing you, not me.
+	|What difference would it make if I ^2?
+	|Oh, I ^2?
+	|You're not really talking about me, are you?
+	|What are your feelings now?
+	]
+
+* {maybe|perhaps} *
+==>	[You don't seem quite certain.
+	|Why the uncertain tone?
+	|Can't you be more positive?
+	|You aren't sure?
+	|Don't you know?
+	]
+
+* #have(memory)
+==>	[#recall_memory(process_memories)]
+
+*
+==>	[I'm not sure I understand you fully.
+	|Please go on.
+	|What does that suggest to you?
+	|Do you feel strongly about discussing such things?
+	]
+
+
+process_memories ::
+
+	* my * ==>
+		[Let's discuss further why your ^2.
+		|Earlier you said your ^2.
+		|But your ^2.
+		|Does that have anything to do with the fact that your ^2?
+		]

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<TITLE>files</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/4.0 (Unix)">
+	<META NAME="AUTHOR" CONTENT="Claude Sammut">
+	<META NAME="CREATED" CONTENT="19980302;1252600">
+	<META NAME="CHANGEDBY" CONTENT="Claude Sammut">
+	<META NAME="CHANGED" CONTENT="19980302;1254800">
+</HEAD>
+<BODY>
+<H1>Files and Input/Output Streams</H1>
+<P>A file is referred to by its name, written as an atom, eg.</P>
+<UL>
+	<PRE>myfile</PRE>
+	<PRE>'123'</PRE>
+	<PRE>'fred.data'</PRE>
+	<PRE>'/lib/prolog.lib'</PRE>
+</UL>
+<P>Unless directed otherwise , input or output refer to standard
+input and standard output. When the terminal is waiting for input on
+a new line, the prompt ':' is displayed.</P>
+<P>Streams are a special type of term. They may be created either
+directly, (by calls to <B>open </B>or <B>process</B>) or indirectly
+(by calls to <B>see </B>and <B>tell</B>) and may refer to a file or
+to the user's terminal. Each stream is either for input or output,
+not both.</P>
+<P>There is a limit of twenty input/output streams that can be open
+at any one time. Three of these streams are reserved for standard
+input, standard output and error output .These reserved streams are
+identified by the atoms <B><I>user_input</I></B>, <B><I>user_output</I></B>
+and <B><I>user_error</I></B> respectively. Normally, they refer to
+your terminal, but may be redirected in the usual way in Unix by
+using '&lt;' and '&gt;' in the shell command.</P>
+<P>All I/O errors (including trying to use a stream previously
+closed) cause a failure of the procedure and warnings are issued on
+the standard error file.</P>
+<P>At end of file, the built-in predicate <B>eof </B>becomes true.
+Any more input requests for a file whose end has been reached causes
+Prolog to return the atom <B><I>end_of_file</I></B>.</P>
+<P>When the current output stream is closed, standard output becomes
+the current output stream. Similarly, when the current input stream
+is closed, standard input becomes the new input stream.</P>
+<P>Streams may be passed as the first argument to most input/ouput
+predicates. For example:</P>
+<UL>
+	<PRE>print(Stream, word)!</PRE>
+</UL>
+<P>prints the atom 'word' on the output stream `Stream'.</P>
+<P>However, output to a stream does not necessarily get sent
+immediately due to it being buffered. A stream may be flushed by
+using the predicate flush_output. (The standard error stream is
+usually unbuffered) 
+</P>
+<H2>BUILT-IN PREDICATES</H2>
+<H3>Streams</H3>
+<UL>
+	<LI><A HREF="load.html">load</A>, <A HREF="unload.html">unload</A> 
+	<LI><A HREF="consult.html">consult</A>, unconsult 
+	<LI><A HREF="file.html">file</A> 
+	<LI>open, close 
+	<LI>set_input, set_output 
+	<LI>current_input, current_output 
+	<LI>flush_output 
+	<LI><A HREF="see.html">see</A>, <A HREF="seeing.html">seeing</A>,
+	<A HREF="seen.html">seen</A> 
+	<LI><P><A HREF="tell.html">tell</A>, <A HREF="telling.html">telling</A>,
+	<A HREF="told.html">told</A> 
+	</P>
+</UL>
+<CENTER>
+	<TABLE WIDTH=80% BORDER=1 CELLPADDING=1 CELLSPACING=2>
+		<TR>
+			<TD>
+				<P><A HREF="load.html">load</A></TD>
+			<TD>
+				<P><A HREF="unload.html">unload</A></TD>
+			<TD>
+				<P><A HREF="file.html">file</A></TD>
+			<TD>
+				<P><A HREF="pp.html">pp</A> 
+			</TD>
+			<TD>
+				<P><A HREF="listing.html">listing</A> 
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P><A HREF="see.html">see</A></TD>
+			<TD>
+				<P><A HREF="seeing.html">seeing</A></TD>
+			<TD>
+				<P><A HREF="seen.html">seen</A></TD>
+			<TD>
+				<P><A HREF="tell.html">tell</A></TD>
+			<TD>
+				<P><A HREF="telling.html">telling</A></TD>
+		</TR>
+		<TR>
+			<TD>
+				<P><A HREF="told.html">told</A></TD>
+			<TD>
+				<P><A HREF="eof.html">eof </A>
+			</TD>
+			<TD>
+				<P><A HREF="read.html">read</A> 
+			</TD>
+			<TD>
+				<P><A HREF="ratom.html">ratom</A></TD>
+			<TD>
+				<P><A HREF="hash.html">[...]</A></TD>
+		</TR>
+		<TR>
+			<TD>
+				<P><A HREF="ask.html">ask </A>
+			</TD>
+			<TD>
+				<P><A HREF="print.html">print</A></TD>
+			<TD>
+				<P><A HREF="prin.html">prin </A>
+			</TD>
+			<TD>
+				<P><A HREF="write.html">write</A></TD>
+			<TD>
+				<P><A HREF="nl.html">nl</A> 
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P><A HREF="getc.html">getc</A></TD>
+			<TD>
+				<P><A HREF="skip.html">skip</A></TD>
+			<TD>
+				<P><A HREF="putc.html">putc</A></TD>
+			<TD>
+				<P><A HREF="ascii.html">ascii</A></TD>
+			<TD>
+				<P ALIGN=LEFT><A HREF="tab.html">tab</A></TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

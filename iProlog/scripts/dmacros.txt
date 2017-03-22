@@ -1,0 +1,11 @@
+name = NEW-PARAGRAPH                             \
+ flags = CAPITALIZE+JOIN-NEXT+JOIN-PREVIOUS      \
+ text = '\n\n'
+
+name = NEW-LINE                                  \
+ flags = JOIN-NEXT                               \
+ text = '\n'
+
+name = Capitalize                                \
+ flags = CAPITALIZE+JOIN_NEXT                    \
+ text = ''

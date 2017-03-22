@@ -1,0 +1,5 @@
+% Syntax error occurs on line 3.
+hello.
+silly(X) :-	hello.
+error(X) :-	silly( idiot .
+OK.

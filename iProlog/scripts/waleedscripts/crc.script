@@ -1,0 +1,215 @@
+aff :: {yes | ok | fine | no problem | sure | whatever you say | please | Sure };
+
+neg :: {no | never | not on your life | * off };
+
+greeting :: { ~i | ~day | ~ello | fellow | Fellow };
+
+crc :: 
+	#new_topic(crc, crc_topics, eliza)
+	init ==> 
+	[ 
+		+INCA Synth LoadDict crc+
+		Welcome to the SIT CRC!
+		What is your name?
+		#goto(getname)
+	]
+
+crc_main :: 
+	init ==>	
+	[
+		Welcome to the CRC, ^getprop(friend, name). 
+		Would you like  an introduction to the CRC, 
+		or maybe you'd like to know about the different programs we have? 
+		Maybe you want to know a little about me. 
+	| 
+		What can I help you with? Do you want to know about people in the CRC? 
+	] 
+	* <aff> ==> 
+	[
+		#goto(inca, [init])
+	]
+		
+crc_topics ::
+	* people * ==> #goto(crc_people, [init])
+	* who * { you~ | used}   ==> #goto(inca, [init])
+	* know * you * ==> #goto(inca, [init])
+
+	* yourself * ==> #goto(inca, [init])
+
+	* program~ * ==> 
+	[
+		#goto(crc_programs, [init])
+	]
+
+	* intro~ * ==> 
+	[
+		The SIT CRC, which stands for the Smart Internet Technology
+		Cooperative Research Centre is a project funded jointly by
+		Government, universities and private industry. It goal is to bring
+		about new developments in making the internet easier to use as well 
+		as smarter. 
+	]
+	* what * know * ==> 
+	[
+		I know about lots of things -- like the different programs, 
+		the people involved, and I even know a little about
+		myself. You can ask me about any of those. 
+	]
+	
+	
+	* { natural | adaptive | interface } * ==> 
+	[
+		#goto(naui, ^0)
+	]
+	* {smart | personal | assistant } * ==> 
+	[
+		The smart personal assistant acts on your behalf. 
+		When you want to know stuff, or show an interest in a topic, 
+		the smart personal assistant is supposed to go out and seek information on your behalf. 
+		What's more, it can find information for you without explicit instruction.
+	]
+	* { intelligen~ environment~} * ==> 
+	[
+		As computers get cheaper, it makes more sense that computers will disappear into the woodwork. 
+		The intelligent environment project is about creating all the groundwork to support this.
+	]		
+	* {smart | network~ } * ==>
+	[
+		The smart network program's objective is to support the intelligent environments by providing more intelligent networking. 
+	Right now, the infrastructure of the internet is very limited. 
+	Smart networking is about making the network itself more capable so as to support more interesting protocols. 
+	]
+	* user * { modelling | environment} ==> 
+	[
+		How do we know that all the cool stuff we are developing 
+		is going to be useful and usable by normal people? 
+		The User Environments  program ensures that all the technology 
+		developed by the CRC is actually usable. 
+	]
+	
+
+inca :: 
+	init ==> 
+	[
+		I'm a computer program developed by the CRC. 
+		Right now, I'm not very smart, 
+		but I'm getting better all the time. Want to know more? 
+	]
+	* <aff> * ==>
+	[
+		I am what is called a conversational agent. 
+		There are three parts to me really: speech recognition, 
+		intelligence, speech synthesis and facial
+		animation. You can ask me about any of those.
+
+	]
+	{ * speech * | * recognition * } ==> 
+		
+	* <neg> * ==> 
+	[
+
+		#goto(crc_main, [init])
+	]
+
+naui :: 
+	init ==> 
+	[
+		This program is mainly focused on conversational agents. 
+		Do you want to know what a conversational agent is? 
+	]
+	* <aff> * ==> 
+	[
+		A conversational agent is a computer you can talk to, 
+		just like me. I'm a conversational agent. #goto(inca, [yes])
+	]
+	* <neg> * ==> 
+	[
+		Fine then. I can see you're not interested in me. 
+		#goto(crc_main)
+	]
+	
+crc_programs ::
+	
+	init ==> 
+	[
+		The CRC consists of five programs. 
+		They are: Natural Adaptive User Interface, 
+		the Smart Personal Assistant, Intelligent Environments, 
+		Smart Networks and User Environments. 
+		Do you want to know more about them?
+	]
+
+	* <neg> * ==> 
+	[ 
+		Ok then. What are you interested in? 
+		#goto(crc_main, [init])
+	]
+	
+	* <aff> * ==> 
+	[
+		Ok, which one? We can start with the natural adaptive user interface
+		program. 
+	|
+		#goto(naui)
+	| 
+		
+	]
+
+crc_people ::
+	init ==> 
+	[
+		There are several companies and universities involved. 
+		There are core partners, as well as
+		supporting partners. And then there are the people who
+		manage the CRC.
+	]
+	* core * ==> 
+	[
+		The core partners are Motorola, NSW Department of
+		Information & TEchnology Management, Telstra, ANU,
+		UNSW, Sydney Uni and Wollongong Uni.
+	]
+	* support~ * ==> 
+	[
+		There are more than 10 supporting partners. I wouldn't
+		want to bore you. 
+	]	
+	* { ceo | C E O | jeffrey | ~bias } ==> 
+	[
+		The CEO of the CRC is Dr Jeffrey Tobias. He brings many years of 
+		experience to the CRC. 
+	]
+	* { joe | research } * ==> 
+	[
+		The Research Director is Joe Chicharo, who has been involved
+		with some of the most successful research projects about the 
+		internet, such as the Switched Network Research Centre
+		at Wollongong University. 
+	
+	]
+		
+getname :: 
+	{my name is * | my name's * } ==> 
+	[
+		#putprop(friend, name, ^1)
+		#goto(crc_main, [init])
+	]
+	* {bugger | off | secret } *  ==> 
+	[
+		OK then, you don't have to tell me your name. I'll call you 
+		Anon then. We can talk about something else then. 
+		#putprop(friend, name, "Anon")
+		#goto(crc_main)
+	]	
+	* ==> 
+	[ 
+		#putprop(friend, name, ^1)
+		#goto(crc_main, [init])
+	]
+crc_backup :: 
+
+	* {boring | bored | not interested | what else } * ==>
+	[
+		#pop_topic([init])
+	]
+

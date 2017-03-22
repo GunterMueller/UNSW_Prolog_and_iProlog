@@ -1,0 +1,128 @@
+person ako [] with
+[
+	name:
+	[
+		range		atom,
+		help		print("The name should be a string."),
+		if_new		question
+				(
+					<< Hi there! What's your name? >>,
+			
+					if answer << They call me * >> then
+					(
+						respond <<Hi, ^1.>>,
+						return first(^1)
+					)
+					else if answer << My name is * >> then
+					(
+						respond << Nice to meet you, ^1. >>,
+						return first(^1)
+					)
+					else if answer << * >> then
+						return first(^1)
+				),
+		cache		true
+	],
+	sex:
+	[
+		range		[male, female],
+		help		print("Sex can only be male or female, not ", new_value),
+		if_needed	ask_user,
+		if_replaced	print("Are you sure you want a sex change?"),
+		if_removed	print("Are you sure you want the sex removed?"),
+		cache		true
+	],
+	year_of_birth:
+	[
+		range		year(current_date) - 120 .. year(current_date),
+		help		print("Invalid year of birth."),
+		if_needed	ask_user("Year of birth"),
+		cache		true
+	],
+	age:
+	[
+		cache		true,
+		range		1..110,
+		if_needed	year(current_date) - year_of_birth,
+		help
+		(
+				if new_value < 4 then
+					print(new_value, " is too young."),
+				if new_value > 100 then
+					print(new_value, " is too old."),
+
+				print("Your age should be between 4 and 110.")
+		),
+		if_needed	question
+				(
+					<< {How old are you? | What's your age?} >>,
+			
+					if answer << {I'm | I am } * years {old | of age} >> then
+						return first(^1)
+					else if answer << * >> and number(first(^1)) then
+					(
+						respond << You are ^1 years of age. >>,
+						return first(^1)
+					)
+					else
+						respond
+						<<
+							Sorry, I {didn't get that | don't understand}.
+							{Please give me a numerical value.
+							|Could you give me your age as a number?
+							}
+						>>
+				),
+		if_added
+				if new_value < 4 then
+					respond << You're pretty young to be able to use a computer! >>
+				else if new_value >=13 and new_value <= 19 then
+					respond << O-Oh, a teenager. Here's trouble :-) >>
+				else if new_value > 60 then
+					respond << ^new_value is a lovely age, ^name. >>
+
+	],
+	parents:
+	[
+		multivalued	true,
+		range		person,
+		help		print("The value in a parents slot must be a person.")
+	],
+	height:
+	[
+		range		10..220,
+		cache		true,
+		help
+		(
+				if new_value < 10 then
+					print(new_value, "cm is too short."),
+				if new_value > 220 then
+					print(new_value, "cm is too tall."),
+				print("The height should be between 10 and 220cm.")
+		),
+		if_needed	ask_user("What is the height of ", name)
+	],
+	weight:
+	[
+		range		1..150	,
+		if_needed	ask_user("What is the weight of ", name),
+		cache		true,
+		if_added	if new_value > 100 then
+					print("Your ", current_slot, " is too high!")
+	],
+	occupation:
+	[
+		range		atom,
+		help		print("The occupation should be a string."),
+		if_needed	ask_user("What is the occupation"),
+		cache		true,
+		if_removed	print("I used to be a ", old_value, ".")
+	]
+]!
+
+current_date isa [] with
+[
+	year:	2003,
+	month:	4,
+	day:	1
+]!

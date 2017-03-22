@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>char_code</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>char_code - the ascii (or whatever) code for a character</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>char_code(+<I>Char</I>, ?<I>Code</I>)<BR>
+char_code(?<I>Char</I>, +<I>Code</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P><B><I>Code </I></B>is the ascii (or whatever code is use by your OS)
+equivalent of the character <B><I>Char</I></B>, where <B><I>Char </I></B>is
+a one-character atom.</P>
+
+<P>If <B><I>Char </I></B>is a single character atom, <B><I>Code </I></B>is
+instantiated to the ascii code representing <B><I>Char</I></B>.</P>
+
+<P>If <B><I>Char </I></B>is a variable and <B><I>Code </I></B>is an integer,
+<B><I>Char</I></B> is instantiated to the appropriate single character
+atom.</P>
+</UL>
+
+</BODY>
+</HTML>

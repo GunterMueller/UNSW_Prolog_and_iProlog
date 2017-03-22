@@ -1,0 +1,447 @@
+c_language :: { french | german | spanish | italian }; 
+c_help :: { * available * | what * can * you * | * help * | what * know * | * don't know};
+
+c_frontend :: 
+	#new_topic(c_frontend, c_topics, c_fallback)
+
+	init ==> 
+	[
+		Hello. How can I help you? 	 	
+	|
+		Anything else I can do for you? 
+	]
+	init2 ==> 
+	[
+		Is there anything else I can do for you? 
+	]
+	
+	<c_help> ==> 
+	[
+		I can handle news, appointments, email, weather,
+		exchange rates and translations.
+	]
+
+	* thank~ * ==> 
+	[
+		You are most welcome. 
+		#goto(c_frontend, [init])
+	]
+
+	
+
+c_topics :: 
+	* appointment~ * ==> 
+	[
+		#goto(c_appointment, ^0) 
+	]	
+	
+	* { weather | whether | wither }   * ==> 
+	[
+		^coord_query([weather])
+	]
+	* { news | headline~ } * ==> 
+	[
+		#goto(c_news, ^0)
+	]
+	* { exchange | currenc~ } * ==> 
+	[
+		#goto(c_exchange, ^0)
+	]
+	
+	* translat~ * ==> 
+	[
+		#goto(c_translate, ^0)
+	]
+	
+	what * { time | date } * ==> 
+	[
+		It is ^pptime(time_now) on ^ppdate(today). 
+	]
+	
+	{* map * | * campus *}  ==> 
+	[
+		+CLIENT IMG+ Ok, here's a map of the UNSW campus. 
+		#goto(c_map)
+	]
+
+	* sphere *  ==> 
+	[
+		#goto(c_fspass, [init])
+	]
+
+	{ who  | what } * you ==> 
+	[
+		My name is Inca. I'm a personal assistant developed 
+		as part of the Smart Internet CRC. 
+	]
+
+	{ who  | what~ } * name~ ==> 
+	[
+		My name is Inca. I'm a personal assistant developed 
+		as part of the Smart Internet CRC. 
+	]
+	* 
+
+	* your name~ ==> 
+	[
+		My name is Inca. I'm a personal assistant developed 
+		as part of the Smart Internet CRC. 
+	]
+	* show * face ==>
+	[
+		+CLIENT FACE+
+		Sure. Here I am again!
+	]
+	* hide * face ==> 
+	[
+		+CLIENT TABLE+
+		Ok, but I'll miss you. 
+	]
+	{* in * meeting | *hunting * rabbits*} ==> 
+	[
+		+SYNTH WHISPER+ Ok, I'll be very very quiet. 
+	]
+	* meeting * over ==> 
+	[
+		+SYNTH NORMAL+ Alright. I hated whispering anyway. 
+	]
+	* { go back | go to start | not interested | whatever | start over } * ==> 
+	[
+		Sorry I couldn't help. 
+		#goto(c_frontend, [init])
+	]
+	* inca * ==> 
+	[
+		InCA stands for "Internet Conversational Agent". Can I help you with anything?
+	]	
+	* crc * ==> 
+	[
+		The CRC is the cooperative research centre. They made me. They're trying 
+		to make me smarter. 
+	]	
+	
+	* {goodbye | bye } * ==> 
+	[
+		Ok. See you later! 
+		#goto(c_frontend)
+	]
+
+	* thank~ * ==> 
+	[
+		You are most welcome. 
+		#goto(c_frontend, [init2])
+	]
+	
+	 * very much ==> 
+	[
+		You are most welcome. 
+		#goto(c_frontend, [init])
+	]
+	{ how are you | how~ * ~oing } ==>
+	[
+		I'm very well. Thanks for asking. Can I help you with 
+		news, appointment, e-mail, weather or exchange rates?
+	]
+	{ hi | hello } ==> 
+        [ 
+                Hi there! Can I help you with  
+                news, appointment, e-mail, weather or exchange rates? 
+        ]
+
+c_fspass :: 
+	init ==> 
+	[
+	 	FileSphere is commercial-in-confidence. Tell me the 
+		password to proceed. 
+	]
+	* honesty * ==>
+	[
+		Ok, password accepted. 
+		#goto(c_filesphere, [init])
+	]
+
+c_filesphere :: 
+	init ==> 
+	[
+		Welcome to FileSphere. What would you like 
+		to know about your files? 
+	]
+	{* what * type~ * know * | * what * type~ * handle * } ==> 
+	[
+		^coord_query([fs,listtypes])
+	]
+	{ * what * type~ * have * } ==> 
+	[
+		^coord_query([fs,filespresent])
+	]
+	* how * many * word~ * ==> 
+	[
+		^coord_query([fs,count, msword])
+	]	
+	* how * many * { excel~ | spreadsheet~ | workbook}  * ==> 
+	[
+		^coord_query([fs,count, msexcel])
+	]	
+	* how * many * { impede | mp3~ | music } * ==> 
+	[
+		^coord_query([fs,count, mp3])
+	] 
+	* how * many * { PDF | acrobat } * ==>
+	[
+		^coord_query([fs,count, pdf])
+	]
+	* how * many * { file~ | document~ }  * ==> 
+	[
+		^coord_query([fs,count, `all])
+	] 
+	* list * {mp3~ | music } * ==> 
+	[
+		^coord_query([fs,list, mp3]) 
+	] 
+	* list * word * ==> 
+	[
+		^coord_query([fs,list,msword])
+	]
+	* list my * documents ==> 
+	[
+		^coord_query([fs,list,first(^2)])
+	]
+	* tell * document <cardinalslt100> * ==> 
+	[
+		^coord_query([fs,info,parsecard(^3)]) 
+	]	
+	tell me {what | who} * are in my * {file~ | doc~} ==> 
+	[ 
+		^coord_query([fs,genquery,first(^2), first(^3)])
+	] 
+	* artist~ * ==> 
+	[
+		^coord_query([fs,genquery,mp3,artist])
+	]
+	* who * {~mail~ | ~male | ~message~ } * ==> 
+	[
+		^coord_query([fs,genquery,email,from])
+	]
+
+c_exchange :: 
+
+	* {US|us|U.S.} dollar~ * ==>
+	[
+		^coord_query([exchange, united, states])
+	]	
+	* { yen | japan~ } * ==> 
+	[	
+ 		^coord_query([exchange, japan])
+	]
+	* { french | franc~} * ==> 
+	[
+		^coord_query([exchange, france])
+	]
+	* { eur~} * ==> 
+	[
+		^coord_query([exchange, euro])
+	]
+	what's * exchange rate for * ==> 
+	[
+		^coord_query([exchange, first(^2)])
+	]
+	* change from * to * ==> 
+	[
+		^coord_query([exchange, first(^2), first(^3)])
+	]	
+	<c_help> ==> [
+		I can convert from Australian dollars to US dollars, japanese yen, french francs, or euros. 
+	]
+
+	* {exchange | currenc~} * ==> [
+		Do you want the exchange rate for US dollars, japanese yen, french francs, or euros?
+	]
+
+
+c_map :: 
+	* library * ==> 
+	[
+		+POINT 200,30,40,crap+ The red circle shows where the library is. 
+	]
+
+	* parking * ==> 
+	[
+		+POINT 100,190,40,crap+ The red circle shows where the parking lot is. 
+	]
+	* gate *  ==> 
+	[
+		+POINT 40,220,40,crap+ The gate is circled in red. 
+	]
+	* computer * ==> 
+	[
+		+POINT 90,150,40,crap+ The computer science department is circled in red. 
+	]
+	EVENT CLICK X * Y * END * #inBox(first(^1), first(^2), 180, 220, 10, 50) ==> 
+	[
+		That's the library. 
+	]
+	EVENT CLICK X * Y * END * #inBox(first(^1), first(^2), 80, 120, 170, 210) ==> 
+	[
+		That's the parking lot. 
+	]
+	EVENT CLICK X * Y * END * #inBox(first(^1), first(^2), 20, 60, 200, 240) ==> 
+	[
+		That's Gate 14. 
+	]
+	EVENT CLICK X * Y * END * #inBox(first(^1), first(^2), 70, 110, 130, 170) * tell *==> 
+	[
+		That's K17 -- Home of the School of Computer Science and Engineering. To get there, please ring security. 
+	]
+	EVENT CLICK X * Y * END * #inBox(first(^1), first(^2), 70, 110, 130, 170) ==> 
+	[
+		That's K17 -- Home of the School of Computer Science and Engineering. 
+	]
+	
+	EVENT CLICK X * Y * END * ==> 
+	[
+		I don't know what you're pointing at. 
+	]	
+	
+
+
+
+
+c_email ::
+	* list * ==> 	
+	[
+		^coord_query([email, list])
+	]
+	what * have * ==> 
+	[
+		^coord_query([email, list])	
+	]
+	* read * <cardinalslt100> * ==> 
+	[
+		^coord_query([email, readmsg, parsecard(^3)])
+	]
+	* read * <ordinalones> * ==> 
+	[
+		^coord_query([email, readmsg, dayofm(^3)])
+	]
+
+	<cardinalslt100> ==> 
+	[
+		^coord_query([email, readmsg, parsecard(^1)])
+	]
+	
+	* <ordinalones> * ==> 
+	[
+		^coord_query([email, readmsg, dayofm(^2)])
+	]
+	* read * ==> 
+	[
+		What is the number of the message you want me to read. 
+	]
+
+	<c_help> ==> 
+	[
+		To read a message, just tell me the message number. Or you can
+		ask me to list your messages. I know I'm a bit stupid, soon, you'll be able to 
+		tell me the topic. 
+	]	
+	* {~mail~ | ~male~ } * ==> 
+
+	[
+		Would you like to list or read your e-mails?
+	]
+	
+
+c_appointment ::
+	* make * ==> 
+	[
+		 ^saveevent([])
+	]
+	
+	* { what | find out | list }  * ==> 
+	[
+		You have the following appointments: 
+		^(listevents) 
+	]
+	<c_help> ==> 	
+	[
+		Do you want to make an appointment, or find out
+		what appointments you have? 
+	]
+	* appointment~ * ==> 
+	[
+		Do you want to list or make appointments? 
+	]
+
+c_news :: 
+	* { Australia~ | Aussie~ | Ozzie~ | local }  * ==> 
+	[	
+		^coord_query([news, abc])
+	]
+	
+	* { ~nation~ } * ==> 
+	[
+		^coord_query([news, cnn]) 
+	]
+	
+	* { geek | nerd | technical | computer } * ==> 
+	[
+		^coord_query([news, slashdot])
+	]
+	<c_help>  ==> 	
+	[
+		I can tell you local or international news. 
+	]
+	* { news | headline~} * ==> 	
+	[
+		Do you want local or international news? 
+	]
+
+c_translate :: 	
+	* translat~ * {into | to } <c_language> ==> 
+	[
+		^coord_query([translate, first(^4) | ^2])
+	]
+	<c_help> ==> 
+	[
+		I can translate to French, German, Italian or Spanish. 
+		Probably the easiest way is to say something like:
+		translate blah into Italian. 
+	]		
+	* translat~ * ==> 
+	[
+		I can translate to French, German, Italian or Spanish. 
+	|
+		Could you repeat that please? 
+	|
+		Sorry. Again, please? 
+	|
+		Could you repeat that please? 
+	] 
+	
+c_fallback :: 
+	NOMOREALTS ==> 
+	{        
+        	Sorry? 
+	| 
+		I didn't quite understand you. 
+	|
+		Beg your pardon? 
+	| 
+		Could you repeat that please? 
+	| 
+		What was that? 
+	| 
+		Again, please? 
+	| 
+		What did you say? 
+	| 
+		Say that again, please? 
+	| 
+		Excuse me? 
+		
+ 	}
+       	* ==> 
+        	[
+	                +INCA Recog Alt+
+	]
+	

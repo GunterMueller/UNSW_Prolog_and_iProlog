@@ -1,0 +1,98 @@
+assistant :: 
+	init ==> 
+	[
+		How can I help you? Some options are: 
+		news, appointments, email and weather. 	 	
+	
+	|
+		What esle can I do for you? 
+
+	]
+	
+
+assistant_topics :: 
+	* {~mail~ | ~male~ } * ==> [
+		#goto
+	]
+
+
+email :: 
+	* {~mail~ | ~male~ } * ==> [
+		^coord_query("email list")
+	]
+
+news :: 	
+	* { news | headlines } * ==> [
+		#goto(news, [init])
+	]
+
+
+
+
+appointment :: 
+	init ==> 
+	[
+		
+	]
+
+	* make * appointment ==> 
+	[
+		#newframe(event, [])
+		Ok, done! Entered and recorded. 
+		#goto(frontend, [init])
+	]
+	* what * appointment~ * ==> 
+	[
+		You have the following appointments: 
+		^(listevents) 
+	]
+
+
+weather :: 
+
+	* { weather | whether | wither }   * ==> 
+	[
+		^coord_query(weather)
+	]
+	
+
+
+news :: 
+	init ==>
+	[
+		Do you want Australian news or geek news? 
+	]
+	* { Australia~ | Aussie~ | Ozzie~ }  * ==> 
+	[	
+		^coord_query(\"news abc\")
+	]
+	* { geek | nerd | technical | computer } * ==> 
+	[
+		^coord_query("news slashdot")
+	]
+	
+	* ==> 
+	[
+		#goto(frontend, [init])
+	]
+	
+
+fallback :: 
+	NOMOREALTS ==> [        
+        	      	I didn't understand that one. Sorry. 
+ 	]
+       	* ==> 
+        	[
+                	+INCA Recog Alt+
+	]
+
+
+desc ::
+	init ==> 
+	[
+		What is the description? 
+	]
+	* ==> 
+	[
+		#return(^1)
+	]

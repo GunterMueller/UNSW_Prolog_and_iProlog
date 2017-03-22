@@ -1,0 +1,393 @@
+#include <setjmp.h>
+#include "forms.h"
+#include "rdr_GUI.h"
+#include "prolog.h"
+#include "xforms_io.h"
+
+#define EXCEPT(x)	ARG(4, x)
+#define ALT(x)		ARG(5, x)
+
+#define MAX_COND 20
+
+extern term varlist, new_var();
+extern term *global;
+
+void xprint_browser(FL_OBJECT *, term);
+
+static FD_rdr *fd_rdr = NULL;
+static jmp_buf ret_env;
+static term *old_global;
+
+static term rule_slot, new_case, old_case, conclusion, whole_rule;
+static term condition_list[MAX_COND];
+static term selected_conds[MAX_COND];
+static int n_conditions;
+
+static term _gt, _lt, _eq, _ne, _dont_know;
+
+extern int  was_true;
+extern term anon_struct;
+extern term last_rule;
+extern term last_case;
+
+
+/************************************************************************/
+/*		Make a bound variable to put into condition		*/
+/************************************************************************/
+
+static term
+mkbound(term free)
+{
+	term rval;
+
+	if (TYPE(free) != FREE)
+		return(free);
+
+	rval = new_ref();
+	varlist = gcons(gcons(new_var(BOUND, OFFSET(free), PNAME(free)), rval), varlist);
+	return(rval);
+}
+
+
+/************************************************************************/
+/*		  Place a condition on condition browser		*/
+/************************************************************************/
+
+static void
+show_condition(term cond)
+{
+	condition_list[n_conditions++] = cond;
+	xprint_browser(fd_rdr -> conditions, cond);
+}
+
+
+/************************************************************************/
+/*		   Put conclusions in choice pull-down			*/
+/************************************************************************/
+
+static void
+show_conclusions(term inherits, term slot, term conclusion)
+{
+	extern term get_facet();
+	int choice, i = 0;
+	term p, conc_list;
+
+	if (inherits == _nil || TYPE(inherits) != LIST)
+		return;
+
+	conc_list = get_facet(CAR(inherits), slot, intern("range"));
+	whole_rule = get_facet(CAR(inherits), slot, intern("if_needed"));
+
+	fl_clear_choice(fd_rdr -> conclusion);
+
+	for (p = conc_list; p != _nil; p = CDR(p))
+	{
+		i++;
+		fl_addto_choice(fd_rdr -> conclusion, NAME(CAR(p)));
+		if (CAR(p) == conclusion)
+			choice = i;
+	}
+
+	fl_set_choice(fd_rdr -> conclusion, choice);
+}
+
+/************************************************************************/
+/*			Show a case is a browser			*/
+/************************************************************************/
+
+static void
+show_case(FL_OBJECT *browser, term plist)
+{
+	term p;
+
+	fl_clear_browser(browser);
+
+	for (p = plist; p != _nil; p = CDR(p))
+		if (CAR(CAR(p)) != rule_slot)
+			xprint_browser(browser, CAR(p));
+}
+
+/************************************************************************/
+/*			  Make a single condition			*/
+/************************************************************************/
+
+static term
+make_cond(term var, term old, term new)
+{
+	term rval, rval1 = NULL, mid_point;
+
+	switch (TYPE(old))
+	{
+		case INT:
+			switch (TYPE(new))
+			{
+				case INT:
+					mid_point = new_real((IVAL(old) + IVAL(new))/2.0);
+
+					if (IVAL(old) < IVAL(new))
+						rval =  g_fn2(_gt, var, mid_point);
+					else if (IVAL(old) > IVAL(new))
+						rval = g_fn2(_lt, var, mid_point);
+						break;
+				case REAL:
+					mid_point = new_real((IVAL(old) + RVAL(new))/2.0);
+
+					if (IVAL(old) < RVAL(new))
+						rval =  g_fn2(_gt, var, mid_point);
+					else if (IVAL(old) > RVAL(new))
+						rval =  g_fn2(_lt, var, mid_point);
+						break;
+				default:
+					rval = g_fn2(_ne, var, old);
+					break;
+			}
+			break;
+		case REAL:
+			switch (TYPE(new))
+			{
+				case INT:
+					mid_point = new_real((RVAL(old) + IVAL(new))/2.0);
+
+					if (RVAL(old) < IVAL(new))
+						rval = g_fn2(_gt, var, mid_point);
+					else if (RVAL(old) > IVAL(new))
+						rval =  g_fn2(_lt, var, mid_point);
+						break;
+				case REAL:
+					mid_point = new_real((RVAL(old) + RVAL(new))/2.0);
+
+					if (RVAL(old) < RVAL(new))
+						rval =  g_fn2(_gt, var, mid_point);
+					else if (RVAL(old) > RVAL(new))
+						rval =  g_fn2(_lt, var, mid_point);
+						break;
+				default:
+					rval = g_fn2(_ne, var, old);
+					break;
+			}
+			break;
+		default:
+			rval = g_fn2(_eq, var, new);
+			rval1 = g_fn2(_ne, var, old);
+	}
+
+	ARG(1, rval) = mkbound(var);
+	show_condition(rval);
+
+	if (rval1 && old != _dont_know)
+	{
+		ARG(1, rval1) = mkbound(var);
+		show_condition(rval1);
+	}
+}
+
+
+/************************************************************************/
+/*		Create conditions for differentiating cases		*/
+/************************************************************************/
+
+static term
+plist_diff(term old_case, term new_case)
+{
+	term p, q;
+
+	n_conditions = 0;
+
+	for (p = new_case; p != _nil; p = CDR(p))
+	{
+		term cond = NULL;
+
+		if (CAR(CAR(p)) == rule_slot)
+			continue;
+
+		for (q = old_case; q != _nil; q = CDR(q))
+			if (CAR(CAR(p)) == CAR(CAR(q)))
+			{
+				if (! unify(CDR(CAR(q)), NULL, CDR(CAR(p)), NULL))
+					cond = make_cond(CAR(CAR(p)), CDR(CAR(q)), CDR(CAR(p)));
+				break;
+			}
+
+		if (q == _nil)
+		{
+			cond = g_fn2(_eq, CAR(CAR(p)), CDR(CAR(p)));
+			show_condition(cond);
+		}
+	}
+	for (q = old_case; q != _nil; q = CDR(q))
+	{
+		term cond = NULL;
+
+		if (CAR(CAR(q)) == rule_slot)
+			continue;
+
+		for (p = new_case; p != _nil; p = CDR(p))
+			if (CAR(CAR(p)) == CAR(CAR(q)))
+				break;
+		if (p == _nil)
+		{
+			cond = g_fn2(_ne, CAR(CAR(q)), CDR(CAR(q)));
+			show_condition(cond);
+		}
+	}
+}
+
+/************************************************************************/
+/*	Perform interactive RDR maintenance on property lists		*/
+/************************************************************************/
+
+static int
+rdr_plist(term goal, term *frame)
+{
+	old_global = global;
+	new_case = copy(check_arg(1, goal, frame, FN, IN), frame);
+	conclusion = eval(new_case, frame);
+	rule_slot = ARG(0, new_case);
+	new_case = ARG(1, new_case);
+	old_case = last_case;
+
+	show_case(fd_rdr -> cornerstone_case, PLIST(old_case));
+	show_case(fd_rdr -> new_case, PLIST(new_case));
+	show_conclusions(INHERITS(new_case), rule_slot, conclusion);
+}
+
+
+static void
+make_new_rule(int n)
+{
+	extern term new_rule();
+	int i = n - 1;
+	term conj = selected_conds[i--];
+	term conclusion = intern((char *) fl_get_choice_text(fd_rdr -> conclusion));
+	term rule;
+
+	while (i >= 0)
+		conj = g_fn2(intern("and"), selected_conds[i--], conj);
+		
+	rule = new_rule(
+		 make(conj, NULL),
+		 conclusion,
+		 new_case,
+		 _anon,
+		 _anon
+		 );
+
+	if (was_true)
+		EXCEPT(last_rule) = rule;
+	else
+		ALT(last_rule) = rule;
+
+	fl_set_input(fd_rdr -> new_rule, "");
+	xprint(fd_rdr -> new_rule, whole_rule);
+
+	global = old_global;
+}
+
+
+/************************************************************************/
+/*				Call backs				*/
+/************************************************************************/
+
+void
+conclusion_cb(FL_OBJECT *ob, long data)
+{
+	fl_clear_browser(fd_rdr -> conditions);
+	n_conditions = 0;
+	varlist = _nil;
+	plist_diff(PLIST(old_case), PLIST(new_case));
+}
+
+void
+conditions_cb(FL_OBJECT *ob, long data)
+{
+  /* fill-in code for callback */
+}
+
+void
+make_button_cb(FL_OBJECT *ob, long data)
+{
+	int i, n = 0;
+	int total_lines = fl_get_browser_maxline(fd_rdr -> conditions);
+
+	for (i = 1; i <= total_lines; i++)
+		if (fl_isselected_browser_line(fd_rdr -> conditions, i))
+			selected_conds[n++] = condition_list[i-1];
+
+	make_new_rule(n);
+}
+
+void
+close_button_cb(FL_OBJECT *ob, long data)
+{
+	fl_hide_form(fd_rdr -> rdr);
+
+	longjmp(ret_env, 1);
+}
+
+
+/************************************************************************/
+/*			    Handle window close				*/
+/************************************************************************/
+
+static int
+close_rdr_GUI(FL_FORM *ob, void *dummy)
+{
+	fl_hide_form(ob);
+
+	longjmp(ret_env, 1);
+	return FL_OK;
+}
+
+
+/************************************************************************/
+/*			Invokde RDR maintenance GUI			*/
+/************************************************************************/
+
+static int
+rdr_GUI(term goal, term *frame)
+{
+	char buf[256];
+
+	if (fd_rdr == NULL)
+	{
+		fd_rdr = create_form_rdr();
+		fl_set_form_atclose(fd_rdr -> rdr, close_rdr_GUI, 0);
+	}
+	else
+	{
+		fl_clear_browser(fd_rdr -> conditions);
+		n_conditions = 0;
+	}
+
+	rdr_plist(goal, frame);
+
+	sprintf(buf, "New Case: %s", NAME(new_case));
+	fl_set_object_label(fd_rdr -> new_case, buf);
+	sprintf(buf, "Cornerstone Case: %s", NAME(old_case));
+	fl_set_object_label(fd_rdr -> cornerstone_case, buf);
+	fl_show_form(fd_rdr -> rdr, FL_PLACE_CENTER, FL_FULLBORDER, "Ripple Down Rules");
+
+	if (setjmp(ret_env))
+		return TRUE;
+	else
+		fl_do_forms();
+
+	return FALSE;
+}
+
+
+/************************************************************************/
+/*			Invokde RDR maintenance GUI			*/
+/************************************************************************/
+
+void
+rdr_GUI_init(void)
+{
+	_gt = intern(">");
+	_lt = intern("<");
+	_eq = intern("=");
+	_ne = intern("\\=");
+	_dont_know = intern("$");
+
+	new_pred(rdr_GUI, "rdr_GUI");
+}

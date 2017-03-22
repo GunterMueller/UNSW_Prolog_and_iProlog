@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Arithmetic</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>ARITHMETIC EXPRESSIONS</H2>
+
+<P>Arithmetic is performed by built-in procedures whose arguments are integer
+expressions which are evaluated when the procedure is called. An integer
+expression is a term built from evaluable functors, integers and variables.
+At the time of evaluation, each variable in an integer expression must
+be bound to an integer, or an integer expression. </P>
+
+<P>Each evaluable functor stands for an arithmetic operation. The evaluable
+functors are as follows, where X and Y are integer expressions:</P>
+
+<P>In the arithmetic built-in procedures which follow, X and Y stand for
+arithmetic expressions and Z for some term. </P>
+
+<CENTER><TABLE BORDER=1 CELLSPACING=2 CELLPADDING=2 >
+<TR>
+<TD><B>Z is X</B> </TD>
+
+<TD>Expression <B><I>X </I></B>is evaluated and the result is unified with
+<B><I>Z</I></B>.</TD>
+</TR>
+
+<TR>
+<TD><B>X + Y</B></TD>
+
+<TD>Addition</TD>
+</TR>
+
+<TR>
+<TD><B>X - Y </B></TD>
+
+<TD>Subtraction </TD>
+</TR>
+
+<TR>
+<TD><B>X * Y</B> </TD>
+
+<TD>Multiplication </TD>
+</TR>
+
+<TR>
+<TD><B>X / Y </B></TD>
+
+<TD>Floating-point division </TD>
+</TR>
+
+<TR>
+<TD><B>X // Y </B></TD>
+
+<TD>Integer division </TD>
+</TR>
+
+<TR>
+<TD><B>X mod Y </B></TD>
+
+<TD><B><I>X </I></B>modulo <B><I>Y </I></B></TD>
+</TR>
+
+<TR>
+<TD><B>X ** Y </B></TD>
+
+<TD>exponentiation (<B><I>Y </I></B>&gt; 0). </TD>
+</TR>
+
+<TR>
+<TD><B>X ^ Y</B></TD>
+
+<TD>exponentiation (<B><I>Y </I></B>&gt; 0). [Not ISO Standard]</TD>
+</TR>
+
+<TR>
+<TD><B>-X</B> </TD>
+
+<TD>unary minus </TD>
+</TR>
+
+<TR>
+<TD><B>abs(N)</B></TD>
+
+<TD>Absoliute value</TD>
+</TR>
+
+<TR>
+<TD><B>acos(N)</B></TD>
+
+<TD>Arccosine (in radians)</TD>
+</TR>
+
+<TR>
+<TD><B>asin(N)</B></TD>
+
+<TD>Arcsine (in radians)</TD>
+</TR>
+
+<TR>
+<TD><B>atan(N)</B></TD>
+
+<TD>Arctangent (in radians)</TD>
+</TR>
+
+<TR>
+<TD><B>atan2(Y, X)</B></TD>
+
+<TD>Same as atan(Y/X) except that the signs of both arguments are used
+to determine the quadrant of the result</TD>
+</TR>
+
+<TR>
+<TD><B>ceiling(N)</B></TD>
+
+<TD>Smallest inteteger not smaller than <B><I>N</I></B></TD>
+</TR>
+
+<TR>
+<TD><B>cos(N)</B></TD>
+
+<TD>Cosine (argument in radians)</TD>
+</TR>
+
+<TR>
+<TD><B>exp(N)</B></TD>
+
+<TD>Natural anitlogarithm, e^<B><I>N</I></B></TD>
+</TR>
+
+<TR>
+<TD><B>float(N)</B></TD>
+
+<TD>Convert to floating point</TD>
+</TR>
+
+<TR>
+<TD><B>floor(X)</B></TD>
+
+<TD>Largest integer not greater than <B><I>X</I></B></TD>
+</TR>
+
+<TR>
+<TD><B>log(N)</B></TD>
+
+<TD>Natural logarithm</TD>
+</TR>
+
+<TR>
+<TD><B>log10(N)</B></TD>
+
+<TD>Logarithm (base 10)</TD>
+</TR>
+
+<TR>
+<TD><B>sin(N)</B></TD>
+
+<TD>Sine (argument in radians)</TD>
+</TR>
+
+<TR>
+<TD><B>sign(N)</B></TD>
+
+<TD>Sign (-1, 0 or 1 for negative, zero or positive <B><I>N</I></B>)</TD>
+</TR>
+
+<TR>
+<TD><B>sqrt(N)</B></TD>
+
+<TD>Square root</TD>
+</TR>
+
+<TR>
+<TD><B>truncate(X)</B></TD>
+
+<TD>Integer equal to the integer part of <B><I>X</I></B></TD>
+</TR>
+
+<TR>
+<TD><B>X =:= Y </B></TD>
+
+<TD>The values of <B><I>X </I></B>and <B><I>Y </I></B>are equal. </TD>
+</TR>
+
+<TR>
+<TD><B>X =\= Y </B></TD>
+
+<TD>The values of <B><I>X </I></B>and <B><I>Y </I></B>are not equal. </TD>
+</TR>
+
+<TR>
+<TD><B>X &lt; Y </B></TD>
+
+<TD>The value of <B><I>X </I></B>is less than the value of <B><I>Y</I></B>.
+</TD>
+</TR>
+
+<TR>
+<TD><B>X &gt; Y </B></TD>
+
+<TD>The value of <B><I>X</I></B> is greater than the value of <B><I>Y</I></B>.
+</TD>
+</TR>
+
+<TR>
+<TD><B>X =&lt; Y</B></TD>
+
+<TD>The value of <B><I>X </I></B>is less than or equal to the value of
+<B><I>Y</I></B>. </TD>
+</TR>
+
+<TR>
+<TD><B>X &lt;= Y</B></TD>
+
+<TD>The value of <B><I>X </I></B>is less than or equal to the value of
+<B><I>Y</I></B>. [Not ISO Standard]</TD>
+</TR>
+
+<TR>
+<TD><B>X &gt;= Y </B></TD>
+
+<TD>The value of <B><I>X </I></B>is greater than or equal to the value
+of <B><I>Y</I></B>. </TD>
+</TR>
+</TABLE></CENTER>
+
+</BODY>
+</HTML>

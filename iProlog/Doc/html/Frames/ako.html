@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>Ako</title>
+  <meta name="Author" content="Claude Sammut">
+</head>
+
+<body>
+<h2>NAME</h2>
+<ul>
+  <p>ako - create a generic frame</p>
+</ul>
+
+<h2>SYNOPSIS</h2>
+<ul>
+  <p>new-generic-frame<b> ako</b> generic-frame-name <b>with
+  </b><i>slot-list</i>!</p>
+</ul>
+
+<h2>DESCRIPTION</h2>
+<ul>
+  <p>Create a new generic frame with name <b><i>new-generic-frame</i></b> and
+  with slots defined by <b><i>slot-list</i></b>. <b><i>Ako </i></b>is a
+  2-arity <i>predicate</i>.</p>
+
+  <p>The slot specification consists of a slot name, followed by a ':'and a
+  list of dæmons. Slot specifications are separated by ';'. The final slot
+  specification should be terminated by a '!'.</p>
+</ul>
+<pre>        frame_name ako inheritance-list
+        [
+                slot1:
+                [
+                        facet11    demon11,
+                        facet12    demon12
+                ],
+                slot2:
+                [
+                        facet21    demon21,
+                        facet22    demon22
+                ]
+        ]!</pre>
+<ul>
+  <p>The description of a dæmon consists of a <i>facet</i> or the name of the
+  type of dæmon, followed by the implementation of the dæmon. Some dæmons
+  behave like predicates, succeeding ot failing and others behave like
+  functions, returning values. See the documentation for each type of
+  dæmon.<br>
+  </p>
+</ul>
+
+<h2>EXAMPLE</h2>
+<ul>
+  <p>Click <a href="person.pro">here </a>to see an example of a generic frame
+  definition.</p>
+</ul>
+
+<h2>SEE ALSO</h2>
+<ul>
+  <p>isa, range, help, if_new, if_needed, if_removed, cache, multivalued,
+  default</p>
+
+  <p>if ... then ... else, ask, new value, old value, in, .., must_be_a, yes,
+  make, this</p>
+</ul>
+
+<h2>BUGS</h2>
+<ul>
+  <p>The parser is not as good as it could be. Syntax errors may be hard to
+  track down.</p>
+</ul>
+</body>
+</html>

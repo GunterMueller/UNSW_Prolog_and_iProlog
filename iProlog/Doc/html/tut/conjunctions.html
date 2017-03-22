@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Conjunctions</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>CONJUNCTIONS OF GOALS </H2>
+
+<P>How do we ask, &quot;Does Jeff teach Fred&quot;? This can be answered
+by finding out if Jeff lectures in a subject which fred studies. </P>
+
+<PRE>        lectures(jeff, Subject), studies(fred, Subject)?
+</PRE>
+
+<P>This is like saying, &quot;Jeff lectures in course, Subject and Fred
+studies (the same) Subject&quot;. <I>Subject</I> is a variable. The question
+consists of two <I>goals</I>. To answer this question, Prolog first finds
+a course, Subject, for which Jeff is the lecturer and then finds out if
+Fred studies the Subject which was just found. </P>
+
+<P>A similar query is: </P>
+
+<PRE>        lectures(ken, Subject), studies(Student, Subject)?
+        Subject = 621
+        Student = jack
+
+        Subject = 643
+        Student = henry
+</PRE>
+
+<P>That is: &quot;Which students does Ken teach&quot;? Prolog solves this
+problem by proceeding left to right and then <I>backtracking</I>. A good
+way of picturing what happens when Prolog tries to find a solution and
+backtracks, is to draw tree diagrams like the one on the next page. When
+given the initial query, Prolog starts by trying to solve </P>
+
+<PRE>        lectures(ken, Subject)
+</PRE>
+
+<P>There are five &quot;lectures&quot; clauses, but only two have &quot;ken&quot;
+as their first argument. Prolog chooses the first clause containing a reference
+to ken, i.e. <TT>lectures(ken, 621). </TT>With <TT>Subject = 621</TT>,
+it then tries to satisfy the next goal, viz, <TT>studies(Student, 621)</TT>.
+After the first solution is found, Prolog retraces its steps up the tree
+and looks for alternative solutions. It may now go down the branch containing
+<TT>lectures(ken, 643) </TT>and then try <TT>studies(Student, 643)</TT>.
+</P>
+
+<CENTER><P><A NAME="proof tree"></A><IMG SRC="intro1.gif" BORDER=1 HEIGHT=156 WIDTH=384 ALIGN=BOTTOM>
+</P></CENTER>
+
+<P>Go <A HREF="facts.html">here </A>to see the database.</P>
+
+</BODY>
+</HTML>

@@ -1,0 +1,31 @@
+The files in this directory are:
+
+	Makefile
+	g.h - global declarations for all Prolog files
+	in.h - include file for input routines
+	lex.c - lexical analyzer
+	main.c - obvious
+	make.c - copy objects from stack on to heap
+	mem.c - memory allocation routines
+	monitor.c - tracing, backtrace and link to profiling
+	out.c - output routines
+	p_IO.c - predefined I/O predicates
+	p_basic.c - predefined  predicates for arithmetic and comparisons
+	p_behave.c - predefined predicates for defining operators, abort, halt
+	p_clause.c - predefined predicates for making clauses
+	p_streams.c - predefined predicates for manipulating streams
+	p_meta.c - predefined predicates functor, univ, retract, assert, etc.
+	p_unix.c - predefined predicates for accessing Unix
+	parse.c - operator precedence parser
+	pred.c - predefined atoms and hash table initialization
+	pred.h - include for p_*.c files
+	profile.c - procedures for profiling
+	prove.c - the Prolog interpreter
+	spaces.c - memory management routines
+
+
+If you want to add your own predefined predicates, look at the p_*.c files.
+These include the file 'pred.h' at the beginning. At the end, they have a
+symbol table which, by convention, is the same name as the file. 'pred.c'
+should contain a call to 'add_atoms' to initialize the hash table from the
+table of atoms you have supplied.

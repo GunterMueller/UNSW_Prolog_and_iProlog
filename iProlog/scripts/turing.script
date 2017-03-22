@@ -1,0 +1,90 @@
+turing ::
+	#new_topic(turing, [], turing_backup)
+
+	{ * why * | * really * | * weird * | * strange * } ==>
+		#goto(turing_preamble, [init])
+
+	{ * alan * | * turing * | * cheering * } ==>
+	[
+		Alan Turing is my hero!
+	]
+
+
+turing_preamble ::
+
+	init ==>
+	[
+		As early as the mid-1930's Alan Turing  had the
+		underlying mathematical idea on  which the computers
+		of today are  based. He was also one of the
+		founders of what we now call Artificial Intelligence
+		or AI. He invented a test for intelligence. Shall I
+		describe it?
+	]
+
+	{ * <aff> * | * describe * } ==> [#goto(turing_test, [init])]
+
+	<neg> ==>
+	[
+		Well, I think Alan Turing was an interesting person,
+		but we can move on.
+		#pop_topic([init])
+	]
+
+
+turing_test ::
+	init ==>
+	[
+		Turing was the first to put up a testable 
+		definition of Artificial Intelligence. He 
+		phrased it as an 'imitation game', and it
+		has come to be known as the Turing Test.
+		No-one has come near to this criterion as yet. 
+		Competitions are held every year, including 
+		one by this Museum in 1998.
+	]
+
+	{ * describe~ *
+	| * what is it *
+	| * what * test *
+	| * tell *
+	} ==>
+	[
+		Turing's 'imitation game' was designed for  detecting
+		the presence of intelligent thought  processes in
+		computer systems. It has become  known as "The Turing
+		Test". The candidate  program is interrogated alongside
+		a human.  Both are remotely connected to a human 
+		examiner. If the latter can't score better  than
+		seventy per cent correct in spotting  which is the
+		computer and which is the human, then the machine has
+		demonstrated its  possession of some degree of
+		intelligence. The same paper, which appeared in 1950,
+		contained an extraordinary proposal. This 'child
+		machine' project was overlooked, and remains so to
+		this day.
+	]
+
+	{ * proposal *
+	| * what * it *
+	| * what * that *
+	| * what * was *
+	| * what * did *
+	| * child * machine *
+	| * what * project *
+	} ==>
+	[
+		The proposal appears at the very end, where Turing
+		considers something more challenging than a machine
+		with just enough  smarts to get it through the Turing
+		Test. How precisely are we to design and build a
+		machine with human-type and human-level intelligence?
+		His recipe was first, to develop a system that can
+		learn  from experience, from instruction and from
+		imitation. Then spend as long as it  takes to train
+		it and educate it to human  standards.
+	]
+
+turing_backup ::
+
+	* something {else | different} * ==> #pop_topic([init])

@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>atom_chars - interconvert atoms and lists of characters</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>atom_chars(+<I>Atom</I>, ?<I>List</I>) <BR>
+atom_chars(?<I>Atom</I>, +<I>List</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P>If <B><I>Atom </I></B>is instanitated, <B><I>List </I></B>is unified
+with the list of single character atoms that make up <B><I>Atom</I></B>'s
+name.</P>
+
+<P>If <B><I>List </I></B>is instantiated to a list of single character
+atoms, they are combined to form a single atom which is unified with <B><I>Atom</I></B>.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>atom_chars(abc, [a, b, c])?</P>
+</UL>
+
+<H2>COMPATIBILITY</H2>
+
+<UL>
+<P><B><I>iProlog </I></B>implements an extended form of atom_chars in which
+the elements of the instantiated <B><I>List</I></B>, may be atoms of any
+kind, eg:</P>
+
+<PRE>: atom_chars(X, [fred, 123, xyz])?</PRE>
+
+<PRE>X = fred123xyz
+</PRE>
+</UL>
+
+</BODY>
+</HTML>

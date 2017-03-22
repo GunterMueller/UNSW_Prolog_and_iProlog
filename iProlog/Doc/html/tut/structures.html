@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<TITLE>Structures</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/4.0 (Unix)">
+	<META NAME="AUTHOR" CONTENT="Claude Sammut">
+	<META NAME="CREATED" CONTENT="19980228;1092200">
+	<META NAME="CHANGEDBY" CONTENT="Claude Sammut">
+	<META NAME="CHANGED" CONTENT="19980228;1105600">
+</HEAD>
+<BODY>
+<H2>STRUCTURES</H2>
+<P>Functional terms can be used to construct complex data structures.
+For example, if we want to say that John owns the book <I>The
+Hitchhicker's Guide to the Galaxy</I>, this may be expressed as: 
+</P>
+<UL>
+	<P>owns(john, &quot;The Hitchhicker's Guide to the Galaxy&quot;).</P>
+</UL>
+<P>This statement tells us very little about the book. Often we
+ascribe to objects a number of attributes. In this case, we would
+like to represent a book as having a title and an author. A
+structured object such a book can be represented by a functional term
+as follows: 
+</P>
+<UL>
+	<PRE>owns(john, book(&quot;The Hitchhicker's Guide to the Galaxy&quot;, adams)).</PRE>
+</UL>
+<P>Now the second argument to the predicate shows us more detail.
+Adams is avery common name, so to be more accurate we should give the
+author's family and given names. 
+</P>
+<PRE>owns(john, book(&quot;The Hitchhicker's Guide to the Galaxy&quot;, author(adams,douglas))).</PRE>
+<P>
+How do we ask, &quot;What books does John own which were written by
+someone called &quot;Adams&quot;? 
+</P>
+<UL>
+	<PRE>owns(john, book(Title, author(adams, GivenName))?</PRE>
+	<PRE>Title = &quot;The Hitchhicker's Guide to the Galaxy&quot;</PRE>
+	<PRE>GivenName = douglas</PRE>
+</UL>
+<P>Notice that in order to find a fact in the database which would
+answer the question, Prolog performed a quite complex matching
+operation between the structures in the query and those in the clause
+head. 
+</P>
+<P>Here is a more complicated example of the use of structures in
+Prolog. It is also out first moderately useful set of Prolog
+programs. A database of books in a library contains facts of the form
+
+</P>
+<UL>
+	<PRE>book(CatalogNumber, Title, author(FamilyName, GivenName)).</PRE>
+	<PRE>member(MemberNumber, name(FamilyName, GivenName), Address).</PRE>
+	<PRE>loan(CatalogNumber, MemberNumber, BorrowDate, DueDate).</PRE>
+</UL>
+<P>A member of the library may borrow a book. When this is done, a
+&quot;loan&quot; is entered into the database recording the catalogue
+number of the book which was borrowed and the number of the member
+who borrowed it. The date at which the book was borrowed and the due
+date are also recorded. Dates are stored as structures of the form
+<TT>date(Year, Month, Day).</TT> For example <TT>date(96, 6, 16)
+</TT>represents 16 June 1996. Names and address are all stored as
+character strings (i.e. atoms). 
+</P>
+<P>The first program we write tells us which books a member has
+borrowed: 
+</P>
+<PRE>        has_borrowed(MemberFamilyName, Title, CatalogNumber) : -
+                member(MemberNumber, name(MemberFamilyName, _), _),
+                loan(CatalogNumber, MemberNumber, _, _),
+                book(CatalogNumber, Title, _).</PRE>
+<P>
+Next we would like to know which books are overdue but before we can
+get started on this program we first have to work out how to compare
+dates. The following predicate tells us when the first date comes
+after the second. 
+</P>
+<PRE>        later(date(Year, Month, Day1), date(Year, Month, Day2)) :- !,
+                Day1 &gt; Day2.
+        later(date(Year, Month1, _), date(Year, Month2, _)) :- !,
+                Month1 &gt; Month2.
+        later(date(Year1, _, _), date(Year2, _, _)) :-
+                Year1 &gt; Year2.</PRE>
+<P>
+Note that the cuts indicate that if Prolog has found a clause head
+which matches the goal then there is no need to consider the
+following clauses. Also notice that the program uses comparison
+operators. These operators can be thought of predicates that have
+been predefined in the Prolog system. 
+</P>
+<PRE>        overdue(DateToday, Title, CatalogNumber, MemberFamilyName) :-
+                loan(CatalogNumber, MemberNumber, _, DueDate),
+                later(DueDate, DateToday),
+                book(CatalogNumber, Title, _),
+                member(MemberNumber, name(MemberFamilyName, _), _).</PRE>
+<P>
+For the final program in this example, let's write a rule which will
+help us to determine that date on which a book is due. 
+</P>
+<PRE>        due_date(date(Year, Month1, Day), date(Year, Month2, Day)) :-
+                Month2 is Month1 + 1.</PRE>
+<P>
+This rule illustrates the use of another arithmetic predefined
+predicate, namely, the <I>is </I>operator. <I>Is</I> accepts two
+arguments. The right hand argument must be a term which can be
+treated as an arithmetic expression. This term is evaluated and then
+unified with the left hand argument. 
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,310 @@
+c_help :: { * available * | what * can * you * | * help * | what * know * | * don't know};
+
+c_thirdper :: { those |  them |  they |  these | it}; 
+
+c_emails :: 
+	{ court | ~cord~ | claude | call it } ==>
+	[
+		claude
+	]	
+	{ well lead | w~ lead | Willie | well eat | Wally} ==> 
+	[
+		waleed
+	]
+	roger ==>
+	[
+		roger
+	]
+	{ karim | kerry | carry~}  ==>
+	[
+		karim
+	]
+	{ bahram | bar}  ==>
+	[
+		bahram
+	]
+	{ mohsen | moths | months | mark~ | Lawson}  ==>
+	[
+		mohsen
+	]
+	john ==> 
+	[
+		john
+	]	
+	{ peter | peace | Topeka} ==>
+	[
+		peter
+	]
+	{ gautam | doubt}  ==>
+	[
+		gautam
+	]
+	{ satya | center | Sanchez} ==>
+	[
+		satya
+	]	
+	tim ==>
+	[
+		tim
+	]
+	
+c_frontend :: 
+	#new_topic(c_frontend, c_topics, c_fallback)
+	init ==> 
+	[
+		Hello. Welcome to FileSphere. What can I help you
+		with? We could look at your document space or your in
+		tray, for example.
+	|
+		Anything else I can do for you? 
+	]
+	init2 ==> 
+	[
+		Is there anything else I can do for you? 
+	]
+	
+	<c_help> ==> 
+	[
+		I can do many things, but I'm here today to
+		demonstrate FileSphere. Would you like to proceed?
+	]
+
+	* thank~ * ==> 
+	[
+		You are most welcome. 
+		#goto(c_frontend, [init])
+	]
+
+	
+
+c_topics :: 
+	* document space * ==> 
+	[
+		#goto(c_fspassdoc, [init]) 
+	]	
+	* {in tray|intray} * ==> 
+	[
+		#goto(c_fspassin, [init]) 
+
+	]
+	what * { time | date } * ==> 
+	[
+		It is ^pptime(time_now) on ^ppdate(today). 
+	]
+	
+	{ who  | what } * you ==> 
+	[
+		My name is Inca. I'm a personal assistant developed 
+		as part of the Smart Internet CRC. 
+	]
+
+	{ who  | what~ } * name~ ==> 
+	[
+		My name is Inca. I'm a personal assistant developed 
+		as part of the Smart Internet CRC. 
+	]
+	* 
+
+	* your name~ ==> 
+	[
+		My name is Inca. I'm a personal assistant developed 
+		as part of the Smart Internet CRC. 
+	]
+
+	* { go back | go to start | not interested | whatever | start over } * ==> 
+	[
+		Sorry I couldn't help. 
+		#goto(c_frontend, [init])
+	]
+	* inca * ==> 
+	[
+		InCA stands for "Internet Conversational Agent". Can I help you with anything?
+	]	
+	* crc * ==> 
+	[
+		The CRC is the cooperative research centre. They made me. They're trying 
+		to make me smarter. 
+	]	
+	
+	* {goodbye | bye } * ==> 
+	[
+		Ok. See you later! 
+		#goto(c_frontend)
+	]
+
+	* thank~ * ==> 
+	[
+		You are most welcome. 
+		#goto(c_frontend, [init2])
+	]
+	
+	 * very much ==> 
+	[
+		You are most welcome. 
+		#goto(c_frontend, [init])
+	]
+	{ how are you | how~ * ~oing } ==>
+	[
+		I'm very well. Thanks for asking. Can I help you with FileSphere?
+	]
+
+
+c_fspassdoc :: 
+	init ==> 
+	[
+		Could you tell me the password to proceed? 
+	]
+	* honesty * ==>
+	[
+		Ok, password accepted. 
+		
+		#goto(c_docspace, [init])
+	]
+c_fspassin :: 
+	init ==> 
+	[
+		Could you tell me the password to proceed? 
+	]
+	* honesty * ==>
+	[
+		Ok, password accepted. 
+		
+		#goto(c_intray, [init])
+	]
+
+c_fspass :: 
+	init ==> 
+	[
+		I require your password to proceed. 
+	]
+	* honesty * ==>
+	[
+		Ok, password accepted. 
+		
+		#goto(getnextstate, [init])
+	]
+
+c_docspace :: 
+	init ==> 
+	[
+		#fs_context([fs,resetcontext])
+		How can I help you? 
+	]
+	* list * current * ==>
+	[
+	   ^fs_context([fs,current])
+	]	
+	* { search | find }  * about * ==>
+	[
+	   ^fs_context([fs,finddocs,dc,subject,first(^4)])
+	]
+	* creat~ * { those | them | these } * ==>
+	[
+	   ^fs_context([fs,currquery,dc,creator])
+	]	
+	* look at * <daysofmonth> * ==>
+	[
+		#focus(dayofm(^3))
+	        ^fs_context([fs,info])
+	]	
+	* { ~mail~ | mallet | send } * to <c_emails> * ==>
+	[
+		Sending mail to ^4.
+	]	
+	* reset * ==>
+	[
+		#fs_context([fs,resetcontext])
+		Context reset. Now looking at all documents again.
+	]	
+	{* what * type~ * know * | * what * type~ * handle * } ==> 
+	[
+		^fs_context([fs,listtypes])
+	]
+	{ * what * type~ * have * } ==> 
+	[
+		^fs_context([fs,filespresent])
+	]
+	* how * many * word~ * ==> 
+	[
+		^fs_context([fs,count, msword])
+	]	
+	* how * many * { excel~ | spreadsheet~ | workbook}  * ==> 
+	[
+		^fs_context([fs,count, msexcel])
+	]	
+	* how * many * { impede | mp3~ | music } * ==> 
+	[
+		^fs_context([fs,count, mp3])
+	] 
+	* how * many * { PDF | acrobat } * ==>
+	[
+		^fs_context([fs,count, pdf])
+	]
+	* how * many * { file~ | document~ }  * ==> 
+	[
+		^fs_context([fs,count, `all])
+	] 
+	* list * {mp3~ | music } * ==> 
+	[
+		^fs_context([fs,list, mp3]) 
+	] 
+	* list * word * ==> 
+	[
+		^fs_context([fs,list,msword])
+	]
+	* list my * documents ==> 
+	[
+		^fs_context([fs,list,first(^2)])
+	]
+	* tell * document <cardinalslt100> * ==> 
+	[
+		^fs_context([fs,info,parsecard(^3)]) 
+	]	
+	tell me {what | who} * are in my * {file~ | doc~} ==> 
+	[ 
+		^fs_context([fs,genquery,first(^2), first(^3)])
+	] 
+	* artist~ * ==> 
+	[
+		^fs_context([fs,genquery,mp3,artist])
+	]
+	* who * {~mail~ | ~male | ~message~ } * ==> 
+	[
+		^fs_context([fs,genquery,email,from])
+	]
+
+c_intray :: 
+	init ==>
+	[
+		^fs_context([fs,intray])
+	]
+
+
+	
+c_fallback :: 
+	NOMOREALTS ==> 
+	{        
+        	Sorry? 
+	| 
+		I didn't quite understand you. 
+	|
+		Beg your pardon? 
+	| 
+		Could you repeat that please? 
+	| 
+		What was that? 
+	| 
+		Again, please? 
+	| 
+		What did you say? 
+	| 
+		Say that again, please? 
+	| 
+		Excuse me? 
+		
+ 	}
+       	* ==> 
+        	[
+	                +INCA Recog Alt+
+	]
+	

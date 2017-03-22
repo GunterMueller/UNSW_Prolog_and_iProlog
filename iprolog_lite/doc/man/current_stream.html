@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+current_stream
+</TITLE><META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+<META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>
+current_stream
+</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P>
+current_stream(Name, Mode, Stream)
+</P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>
+
+	Stream is currently open stream on name Name in mode Mode where
+	Mode is either 'read', 'write' or 'append'. None of the arguments
+	need be initially instantiated. This predicate is non-determinate
+	and can be used to backtrack through all open streams.
+
+	The three reserved streams (user_input, user_output, user_error)
+	are ignored.
+
+	A fact of this form is asserted whenever a stream is created
+	(by open or process) and retracted whenever a stream is closed.
+
+</P>
+</UL>
+
+</BODY>
+</HTML>

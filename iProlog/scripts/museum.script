@@ -1,0 +1,80 @@
+aff :: {yes | ok | fine | no problem | sure | whatever you say};
+
+neg :: {no | never | not on your life | * off };
+
+
+museum ::
+
+	#new_topic(museum, museum_topics, eliza)
+
+	init ==>
+	[
+		Welcome to the Powerhouse Museum and our exhibition
+		on the Universal Machine. We can talk about lot's of
+		things, including Alan Turing and his ideas on Artificial
+		Intelligence.
+	|
+		We have a great exhibit on Charles Babbage and
+		computers in general.
+	|
+		We can talk about other things, like Robotics and
+		Machine Learning.
+	]
+
+
+museum_topics ::
+
+	{* comput~ * | * universal *} ==>
+	[
+		#goto(universal, [init])
+	]
+
+	{* control * | * information * | * processing *} ==>
+	[
+		#goto(control, [init])
+	]
+
+	{* simulation * | * visuali~ation *} ==>
+	[
+		#goto(simulation, [init])
+	]
+
+	{* communications * | * media *} ==>
+	[
+		#goto(media, [init])
+	]
+
+	{* AI * | * artificial intelligence *} ==>
+	[
+		#goto(ai, [init])
+	]
+
+	{ * interface * | * language *} ==>
+	[
+		#goto(hci, [init])
+	]
+
+	{* web * | * internet *} ==>
+	[
+		#goto(www, [init])
+	]
+
+	{* cyber * | * culture * | * cyborg *} ==>
+	[
+		#goto(cyber, [init])
+	]
+
+	{* alan * | * turing * | * cheering *} ==>
+	[
+		#not(topic(turing)) -> #goto(turing, ^0)
+	]
+
+	{* charles * | * babbage * | * baggage *} ==>
+	[
+		#not(topic(babbage)) -> #goto(babbage, ^0)
+	]
+
+	{* robot~ * | * learn~ *} ==>
+	[
+		#goto(stumpy, [init])
+	]

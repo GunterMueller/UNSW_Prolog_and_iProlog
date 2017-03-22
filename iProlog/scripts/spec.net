@@ -1,0 +1,33 @@
+greeting ::
+[
+	[My name is * | * is my name] ==>
+	[
+		Nice to meet you, ^0.	#(assert(name(^0)))
+	|
+		How are you ^0?	#(assert(name(^0)))
+	]
+|
+	My {father|mother|brother|sister} loves me ==>
+	[
+		Why do you think so?
+	]
+]
+
+name ::
+{
+	My name is *
+|
+	* is my name ==>
+	[
+		My name is *
+	]
+}
+
+always ::
+{
+	me ==> you
+|
+	my ==> your
+|
+	am ==> are
+}

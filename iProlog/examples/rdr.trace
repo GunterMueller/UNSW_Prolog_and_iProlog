@@ -1,0 +1,121 @@
+iProlog v5
+: rdr(2)?
+Is none the correct conclusion? n
+What is the correct conclusion? soft
+Is young correct? n
+Is myope correct? n
+Is not_astigmatic correct? y
+Is normal correct? y
+** yes
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2
+: rdr(4)?
+Is none the correct conclusion? n
+What is the correct conclusion? hard
+Is young correct? y
+Is myope correct? n
+Is astigmatic correct? n
+Is normal correct? y
+** yes
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2
+        else if young and normal then hard because 4
+: rdr(6)?
+Is soft the correct conclusion? y
+** yes
+: rdr(7)?
+Is none the correct conclusion? y
+** yes
+: rdr(8)?
+Is hard the correct conclusion? y
+** yes
+: rdr(9)?
+Is none the correct conclusion? y
+** yes
+: rdr(10)?
+Is soft the correct conclusion? y
+** yes
+: rdr(11)?
+Is none the correct conclusion? y
+** yes
+: rdr(12)?
+Is none the correct conclusion? n
+What is the correct conclusion? hard
+Is pre_presbyopic correct? n
+Is myope correct? y
+Is astigmatic correct? n
+Is normal correct? y
+** yes
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2
+        else if young and normal then hard because 4
+        else if myope and normal then hard because 12
+: rdr(13)?
+Is none the correct conclusion? y
+** yes
+: rdr(14)?
+Is soft the correct conclusion? y
+** yes
+: rdr(15)?
+Is none the correct conclusion? y
+** yes
+: rdr(16)?
+Is none the correct conclusion? y
+** yes
+: rdr(17)?
+Is none the correct conclusion? y
+** yes
+: rdr(18)?
+Is soft the correct conclusion? n
+What is the correct conclusion? none
+Is presbyopic correct? y
+Is young \= true correct? n
+** yes
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2 except
+                if presbyopic then none because 18
+        else if young and normal then hard because 4
+        else if myope and normal then hard because 12
+: rdr(19)?
+Is none the correct conclusion? y
+** yes
+: rdr(20)?
+Is hard the correct conclusion? y
+** yes
+: rdr(21)?
+Is none the correct conclusion? y
+** yes
+: rdr(22)?
+Is none the correct conclusion? n
+What is the correct conclusion? soft
+Is hypermetrope correct? n
+Is myope \= true correct? y
+** yes
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2 except
+                if presbyopic then none because 18 except
+                        if myope \= true then soft because 22
+        else if young and normal then hard because 4
+        else if myope and normal then hard because 12
+: rdr(23)?
+Is none the correct conclusion? y
+** yes
+: rdr(24)?
+Is none the correct conclusion? y
+** yes
+: 

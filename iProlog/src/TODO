@@ -1,0 +1,6 @@
+wrt
+expand_term
+portray
+
+assert(f(a)) wrt x
+assert(f(a) wrt x)

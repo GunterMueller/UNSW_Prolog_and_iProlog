@@ -1,0 +1,11 @@
+lengths ::
+	{ word | two words | three words long | this is four words };
+	
+digits ::
+	{ 0 | 1 | 2 | 3 };
+
+bug :: 
+	<lengths> ==> 
+	[
+		I got ^1. 
+	]

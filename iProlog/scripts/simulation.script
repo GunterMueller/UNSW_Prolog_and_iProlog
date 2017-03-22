@@ -1,0 +1,18 @@
+simulation ::
+
+	#new_topic(simulation, [], [])
+
+	init ==>
+	[
+		Simulation and visualisation examines the way in which we
+		use computers to enhance the human capacity to imagine
+		and predict events and understand processes.
+	]
+
+	* ==>
+	[
+		There's a lot more interesting stuff on simulation and
+		visualization in this exhibition. It's a lot of fun.
+		Don't miss it!
+		#pop_topic([init])
+	]

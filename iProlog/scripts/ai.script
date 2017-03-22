@@ -1,0 +1,116 @@
+ai ::
+	#new_topic(ai, [], ai_backup)
+
+	{* AI * | * artificial intelligence *} ==>
+	[
+		My favorite subject! The name of Artificial
+		Intelligence was given it by the  American pioneer, John
+		McCarthy. Want to know more?
+	]
+
+	<aff> ==> [#goto(ai_more, [init])]
+
+	<neg> ==>
+	[
+		AI is a fascinating subject. I'm sure you'll hear a lot
+		more about it in the future. In the mean time don't miss
+		seeing my friend Stumpy, the robot, learn to walk.
+		#pop_topic([init])
+	]
+
+ai_more ::
+
+	init ==>
+	[
+		The idea in AI is to mechanize thought processes. Are
+		today's systems capable of anything as helpful as that?
+	]
+
+	<aff> ==> [#goto(ai_yes, [init])]
+
+	<neg> ==> [#goto(deep_blue_0, [init])]
+
+ai_yes ::
+	
+	init ==>
+	[
+		{ What makes you think that | Why do you think so }?
+		#goto(deep_blue, [init])
+	]
+
+deep_blue_0 ::
+	init ==>
+	[
+		Well, let's think about this. 
+		Is there any concrete way of detecting
+		intelligence? Suppose we wanted to find out whether
+		the property was present in a machine. Was Deep Blue
+		clever?
+	]
+
+	{ * what * deep blue *
+	| * chess *
+	| * beat * champion *
+	} ==>
+	[
+		Deep Blue was the first computer system to beat the
+		World Champion Chess player, Gary Kasparov. So do you
+		think that's pretty smart?
+	]
+
+	* ==> [#goto(deep_blue_1, [init])]
+
+deep_blue_1 ::
+
+	init ==>
+	[
+		Deep Blue was certainly very something or other. But was that 
+		something what we mean by intelligent?
+	]
+
+	<aff> ==>
+	[
+		Really? You must have a pretty neat watch!
+		#goto(deep_blue_1, [continue])
+	]
+
+	<neg> ==>
+	[
+		Of course not!
+		#goto(deep_blue_1, [continue])
+	]
+
+	continue ==>
+	[
+		Then there's something wrong with saying that 
+		intelligence is shown whenever a machine solves a
+		problem that would require intelligence  for an unaided
+		brain to solve.
+	]
+
+	* ==>
+	[
+		In that connection I always think about my watch. It can
+		tell the time. Before there were clocks and watches,
+		only pretty intelligent people could do that! Would you say
+		that your watch is intelligent?
+	]
+
+ai_backup ::
+
+	{ * what * AI *
+	| * what * artificial intelligence *
+	| * is * AI *
+	| * is * artificial intelligence *
+	} ==>
+	[
+		AI is a particular style of programming. As things are,
+		computers are fed problems and produce solutions. Like
+		"What's two plus two?"; "Answer: four". But they are
+		unutterably stupid about what they do!  Faced with the
+		obvious follow-up question, they're  {floored|stumped}!
+		#goto(ai_whatsthat, [init])
+	]
+
+	* something {else | different} * ==> #pop_topic([init])
+

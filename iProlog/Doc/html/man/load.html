@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>load
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>load - read a Prolog program</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>load +<I>FileName <BR>
+</I>load +<I>ListOfFileNames</I></B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P><B><I>FileName</I></B> must be the name of a file containing a Prolog
+program. Clauses in the file are read and interpreted just as they would
+be if typed directly to the interpreter.</P>
+
+<P>If the file had been loaded previously, the previous clauses would have
+been removed first, to be replaced by the new ones.</P>
+
+<P>If the argument is a list of file names, each file is loaded in order.</P>
+
+<P>A side-effect of loading a file is that Prolog asserts a clause of the
+form:</P>
+
+<UL>
+<P><B>file(<I>FileName</I>, <I>ProcList</I>) </B></P>
+</UL>
+
+<P>into the database. <B><I>ProcList </I></B>is a list of the names of
+procedures defined in <B><I>FileName</I></B>. This list is used to <A HREF="unload.html"><B>unload</B>
+</A>procedures before being reloaded.</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="unload.html"><B>unload</B> </A>, <B><A HREF="consult.html">consult</A></B>,
+<B><A HREF="file.html">file</A></B></P>
+</UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,74 @@
+control ::
+
+	#new_topic(control, [], [])
+
+	init ==>
+	[
+		We can explore how computers can manipulate and control
+		information and other machines.
+	]
+
+	<aff> ==>
+	[
+		OK, tell me. Why?
+		#goto(control_yes, [init])
+	]
+
+	<neg> ==> #goto(control_no, [init])
+
+
+control_yes ::
+
+	init ==>
+	[
+		Do you have a video recorder at home, or perhaps a
+		microwave oven?
+	]
+
+	* ==>
+	[
+		Almost all devices like these have computers inside
+		them to control how they operate. Can you think of
+		other things that are computer controlled?
+	]
+
+
+control_everywhere ::
+
+	* ==>
+	[
+		There's a classic science fiction movie called The Day
+   		the Earth Stood Still. Have you seen it?
+	]
+
+	<aff> ==>
+	[
+		OK, so you remember that to make a point, the alien
+		stopped all machinery on Earth for a short time. If he
+		was here today, the way to stop everything would be to
+		disable all computers.
+		#goto(control_exit, [init])
+	]
+
+	<neg> ==>
+	[
+		It's about an alien who comes to Earth to warn us that
+		the other races in the galaxy are worried about our
+		violent nature. To make a point, the alien stops all
+		machinery on Earth for a short time. If he was here
+		today, the way to stop everything would be to disable
+		all computers.
+		#goto(control_exit, [init])
+	]
+
+
+control_exit ::
+
+	* ==>
+	[
+		Computers are everywhere now and we have become very
+		dependent on information technology. It's worth
+		thinking about that and what control of that technology
+		means for our society.
+		#pop_topic([init])
+	]

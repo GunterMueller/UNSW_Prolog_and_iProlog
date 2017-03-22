@@ -1,0 +1,183 @@
+c_place :: { anzac | cse | library | parking };
+
+c_click :: 
+	+CLICK <c_place> ==>
+	[
+		^1
+	]
+
+c_frontend :: 
+	#new_topic(c_frontend, c_topics, c_fallback)
+
+	init ==> 
+	[
+		Can I help you with getting anywhere at all? 
+	]
+
+c_topics ::
+	where * am * ==> 
+	[
+		You are at ^(get_location). 
+	]
+	<c_click> * what is * ==> 
+	[
+		#goto(c_placedesc, ^1)
+	]
+	{what is|what's} * <c_click>* ==> 
+	[
+		#goto(c_placedesc, ^2)
+	]
+	{what is|what's}  * <c_place> * ==>
+	[
+		#goto(c_placedesc, ^2)
+	]
+	from * to * ==>
+	[
+		#goto(c_from_to, [first(^1), first(^2)])
+	]
+	* from * <c_click> * to * <c_click> * ==> 
+	[
+		#goto(c_from_to, [first(^3), first(^7)])
+	]
+	* from * <c_click> * <c_click>  to * ==> 
+	[
+		#goto(c_from_to, [first(^3), first(^5)])
+	]
+	* <c_click> * <c_click> * from * to * ==> 
+	[
+		#goto(c_from_to, [first(^2), first(^4)])
+	]
+	* from * to * <c_click> * <c_click> * ==> 
+	[
+		#goto(c_from_to, [first(^4), first(^6)])
+	]
+	* <c_click> * to here ==> 
+	[
+		#goto(c_from_to, [first(^2), get_location])	
+	]
+	* <c_click> * from <c_place> * to there ==> 
+	[
+		#goto(c_from_to, [first(^4), first(^2)])	
+	]	
+	* from here to * <c_place> * ==> 
+	[
+		#goto(c_from_to, [get_location, first(^3)])
+	]	
+	* from * <c_place> * to here ==> 
+	[
+		#goto(c_from_to, [first(^3), get_location])	
+	]	
+
+c_fallback :: 
+	NOMOREALTS ==> 
+	{        
+        	      	Sorry? 
+	| 
+		I didn't quite hear you. 
+	|
+		Beg your pardon? 
+	| 
+		Could you repeat that please? 
+	| 
+		What was that? 
+	| 
+		Again, please? 
+	| 
+		What did you say? 
+	| 
+		Sorry, I'm totally deaf in one ear, and partially deaf in the other. 
+	| 
+		Say that again, please? 
+	| 
+		Excuse me? 
+		
+ 	}
+       	* ==> 
+        	[
+	                +INCA Recog Alt+
+	]
+	
+c_from_to :: 
+	{ anzac anzac | cse cse | library library | lowerparking lowerparking } ==> 
+	[
+		That's easy. You stand still. 
+	]
+	anzac cse ==> 
+	[
+		Walk up the broadwalk until you see electrical engineering. Take a
+		right down engineering road. cse is the really garish building on your left. 
+	]	
+	anzac library ==> 
+	[
+		Walk up the broadwalk until you see the scientia building ... its pretty 
+		hard to miss. Then take a left and follow the road until it veers to the
+		right. It's right in front of you. 
+	]	
+	anzac parking ==> 
+	[
+		Walk up the broadwalk until you see electrical engineering. Take a
+		right down engineering road. cse is the really garish building on your left. Then keep going. Parking's also on your left. 
+	]	
+	cse anzac ==> 
+	[
+		Turn right onto engineering road. Turn left when you hit the main walkway. 
+	]
+	cse library ==> 
+	[
+		Turn right onto engineering road. When you get to the main walkway, turn left. Walk up the broadwalk until you see the scientia building -- its pretty 
+		hard to miss. Then take a left and follow the road until it veers to the
+		right. It's right in front of you.
+	]
+	cse parking ==> 
+	[
+		Turn left onto engineering road. Walk ahead for a bit, and that's it. 
+	]
+	library anzac ==> 
+	[
+		Just walk downhill. Follow the road. You can't miss it. 
+	]	
+	library cse ==> 
+	[
+		Walk down the main walkway. Then turn left at the Red Centre onto engineering road. CSE is on your right. 
+	]
+	library parking ==> 
+	[
+		Walk down the main walkway. Then turn left at the Red Centre onto engineering road. CSE is on your right. 
+	]
+
+	parking anzac ==> 
+	[
+	 	Turn right onto engineering road. Turn left when you hit the main walkway. 
+	]
+	parking cse ==> 
+	[
+		Turn righ onto engineering road. It's the first building you see after the parking lot. 
+	]
+	parking library ==> 
+	[
+		Turn right onto engineering road. When you get to the main walkway, 
+		turn right. Follow the main walkway up the hill, as it bends to 
+		the right then the left -- there it is. 
+	]
+
+c_placedesc ::
+	cse ==>
+	[
+		That is the CSE building. It's the home of the School of Computer 
+		Science and Engineering, Australia's best Computing department. 
+	]
+	anzac ==> 
+	[
+		That's Anzac Parade. This is the public transport hub of the 
+		university. 
+	]	
+	library ==>
+	[
+		That's the UNSW library. It's huge. It has a collection
+		with more than 1.2 million items. 
+	]
+	parking ==>
+	[
+		This the parking lot. It's expensive to park at UNSW, 
+		but if you're staff, it's not too bad. 
+	]	

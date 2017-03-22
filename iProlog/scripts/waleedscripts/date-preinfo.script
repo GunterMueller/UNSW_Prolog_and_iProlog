@@ -1,0 +1,226 @@
+month :: 
+	{ 
+		january | february| march| april| may| june| july| august| september| october| november| december | 
+		jan | feb | mar | apr | may | jun | jul | aug | sep | oct | nov | dec 
+	}; 
+
+weekday :: { 
+		sun | mon | tue | wed | thu | fri | sat | 
+	     	sunday | monday | tuesday | wednesday | thursday | friday | saturday 
+}; 
+
+ordinalones :: { first | second | third | fourth | fifth | sixth | seventh | eighth | ninth }; 
+
+cardinalones :: { one | two | three | four | five | six | seven | eight | nine }; 
+
+ordinalteens :: { tenth | eleventh | twelfth | thirteenth | fourteenth | 
+	fifteenth | sixteenth | seventeenth | eighteenth | nineteenth
+	}; 
+
+cardinalteens :: {	
+	ten | eleven | twelve | thirteen | fourteen | fifteen | sixteen | seventeen
+	| eighteen | nineteen 
+	};
+
+cardinaltens :: {
+	twenty |  thirty |  forty | fifty |  sixty |  seventy | eighty | ninety
+	}; 
+
+cardinalslt100 :: { 
+	<cardinalones> | <cardinalteens> | <cardinaltens> <cardinalones> | <cardinaltens> }; 
+
+daysones :: { <ordinalones> | <cardinalones> }; 
+
+daysteens :: { <ordinalteens> | <cardinalteens> }; 
+	
+daystwenties :: { 
+	 twenty <daysones> | twenty-<daysones> | twenty 
+	}; 
+	
+daysthirties :: { 
+	thirty one | thirty-one | thirty-first | thirty first | thirtieth | thirty 
+	};
+
+daysofmonth :: {
+	<daysones> | <daysteens> | <daystwenties> | <daysthirties> 
+	}; 
+	
+hours :: 	{ 
+	<cardinalslt100> 
+	}; 	
+
+minutes :: { 
+	<cardinalslt100> | quarter | half 
+	}; 
+
+amids :: {	in the morning | am | a m }; 
+
+pmids :: { in the evening | in the afternoon | pm | p m }; 
+
+time :: 
+	<hours> <minutes> <amids> ==> 
+	[
+		 ^time(parsecard(^1), parsecard(^2), 0 )
+	]
+
+	<hours> <minutes> <pmids> ==>
+	[
+		 time(^(parsecard(^1) + 12), ^(parsecard(^2)), 0) 
+	]
+
+	<hours> <minutes> #(clearhour(parsecard(^1))) ==> 
+	[
+		 I think ^(defaulttime(parsecard(^1), parsecard(^2))). 
+
+	]	
+
+	<hours> <minutes> ==> 
+	[
+		Do you mean ^(parsecard(^1)) : ^(parsecard(^2)) a.m. or p.m.? 
+	]
+
+	<hours> { oclock | o'clock } #(clearhour(parsecard(^1))) ==> 
+	[ 
+		 ^(defaulttime(parsecard(^1), 0)). 
+	]
+
+	<hours> { oclock | o'clock } ==> 
+	[ 
+		Do you mean ^1 a.m. or p.m.? 
+	]
+
+	<hours> <amids>  ==> 
+	[
+		 time(^(parsecard(^1)), 0, 0). 
+	]
+
+	<hours> <pmids>  ==>
+	[
+		 time(^(parsecard(^1) + 12), 0, 0). 
+	]
+
+	<minutes>  past <hours> <amids> ==> 
+	[
+		 time(^(parsecard(^2)), ^(parsecard(^1)), 0 ). 
+	]
+
+	<minutes> past <hours> <pmids>  ==>
+	[
+		 time(^(parsecard(^2) + 12), ^(parsecard(^1)), 0). 
+	]		
+
+	<minutes> past <hours> #(clearhour(parsecard(^2))) ==> 
+	[
+	 	 ^(defaulttime(parsecard(^2), parsecard(^1))). 
+	]
+
+	<minutes> past <hours> ==> 
+	[
+		Do you mean ^(parsecard(^2)) : ^(parsecard(^1)) a.m. or p.m.? 
+	]
+	<minutes>  to <hours> <amids> ==> 
+	[
+		 ^(minssub(^1, ^2, am)). 
+	]
+
+	<minutes> to <hours> <pmids>  ==>
+	[
+		print ^1 ^2 ^3. 
+		 ^(minssub(^1, ^2, pm)). 
+	]		
+
+	<minutes> to <hours> #(clearhour(parsecard(^2))) ==> 
+	[
+	 	 ^(minssub(^1, ^2, default)). 
+	]
+
+	<minutes> to <hours> ==> 
+	[
+		Do you mean a.m. or p.m.? 
+	]
+
+
+
+date ::
+	today ==> 
+	[
+		^(today)
+		#(gotfact(idate))
+	]
+
+	tomorrow ==> 
+	[
+		 ^(tomorrow)
+		#(gotfact(idate))
+	]
+	
+	next <weekday> ==> 
+	[
+		 ^(calcnextweekday(^1))
+		#(gotfact(idate))
+	]
+
+	{ <cardinalslt100>  days from { now | today }}  ==> 
+	[	
+		 ^(dateadd(parsecard(^1), today))
+		#(gotfact(idate))
+	]
+
+	<daysofmonth> ==> 
+	[
+		^(defaultdate(date(-1, -1, dayofm(^1)))). 
+		#(gotfact(idate))
+	]
+	
+	<daysofmonth> <month> ==> 
+	[
+	 	^(defaultdate(date(-1, pmonth(^2), dayofm(^1))))
+		#(gotfact(idate))
+	]
+
+	<daysofmonth> of <month> ==> 
+	[
+	 	 ^(defaultdate(date(-1, pmonth(^2), dayofm(^1)))) 
+		#(gotfact(idate))
+
+	]
+
+	NOMOREALTS ==> [	
+		I didn't understand that one. Sorry. 
+	]
+	* ==> 
+	[
+		+INCA Recog Alt+
+	]
+
+frontend :: 
+	init ==> 
+	[
+		How can I help you? 	 	
+	]
+	
+	{I want to make | make an} appointment ==> 
+	[
+		#(requirefacts([idate, itime, idurn, idescription]))
+		#goto(getmoreinfo, [])
+	]
+	
+	I want to make an appointment on <date> ==> 
+	[
+		#(requirefacts([itime, idurn, idescription]))
+		#(assert(idate(^1)))
+		#goto(getmoreinfo, [])
+	]
+	I want to make an appointment at <time> ==> 
+	[
+		#(requirefacts([idate, idurn, idescription]))
+		#(assert(itime(^1)))
+	]	
+
+
+getmoreinfo :: 
+	#(needfact(idate)) ==> 
+	[
+		What is the date? 
+		#goto(date)
+	]

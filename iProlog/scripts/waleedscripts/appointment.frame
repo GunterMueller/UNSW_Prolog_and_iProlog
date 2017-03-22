@@ -1,0 +1,27 @@
+dynamic(f_event/1)!
+f_event ako [] with 
+[
+	s_date: 
+	[
+		help 		print("date of the appointment"), 
+		if_new 		query(c_date, [init, "What date is it on"]), 
+		cache		true
+	],
+	s_start:
+	[
+		help		print("start of the appointment"), 
+		if_new		query(c_time, [init, "When does it start"]),
+		cache 		true
+	], 
+	s_end:
+	[
+		help		print("end of the appointment"), 
+		if_new		query(c_time, [init, "When does it end"]),
+		cache 		true
+	], 
+	s_desc: 
+	[
+		if_new		query(c_string, [init, "What is it about"]),
+		cache 		true
+	]
+]!

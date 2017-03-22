@@ -1,0 +1,58 @@
+lengths :: { word | two words | three words long | this is four words }; 
+combo :: { extraword | extraword <lengths> }; 
+combob :: { extraword <lengths> | extraword }; 
+fruit :: { apple | banana | orange }; 
+adjective :: { sweet | sour | salty }; 
+person :: { girl | boy | man }; 
+threenums :: { 1 | 2 | 3 }; 
+
+buga :: 
+<lengths> ==> 
+[
+	I got ^1. 
+]
+
+
+
+bugb ::
+<combo> ==> 
+[
+	I got ^1. 
+] 
+
+bugc :: 
+<combob> ==> 
+[
+	I got ^1. 
+]
+
+bugd :: 
+	<threenums> ==> 
+	[
+		I got ^1. 
+	]
+	anything <threenums> ==> 
+	[
+		Anything: ^1. 
+	]
+
+
+buglemma :: 
+	<lengths> ==>
+	[
+		^(today)
+	]
+
+
+buge :: 
+	<buglemma> ==> 
+	[
+		I got ^1. 
+	]
+
+bugf :: 
+	<buglemma> ==> 
+	[
+		I got ^(^1). 
+	]
+

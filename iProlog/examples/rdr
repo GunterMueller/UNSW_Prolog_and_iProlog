@@ -1,0 +1,99 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This routine works out the differences between slots in the old case	%
+% (X) and the new case (Y). It is called from a "findall" goal to	%
+% collect all the solutions.						%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+slot_diff(X, Y, Slot of this person > Value) :-
+        value(X, Slot, ValueX),
+        value(Y, Slot, ValueY),
+        number(ValueX),
+        number(ValueY),
+        ValueX < ValueY,
+        Value is (ValueX + ValueY)/2.
+slot_diff(X, Y, Slot of this person < Value) :-
+        value(X, Slot, ValueX),
+        value(Y, Slot, ValueY),
+        number(ValueX),
+        number(ValueY),
+        ValueX > ValueY,
+        Value is (ValueX + ValueY)/2.
+slot_diff(X, Y, Slot of this person = ValueY) :-
+        value(X, Slot, ValueX),
+        value(Y, Slot, ValueY),
+        not((number(ValueX), number(ValueY))), 
+        ValueX \= ValueY.
+slot_diff(X, Y, Slot of this person \= ValueX) :-
+        value(X, Slot, ValueX),
+        not(value(Y, Slot, ValueY)).
+slot_diff(X, Y, Slot of this person = ValueY) :-
+        value(Y, Slot, ValueY),
+        not(value(X, Slot, ValueX)).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This routine is just an interactive hook to call "slot_diff" and ask	%
+% if the condition that's been generated is wanted in the new rule.	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rdr_cond(X, Y, Cond) :-
+        slot_diff(X, Y, Cond),
+        prin("Is ", Cond, " correct"),
+        ratom(y).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A call to "findall" will return a list of conditions for the new RDR.	%
+% "list2cond" turns this list into a conjunction.			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+list2cond([A], A) :- !.
+list2cond([A|B], A and D) :- list2cond(B, D).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	   Print an rdr. Requires "print_if" file to be loaded		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+show_rule :-
+        if_needed(patient, diagnosis, RDR),
+        print_if(RDR, 0),
+        nl.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	   	Interactive running and maintaining of rdr		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rdr(NewCase) :-
+	(Conclusion because _) is diagnosis of NewCase,
+	prin("Is ", Conclusion, " the correct conclusion"),
+	(ratom(n) ->
+		prin("What is the correct conclusion"),
+		ratom(D),
+		corner_stone_case(OldCase),
+		findall(Cond, rdr_cond(OldCase, NewCase, Cond), List),
+		list2cond(List, NewConditions),
+		add_rdr(if NewConditions then D because NewCase),
+		print("\nThe new rdr is:\n"),
+		show_rule
+	| true
+	).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Sample use of rdr inside frames			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+person ako object with
+    sex:         if_new ask cache yes;
+    age:         if_new ask cache yes;
+    height:      if_new ask cache yes;
+    weight:      if_new ask cache yes;
+    diagnosis:   if_needed
+			if true then normal except
+				if height of this person = 150 and age of this person = 12 then hyperthyroid because fred
+				else if height of this person = 160 then hypothyroid because jim!
+
+fred isa person with sex:male;   age:12; height: 150; weight: 50!
+jim  isa person with sex:male;   age:12; height: 160; weight: 55!
+mary isa person with sex:female; age:12; height: 160; weight: 50!
+
+go :- rdr(mary).

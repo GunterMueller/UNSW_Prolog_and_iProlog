@@ -1,0 +1,508 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TR Tree-grower
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% v1.0 Does iterative deepening search for a true node, and returns the entire
+% tree to the given level. (Very memory intensive.)
+
+% v2.0 Only adds those nodes which are true in the starting state (and retains
+% any existing nodes in the tree). - INCOMPLETE
+
+% Both of the above were very buggy
+
+% v3.0 The above with most (hopefully all) of the bugs removed. And a pretty-
+% print procedure added.
+
+% v4.0 Includes support for negative predicates in descriptions
+
+% v5.0 Changed from STRIPS to TOPs - added a small botworld model
+
+% v6.0 Added actor code - finds actions in tree
+
+% v7.0 Modified for Claude's new iProlog
+
+% 
+%      Note that there is a difference between state descriptions and 
+%      TR-Node conditions. We will assume the Closed-World Axiom for state
+%      descriptions, so anything that is not stated is false.
+%      
+%      Whereas, if a predicate is not present in a node condition, then
+%      we assume that it doesn't matter whether it is true or false.
+%
+
+% Tree node structure:
+%
+% tr-node(
+%       Condition,              % The activation condition for this node
+%       Action,                 % The action to be performed (poss "null")
+%       List_of_children,       % The children of this node
+%       Coverage                % the coverage of this subtree
+% ).
+%
+
+%%% expand_tree(
+%%%     OldTree,                % existing tree
+%%%     MaxDepth,               % max depth to search
+%%%     State,                  % new state to cover
+%%%     NewTree).               % new tree
+%%%
+%%% grows the tree, searching to a maximum depth of MaxDepth, and adding 
+%%% any paths to nodes which cover State. Fails in no such path is found.
+
+dynamic(tree/1, explored/1)!
+
+% if a state is already covered, don't do anything.
+
+expand_tree(OldTree, MaxDepth, State, OldTree) :-
+        covers(OldTree, State), !.
+
+expand_tree(OldTree, MaxDepth, State, NewTree) :-
+        assert_explored(OldTree),!,             % assert that all existing
+                                                % nodes are explored
+        expand_node(OldTree, MaxDepth, State, NewTree),
+                                                % expand the tree
+        retract_all_explored,!,                 % clean up the explored()
+                                                % predicates.
+        covers(NewTree, State).                 % check that we have covered
+                                                % the required State, fail
+                                                % otherwise.
+
+%%% assert_explored takes a tr_node, or a list of coverage states, and asserts
+%%% 'explored(X)' for all states in that tree/list
+
+assert_explored(tr_node(_, _, _, Coverage)) :-
+        assert_explored(Coverage).
+
+assert_explored([]).
+
+assert_explored([X | Xs]) :-
+        assert(explored(X)),
+        assert_explored(Xs).
+
+%%% retract_all_explored simply retracts all the 'explored(X)' predicates.
+
+retract_all_explored :-
+        retract_all(explored(_)).
+
+retract_all(X) :-
+	findall(X, X, L),
+	retract_list(L).
+
+retract_list([]).
+
+retract_list([X | L]) :- retract(X), retract_list(L).
+
+%%%
+%%% expand_node is called to expand a subtree to the given depth, and 
+%%% save any nodes (or subtrees) that cover the given state.
+%%%
+%%% expand_node(OldTree,        % Tree before expansion
+%%%             Depth,          % Maximum depth to expand to
+%%%             State,          % Save subtrees that cover this state
+%%%             NewTree)        % resulting Tree
+
+% if the Depth is zero, don't change anything
+
+expand_node(OldTree, MaxDepth, _, OldTree) :-
+        MaxDepth = 0, !.
+
+% otherwise, generate all possible children and investigate each one.
+
+expand_node(
+        tr_node(Condition, Action, OldChildren, OldCoverage),
+        MaxDepth,
+        State,
+        tr_node(Condition, Action, NewChildren, [Condition | NewCoverage])) :-
+
+        % generate and expand all possible children, collect those that
+        % need to be saved (either they cover the target state, or they
+        % are already children
+
+        findall(
+                Child, 
+                new_child(
+                        tr_node(Condition, Action, OldChildren, OldCoverage),
+                        MaxDepth, 
+                        State, 
+                        Child),
+                NewChildren),
+
+        % The coverage of the new tree is the union of the coverage of 
+        % all the children, plus the condition for this state (included
+        % above).
+
+        coverage_union(NewChildren, NewCoverage).
+
+%%%
+%%% New_child will return all the children of a given node, which need to
+%%% be saved. There are two cases: 1) Nodes that are already children, and
+%%% 2) Nodes that are generated by the planner which cover the target state
+%%%
+%%% new_child(ParentNode,       % The Parent node
+%%%           Depth,            % The Depth to search for new children
+%%%           State,            % The target state
+%%%           Child),           % The child generated (output)
+
+% 1st case, an existing child is automatically included. We need to recurse
+% to search for any new grand-children etc.
+
+new_child(
+        tr_node(_, _, Children, _),
+        MaxDepth,
+        State,
+        NewChild) :-
+
+        % all existing children are expanded, and are automatically 
+        % saved
+
+        member(Child, Children),
+        NewDepth is MaxDepth - 1, 
+        expand_node(Child, NewDepth, State, NewChild).
+        
+% 2nd case, new children are generated by the planner. They are marked as 
+% explored nodes (so that the planner will not generate them again), 
+% and then expanded recursively. These new children are only kept if they
+% cover the target state.
+
+new_child(
+        tr_node(Goal, _, _, _),
+        MaxDepth,
+        State,
+        Child) :-
+
+        % generate an unexplored state (will not generate existing children
+        % because they have already been explored)
+
+        new_plan_step(Goal, Action, Condition),
+
+        % mark it as explored
+
+        assert(explored(Condition)),                    
+
+        % recurse
+
+        NewDepth is MaxDepth - 1,
+
+        expand_node(
+                tr_node(Condition, Action, [], [Condition]),
+                NewDepth,
+                State,
+                Child),
+
+        % only save this subtree if it covers the current state
+
+        covers(Child, State).
+
+
+%%% coverage_union just concats together all the coverage fields of a 
+%%% a list of tr_nodes
+
+coverage_union([], []).
+
+coverage_union([tr_node(_, _, _, Coverage) | Rest], Result) :-
+        coverage_union(Rest, L),
+        conc(Coverage, L, Result).      
+
+%%%
+%%% Auxilaries
+%%%
+
+% Generate an unexplored plan step
+
+new_plan_step(Goal, Action, RegressedGoal) :-
+        plan_step(Goal, Action, RegressedGoal),
+        not(explored(RegressedGoal)).
+
+% check if a tree covers a certain state
+
+covers(tr_node(_, _, _, Coverage), State) :-
+        satisfies_list(State, Coverage).
+
+% check that a State satisfies at least one of a list of goals
+
+satisfies_list(State, [Goal | _]) :-
+        satisfies(State, Goal), !.
+
+satisfies_list(Condition, [_ | Goals]) :-
+        satisfies_list(Condition, Goals).
+
+% check if a given State satisfies a Goal condition
+
+satisfies(State, []).
+
+satisfies(State, [not(X) | Conditions]) :-
+        not(member(X, State)), !,
+        satisfies(State, Conditions).
+
+satisfies(State, [X | Conditions]) :-
+        member(X, State),!,
+        satisfies(State, Conditions).
+
+% check if any of the elements of a given set of side-effects interfere
+% with a goal
+
+interfere([Condition | _], Goals) :-
+        impossible(Condition, Goals), !.
+
+interfere([_ | Rest], Goals) :-
+        interfere(Rest, Goals).
+
+% it is impossible to have both X and not(X) true at the same time
+
+impossible(X, Goals) :- member(not(X), Goals).
+impossible(not(X), Goals) :- member(X, Goals).
+
+% debug printing: only output if "debug." is asserted.
+
+dprin(String) :-
+        debug,!,
+        prin(String).
+
+dprin(_).
+
+dprint(String) :-
+        debug,!,
+        print(String).
+
+dprint(_).
+
+%%% Basics
+
+% member(X, [X | _]).
+% member(X, [_ | Xs]) :- member(X, Xs).
+
+conc([], L, L).
+conc([X | L1], L2, [X | L3]) :- conc(L1, L2, L3).
+
+delete([], L, []).
+delete([X | L1], L2, L3) :-
+        member(X, L2),!,
+        delete(L1, L2, L3).
+delete([X | L1], L2, [X | L3]) :-
+        delete(L1, L2, L3).
+
+%%%
+%%% Botworld 
+%%%
+
+% top(
+%       Name,
+%       Action,
+%       Postcondition,
+%       Preimage,
+%       SideEffects)
+
+top(    forward1,
+        forward,
+        [at_grabbing_dist(Bar)],
+        [too_far(Bar), facing_bar(Bar)],
+        [not(too_far(Bar))]).
+
+top(    forward2,
+        forward,
+        [on_midline(Bar)],
+        [facing_midline(Bar)],
+        []).
+
+top(    turn1,
+        turn,
+        [facing_bar(Bar)],
+        [not(facing_bar(Bar))],
+        [facing_midline(Bar)]).
+        
+top(    turn2,
+        turn,
+        [facing_midline(Bar)],
+        [not(facing_midline(Bar))],
+        [not(facing_bar(Bar)), not(parallel_to(Bar))]).
+
+top(    backward1,
+        backward,
+        [on_midline(Bar)],
+        [not(facing_midline(Bar))],
+        [not(at_grabbing_dist(Bar))]).
+
+top(    backward2,
+        backward,
+        [at_grabbing_dist(Bar)],
+        [not(at_grabbing_dist(Bar)), not(too_far(Bar))],
+        [not(on_midline(Bar))]).
+
+top(    grab1,
+        grab,
+        [holding(Bar)],
+        [at_grabbing_dist(Bar), on_midline(Bar), free(Bar), not(holding(_))],
+        [not(free(Bar))]).
+
+top(    release1,
+        release,
+        [free(Bar)],
+        [holding(Bar)],
+        [not(holding(Bar))]).
+
+top(    release2,
+        release,
+        [not(holding(Bar))],
+        [holding(Bar)],
+        [free(Bar)]).
+
+state([too_far(b), free(b), holding(c)]).
+state2([too_far(b), facing_midline(b), free(b)]).
+goal([holding(b)]).
+
+%%%
+%%% Planning
+%%%
+
+% create a 1-step plan to achieve the current goal
+
+plan_step(Goals, Action, RegressedGoals) :-
+        member(Goal, Goals),                    % select a goal
+        top(TOP, Action, [Goal], _, _),         % find a top that achieves it
+        preserves(TOP, Goals),                  % check that it preserves the
+                                                % other goals
+        regress(Goals, TOP, RegressedGoals).    % find the regressed condition
+
+
+% check that an action preserves a list of predicates
+
+preserves(TOP, Goals) :-
+        top(TOP, _, _, _, SideEffects),
+        not(interfere(SideEffects, Goals)).
+
+% regress from a Goal state through a given action to get a precondition state
+
+regress(Goals, TOP, RegressedGoals) :-
+        top(TOP, _, PostCondition, PreImage, _),
+        delete(Goals, PostCondition, RestGoals),
+        addnew(PreImage, RestGoals, RegressedGoals).
+
+% form the union of two lists of predicates, checking that the resulting
+% conjunction is a possible state.
+
+addnew([], L, L).
+
+addnew([Goal | _], Goals, _) :-
+        impossible(Goal, Goals),
+        !,
+        fail.
+
+addnew([X | L1], L2, L3) :-
+        member(X, L2),!,
+        addnew(L1, L2, L3).
+
+addnew([X | L1], L2, [X | L3]) :-
+        addnew(L1, L2, L3).
+
+%%%%
+%%%%  Testing
+%%%% 
+
+create_tree :-
+        retract_all(tree(_)),
+        goal(Goal), 
+        assert(tree(tr_node(Goal, null, [], [Goal]))).
+
+create_tree!
+
+grow_to_cover(Tree, State, NewTree) :-
+        grow_to_cover(Tree, State, 1, NewTree).
+
+% grow by iterative deepening:
+
+grow_to_cover(Tree, State, Depth, NewTree) :-
+        prin("Expanding tree to depth: "),
+        print(Depth),
+        flush_output,
+        expand_tree(Tree, Depth, State, NewTree), !.
+
+grow_to_cover(Tree, State, Depth, NewTree) :-
+        Depth < 10,
+        Depth1 is Depth + 1,
+        grow_to_cover(Tree, State, Depth1, NewTree).
+
+grow(State) :-
+        tree(T),
+        grow_to_cover(T, State, New),
+        retract(tree(T)),
+        print_tree(New),
+        assert(tree(New)).
+
+% display a Tree structure in a more readble format
+
+print_tree :-
+        telling(Old),
+        tell(tree),
+        tree(T),
+        print_tree(T),
+        current_output(Stream),
+        flush_output(Stream),           % doesn't seem to work
+        tell(Old).
+
+print_tree(Tree) :-
+        print_tree(Tree, 0), !.
+
+print_tree(tr_node(Condition, Action, Children, Coverage), Tab) :-
+        print_tabbed("tr_node(", Tab),
+        Tab1 is Tab + 3,
+        write_tabbed(Condition, Tab1),
+        write_tabbed(Action, Tab1),
+%       print_tabbed("[", Tab1),
+        print_children(Children, Tab1),
+%       print_tabbed("]", Tab1),
+        print_coverage(Coverage, Tab1),
+        print_tabbed(")", Tab).
+
+write_tabbed(Item, 0) :- write(Item), print(""), !.
+write_tabbed(Item, X) :- prin(" "), X1 is X-1, write_tabbed(Item, X1).
+
+print_tabbed(String, 0) :- print(String), !.
+print_tabbed(String, X) :- prin(" "), X1 is X-1, print_tabbed(String, X1).
+
+print_children([], _).
+
+print_children([X | Xs], Tab) :-
+        print_tree(X, Tab),
+        print_children(Xs, Tab).
+
+print_coverage([], _).
+
+print_coverage([X | Xs], Tab) :-
+        write_tabbed(X, Tab),
+        print_coverage(Xs, Tab).
+
+%%%
+%%% Executing trees
+%%%
+
+%%% get the action for a particular state. 
+
+% Note: This could be made more efficient by asserting the last rule
+% found (and it's ancestors), and using this as a quick-lookup, as per
+% Benson's thesis.
+
+% if the action is already covered, just fetch it
+
+get_action(State, Action) :-
+        tree(Tree),
+        covers(Tree, State),!,
+        get_action1([Tree], State, Action).
+
+% otherwise grow the tree, and fetch the action from the new tree.
+
+get_action(State, Action) :-
+        grow(State),
+        tree(NewTree),
+        get_action1([NewTree], State, Action).
+
+%%% Do a BFS to find a matching node
+
+% NOTE: can possibly be made more efficient by ignoring any subtrees which 
+% do not cover the state
+
+get_action1([tr_node(Condition, Action, _, _) | _], State, Action) :-
+        satisfies(State, Condition), !.
+
+get_action1([tr_node(_, _, Children, _) | Queue], State, Action) :-
+        conc(Queue, Children, NewQueue),
+        get_action1(NewQueue, State, Action).

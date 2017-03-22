@@ -1,0 +1,18 @@
+table object(
+		size(small, medium, large),
+		colour(red, blue, green),
+		shape(wedge, brick, pillar, sphere),
+		class(yes, no)
+).
+
+object(medium, blue, brick, yes).
+object(small, red, sphere, yes).
+object(large, green, pillar, yes).
+object(large, green, sphere, yes).
+
+object(small, red, wedge, no).
+object(large, red, wedge, no).
+object(large, red, pillar, no).
+
+go is id(object).
+% bayes(object(small, blue, wedge, X))?

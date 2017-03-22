@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <title>Frames</title>
+  <meta name="AUTHOR" content="Claude Sammut">
+  <meta name="CREATED" content="19980228;9475300">
+  <meta name="CHANGEDBY" content="Claude Sammut">
+  <meta name="CHANGED" content="19980228;9484200">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body>
+<h1><a name="FRAMES"></a>FRAMES</h1>
+
+<p>Frames provide a way of representing and manipulating complex objects.
+There are two main features of frame systems: <br>
+ </p>
+
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p><b>Procedural Attachment</b></p>
+      </td>
+      <td><p>Inference in a frame system is performed on an <i>ad hoc</i>
+        basis by attaching procedures to the attributes of an object. These
+        procedures are triggered depending on how the attribute is
+        accessed.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>Inheritance</b></p>
+      </td>
+      <td><p>Like all object-oriented systems, instance frames can inherit
+        properties from generic frames in a hierarchy. <b>iProlog
+        </b>supports multiple inheritance.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In <b>iProlog</b>, frames are stored in Prolog's database and their
+contents can be queried and matched in the same way as other data. This
+section describes a front-end to iProlog that provides a convenient syntax
+for manipulating frames.</p>
+<ul>
+  <li><a href="#Generic Frames">Generic Frames</a></li>
+  <li><a href="#Instance Frames">Instance Frames</a></li>
+  <li><a href="#Frame Commands">Frame Commands</a></li>
+  <li><a href="#Demons">Dæmons</a></li>
+  <li><a href="#Auxiliary">Auxiliary functions and predicates</a></li>
+  <li><p><a href="patient.pro">A Complete Example</a></p>
+  </li>
+</ul>
+<hr>
+
+<h2><a name="Generic Frames"></a><a href="#FRAMES">Generic Frames</a></h2>
+
+<p>The structure of a generic frame is shown below</p>
+<pre> frame_name ako inheritance-list
+ [
+     slot1:
+     [
+         facet11 demon11,
+         facet12 demon12
+     ],
+     slot2:
+     [
+         facet21 demon21,
+         facet22 demon22
+    ]
+ ]!</pre>
+
+<h3>Example</h3>
+<pre>cylinder ako [] with
+[
+    height:
+    [
+        range       number(new_value) and new_value &gt; 0,
+        help        print("Height must be a positive number"),
+        if_needed   ask_user,
+        if_removed  remove volume,
+        cache       true
+    ],
+    radius:
+    [
+        range       number(new_value) and new_value &gt; 0,
+        help        print("Radius must be a positive number"),
+        if_needed   ask_user,
+        if_removed  remove cross_section,
+        cache       true
+    ],
+    cross_section:
+    [
+        if_needed   pi * radius ** 2,
+        if_removed  remove volume,
+        cache       true
+    ],
+    volume:
+    [
+        if_needed   cross_section * height,
+        cache       true
+    ]
+]!</pre>
+
+<h3>Slots</h3>
+
+<p>Generic frames describe generic objects, e.g. person, physical object,
+etc. A frame's attributes (slots) may be explicitly listed within the frame
+definition or they may be inherited from a generic frame. The value of "ako"
+contains a list of generic frame names from which slots can be inherited. In
+the example above, the "cylinder" frame can inherit attributes from the
+"object" frame.</p>
+
+<h3>Facets and Dæmons</h3>
+
+<p>A slot in a generic frame contains a list of <i>facets</i> and
+<i>demons</i>. Facets are labels which identify the type of demon. The
+allowable facets are described in the Reference Manual. Demons are procedures
+that are attached to slots and are triggered automatically by different kinds
+of accesses to the frame. They are written in Prolog.</p>
+
+<h3>Multiple Inheritance</h3>
+
+<p>The inheritance specification may be a single name such as
+<b><i>object</i></b> in the example above, or it may be a list. e.g..<b><i>
+[cylinder, container]</i></b>. This means that the object would inherit all
+the properties of <b><i>cylinder </i></b>and <b><i>container</i></b>. The
+inheritance lists are searched left-to-right and depth-first. If there is
+more the one parent frame with the same slot name, the first one encountered
+is used.</p>
+<hr>
+
+<h2><a name="Instance Frames"></a><a href="#FRAMES">Instance Frames</a></h2>
+
+<h4>The structure of an instance frame</h4>
+<pre> frame-name isa inheritance-list with
+ [
+     slot1: value1,
+     slot2: value2,
+     ................
+     slotN: valueN
+ ]!</pre>
+
+<h4>Example</h4>
+<pre> c isa cylinder with
+ [
+     height: 2,
+     radius: 4
+ ]!</pre>
+
+<p>Instance frames describe instances of generic frames, i.e. cylinders, etc.
+The inheritance list, following the <b>isa</b> keyword contains a list of the
+names of the generic frame names from which the frame can inherit slots.
+Whenever a slot cannot be found within an instance frame, inheritance is
+applied. <b>iProlog </b>searches the inheritance hierarchy looking for a
+particular slot. However, instead of containing an actual value, the slot
+will contain a procedure for computing the corresponding value.</p>
+
+<p><b>iProlog </b>allows <i>multiple inheritance</i>, i.e. a frame may
+inherit attributes from more than one frame. The inheritance hierarchy is
+then searched in a depth-first, left-to-right manner.</p>
+<hr>
+
+<h2><a name="Frame Commands"></a><a href="#FRAMES">Frame Commands</a></h2>
+
+<center>
+
+<table border="1" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p><a href="ako.html"><b>ako</b></a></p>
+      </td>
+      <td><p>Create a generic frame</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="isa.html"><b>isa</b></a></p>
+      </td>
+      <td><p>Create an instance frame</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="of.html"><b>slot-name</b></a></p>
+      </td>
+      <td><p>Retrieve a slot value</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="add.html"><b>has_value</b></a></p>
+      </td>
+      <td><p>Add a new slot value</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="replace.html"><b>is_replaced_by</b></a></p>
+      </td>
+      <td><p>Replace a slot value</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="remove.html"><b>remove</b></a></p>
+      </td>
+      <td><p>Remove a slot</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<hr>
+
+<h2><a name="Demons"></a><a href="#FRAMES">Dæmons</a></h2>
+
+<center>
+
+<table border="1" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p><a href="range.html"><b>range</b></a></p>
+      </td>
+      <td><p>a predicate that checks a new value being added to slot</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="help.html"><b>help</b></a></p>
+      </td>
+      <td><p>a predicate that is invoked if range check fails</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="if_new.html">i<b>f_new</b></a></p>
+      </td>
+      <td><p>a predicate invoked when instance frame is created</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="if_needed.html"><b>if_needed</b></a></p>
+      </td>
+      <td><p>a function that is invoked when a slot value needs to be
+        computed</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="if_added.html"><b>if_added</b></a></p>
+      </td>
+      <td><p>a predicate that is invoked when a new value is added to a
+        slot</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="if_replaced.html"><b>if_replaced</b></a></p>
+      </td>
+      <td><p>a predicate that is invoked when a slot value is replaced</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="if_removed.html"><b>if_removed</b></a></p>
+      </td>
+      <td><p>a predicate that is invoked when a slot is removed from an
+        instance frame</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="cache.html"><b>cache</b></a></p>
+      </td>
+      <td><p>if the value if <b><i>yes, </i></b>the value computed by<b><i>
+        if_needed</i></b> is stored in the instance frame</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="multivalued.html"><b>multivalued</b></a></p>
+      </td>
+      <td><p>if <b><i>yes</i></b>, allow a slot to contain a list of
+        values</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><a href="default.html"><b>default</b></a></p>
+      </td>
+      <td><p>Similar to <b><i>if_needed</i></b>, except that slot value is
+        not evaluated</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+<hr>
+
+<h2><a name="Auxiliary"></a><a href="#FRAMES">Auxiliary Functions and
+Predicates for Frames</a></h2>
+
+<table border="1" cellpadding="4" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><p><b>if ... then ... else</b></p>
+      </td>
+      <td><p>conditional expression which is a function (i.e.. returns a
+        value)</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>ask</b> <br>
+        <b>ask(<i>Question</i>)</b></p>
+      </td>
+      <td><p>prompt the user to enter a value</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>new value</b></p>
+      </td>
+      <td><p>the new value being added to a slot</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>old value</b></p>
+      </td>
+      <td><p>the old value of the slot (prior to the current operation)</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b><i>X </i>in <i>List</i></b></p>
+      </td>
+      <td><p>determinate list membership predicate (but as a user-friendly
+        infix operator)</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b><i>Lo </i></b>.. <b><i>Hi</i></b></p>
+      </td>
+      <td><p>a predicate that tests if</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b><i>Generic</i>(X)</b></p>
+      </td>
+      <td><p>a predicate that succeeds if new slot value is a
+        <b><i>Generic</i></b> type</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>yes</b></p>
+      </td>
+      <td><p>a dummy value for the <b>cache </b>and <b>multivalued</b>
+        slots</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>new_instance [<i>GenericList</i>]</b></p>
+      </td>
+      <td><p>creates a new frame that is an instance of the list of generic
+        frames specified in <b><i>GenericList</i></b></p>
+      </td>
+    </tr>
+    <tr>
+      <td><p><b>current_object</b></p>
+      </td>
+      <td><p>refers to the current object</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p> </p>
+</body>
+</html>

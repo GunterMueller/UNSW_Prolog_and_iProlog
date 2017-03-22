@@ -1,0 +1,163 @@
+container(chips plastic-bag).
+container(bread plastic-bag).
+container(granola cardboard-box).
+container(glob jar).
+container(ice_cream cardboard_carton).
+container(pepsi bottle).
+
+size(chips medium).
+size(bread medium).
+size(granola large).
+size(glop small).
+size(ice_cream medium).
+size(pepsi large).
+
+frozen(chips no).
+frozen(bread no).
+frozen(granola no).
+frozen(glob no).
+frozen(ice_cream yes).
+frozen(pepsi no).
+
+step(check_order).
+bag(1).
+bag_count(1 large 0).
+bag_count(1 medium 0).
+bag_count(1 small 0).
+unpacked(bread).
+unpacked(glop).
+unpacked(granola).
+unpacked(granola).
+unpacked(ice_cream).
+unpacked(chips).
+
+add_pepsi:
+if	step(check_order)
+and	unpacked(chips)
+and	not(unpacked(pepsi))
+then	assert(unpacked(pepsi)).
+
+start_packing_large_items:
+if	step(check_order)
+then	retract(step(check_order))
+and	assert(step(pack_large_items)).
+
+pack_bottle:
+if	step(pack_large_items)
+and	unpacked(Item1)
+and	size(Item1, large)
+and	unpacked(Item2)
+and	container(Item2, bottle)
+and	size(Item2, large)
+and	bag_count(Bag, large, N)
+and	N < 6
+then	retract(unpacked(Item2))
+and	assert(bag(Bag, Item2)).
+
+pack_large_item:
+if	step(pack_large_items)
+and	unpacked(Item)
+and	size(Item large)
+and	bag_count(Bag, large, N)
+and	N < 6
+then	retract(unpacked(Item))
+and	assert(bag(Bag Item)).
+
+new_bag_for_large_items:
+if	step(pack_large_items)
+and	unpacked(Item)
+and	size(Item, large)
+and	bag(CurrentBag)
+then	retract(bag(CurrentBag))
+and	NewBagCount is CurrentBag + 1
+and	assert(new_bag(NewBagCount)).
+
+start_packing_medium_items:
+if	step(pack_large_items)
+then	retract(step(pack_large_items))
+and	assert(step(pack_medium_items)).
+
+pack_frozen_medium_item:
+if	step(pack_medium_items)
+and	unpacked(Item)
+and	size(Item, medium)
+and	bag_count(Bag, small, 0),
+and	bag_count(Bag, large, 0),
+and	frozen(Item, yes)
+and	not(in_freezer_bag(Item))
+then	assert(in_freezer_bag(Item)).
+
+pack_medium_item:
+if	step(pack_medium_items)
+and	unpacked(Item)
+and	size(Item, medium)
+and	bag_count(Bag small 0)
+and	bag_count(Bag large 0)
+then	retract(unpacked(Item))
+and	assert(bag(Bag Item)).
+
+new_bag_for_medium_items:
+if	step(pack_medium_items)
+and	unpacked(Item)
+and	size(Item, medium)
+and	bag(CurrentBag)
+then	retract(bag(CurrentBag))
+and	NewBagCount is CurrentBag + 1
+and	assert(new_bag(NewBagCount)).
+
+start_packing_small_items:
+if	step(pack_medium_items)
+then	retract(step(pack_medium_items))
+and	assert(step(pack_small_items)).
+
+
+pack_small_item_separate_from_large_item:
+if	step(pack_small_items)
+and	unpacked(Item)
+and	size(Item, small)
+and	bag_count(Bag, large, 0)
+then	retract(unpacked(Item))
+and	assert(bag(Bag Item)).
+
+pack_small_item:
+if	step(pack_small_items)
+and	unpacked(Item)
+and	size(Item small)
+and	bag_count(Bag, _, _)
+then	retract(unpacked(Item))
+and	assert(bag(Bag Item))
+
+new_bag_for_small_items:
+if	step(pack_small_items)
+and	unpacked(Item)
+and	size(Item small)
+and	bag(CurrentBag)
+then	retract(bag(CurrentBag))
+and	NewBagCount is CurrentBag + 1
+and	assert(new_bag(NewBagCount)).
+
+finish:
+if	step(pack_small_items)
+then	retract(step(pack_small_items))
+and	stop.
+
+bag_count:
+if	bag(Bag Item)
+then	assert(do_count(Bag, Item)).
+
+do_count:
+if	do_count(Bag, Item)
+and	size(Item, Size)
+and	bag_count(Bag, Size, N)
+then	retract(do_count(Bag, Item))
+and	retract(bag_count(Bag, Size, N))
+and	NewSize is Size + 1
+and	assert(bag_count(Bag, NewSize)).
+
+new_bag:
+if	new_bag(N)
+then	retract(new_bag(N))
+and	assert(bag(N))
+and	assert(bag_count(N, large, 0))
+and	assert(bag_count(N, medium, 0))
+and	assert(bag_count(N, small, 0)).

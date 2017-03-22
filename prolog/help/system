@@ -1,0 +1,4 @@
+system(ShellCommand)
+
+	ShellCommand is an atom or string which is passed to a Bourne shell to
+	be executed as an ordinary Unix command.

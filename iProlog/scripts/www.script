@@ -1,0 +1,12 @@
+www ::
+
+	#new_topic(www, [], [])
+
+	init ==>
+	[
+		Today, over 150 million people worldwide use the
+		internet to publish, communicate, design and research.
+		In this section, you can surf the net and explore the
+		development of electronic communications.
+		#pop_topic([init])
+	]

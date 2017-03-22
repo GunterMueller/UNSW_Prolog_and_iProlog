@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Ako</TITLE>
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>multivalued - allow a slot to contain a list of vlaues</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><I>SlotName</I>:</P>
+
+<UL>
+<P><B>multivalued </B><I>yes</I></P>
+</UL>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>This must only appear as a facet of a slot in a generic frame. It allows
+more than one value to be added to a slot value.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<PRE>box ako object with
+       contents:
+               multivalued     yes!
+
+: b isa box?
+** yes
+: add marble to contents of b?
+** yes
+: contents of b?
+[marble]
+: add string to contents of b?
+** yes
+: contents of b?
+[string, marble]
+: listing?
+
+value(box, isa, [object]).
+value(b, isa, [box]).
+value(b, contents, [string, marble]).
+
+multivalued(box, contents, yes).</PRE>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="add.html">add</A></P>
+</UL>
+
+</BODY>
+</HTML>

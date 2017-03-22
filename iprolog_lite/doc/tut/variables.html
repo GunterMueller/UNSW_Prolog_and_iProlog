@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<TITLE>Variables</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/4.0 (Unix)">
+	<META NAME="AUTHOR" CONTENT="Claude Sammut">
+	<META NAME="CREATED" CONTENT="19980228;1083300">
+	<META NAME="CHANGEDBY" CONTENT="Claude Sammut">
+	<META NAME="CHANGED" CONTENT="19980228;1085800">
+</HEAD>
+<BODY>
+<H1>VARIABLES</H1>
+<H2>SYNTAX</H2>
+<P>Variables are denoted by symbols whose first character is a
+capital letter or the character &quot;_&quot;, eg. <I>X</I>, <I>Value</I>,
+<I>A</I>, <I>A1</I>, <I>_3</I>, <I>_RESULT</I>.</P>
+<P>If a variable is only referred to once, it does not need to be
+named and may be written as an &quot;anonymous&quot; variable
+indicated by a single underline character, '_'.</P>
+<P>A variable should be thought of as standing for some definite but
+unidentified object. This is analogous to the use of a pronoun in
+natural language. Note that a variable is not simply a writeable
+storage location as in most programming languages; rather it is a
+local name for some data object. 
+</P>
+<H2>EXAMPLES</H2>
+<P>Suppose we want to ask, &quot;What course does Jeff teach&quot;?
+This could be written as: 
+</P>
+<PRE>        Is there a subject, X, which Jeff teaches?</PRE>
+<P>
+Here, X, is a variable which stands for an object which the
+questioner does not know about yet. 
+</P>
+<P>To answer the question, Prolog to find out the value of X, if it
+exists. As long as we do not know the value of a variable it is said
+to be <I>unbound</I> or <I>uninstantiated</I>. When a value is found,
+the variable is said to <I>instantiated</I> or <I>bound</I> to the
+value. The name of a variable must begin with a capital letter or an
+underscore character, &quot;_&quot;. 
+</P>
+<P>To ask Prolog to find the course which Jeff teaches, the following
+query is entered: 
+</P>
+<PRE>        lectures(jeff, X)?
+        X = 611                 output from Prolog</PRE>
+<P>
+To ask which course(s) Ken teaches, a similar question may be asked, 
+</P>
+<PRE>        lectures(ken , X)?
+        X = 621
+        X = 643</PRE>
+<P>
+When there is more than one possible answer, Prolog will try to find
+all of them.</P>
+<P>Go <A HREF="facts.html">here </A>to see the database.</P>
+</BODY>
+</HTML>

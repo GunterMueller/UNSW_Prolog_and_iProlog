@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <TITLE>Aq algorithm</TITLE>
+</HEAD>
+<BODY>
+
+<H2>
+NAME</H2>
+
+<UL>aq - run the Aq algorithm over a training set</UL>
+
+<H2>
+SYNOPSIS</H2>
+
+<UL><B>aq(+<I>RelationName</I>)</B></UL>
+
+<H2>
+DESCRIPTION</H2>
+
+<UL>The Aq function induces a set of rules from examples given as a relation
+in Prolog's database. The output is a <A HREF="/home/claude/iprolog/Doc/html/Frames/Frames.html">frame
+</A>that contains the new rule.
+
+<P>Like the other propositional learners, Aq requires a mode declaration
+to specify the types of attributes that the relation has.
+
+<P>The mode declaration defines the range of values each attribute is allowed
+to take. The last attribute is always taken to be the class.</UL>
+
+<H2>
+EXAMPLE</H2>
+
+<UL>
+<UL>
+<PRE>mode object(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; size(small, medium, large),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; colour(red, blue, green),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shape(wedge, brick, pillar, sphere),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; class(yes, no)
+).
+
+object(medium, blue, brick, yes).
+object(small, red, sphere, yes).
+object(large, green, pillar, yes).
+object(large, green, sphere, yes).
+
+object(small, red, wedge, no).
+object(large, red, wedge, no).
+object(large, red, pillar, no).
+
+: <B>aq(object)?
+</B>aq0
+: <B>pf aq0!
+</B>aq0 isa [aq] with
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; creator: aq(object);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; date: '97/10/21 - 10:32:49';
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n_examples: 7;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; errors: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule:&nbsp;
+object(Size, Colour, Shape, Class) :-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Colour in [blue, green] -> Class = yes
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |Shape in [brick, sphere] -> Class = yes
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |Colour = red , Shape in [wedge, brick, pillar] -> Class = no).
+!</PRE>
+</UL>
+</UL>
+
+<H2>
+BUGS</H2>
+
+<UL>This implementation can't handle continuous attributes yet.</UL>
+
+<H2>
+SEE ALSO</H2>
+
+<UL><A HREF="id.html">id</A>, <A HREF="induct.html">induct</A></UL>
+
+</BODY>
+</HTML>

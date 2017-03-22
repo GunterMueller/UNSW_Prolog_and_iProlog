@@ -1,0 +1,54 @@
+char(X0) :- X0 = a.
+char(X0) :- X0 = b.
+
+list(X0) :- X0 = [].
+list(X0) :-
+	X0 = [X1|X2],
+	char(X1),
+	list(X2).
+
+mem(X0, X1) :-
+	X0 = a,
+	X1 = [X2, X3],
+	X2 = a,
+	X3 = [X4, X5],
+	X4 = b,
+	X5 = [],
+	X0 = X2.
+
+saturate(Concept, BG, (Head :- SaturatedBody), Rules) :-
+	get_clause(Concept, Head, Body),
+	cycle(BG, Body, SaturatedBody, [], Rules).
+
+get_clause(ConceptName/Arity, Head, Body) :-
+	functor(Head, ConceptName, Arity),
+	clause(Head, Body).
+
+match(WM, BG, (Head :- Body)) :-
+	member(BG_clause, BG),
+	get_clause(BG_clause, Head, Body),
+	subset(Body, WM).
+
+cycle(BG, WM0, WM2, Rules0, Rules2) :-
+	findall(Rule, match(WM, BG, Rule), Rules),
+	Rules \= [],
+	convert_list(Rules, Lits),
+	extend(WM0, Lits, WM1),
+	append(Rules0, Rules, Rule1),
+	cycle(BG, WM1, WM2, Rules1, Rules2).
+cycle(_, WM, WM, Rules, Rules).
+
+convert_list([X], X) :- !.
+convert_list([A|B], (A, C)) :- convert_list(B, C).
+
+extend((A, B), C, (A, D)) :- extend(B, C, D).
+extend(A, B, (A, B)).
+
+mem(X, (X, _)).
+mem(X, (_, Y)) :- mem(X, Y).
+mem(X, X).
+
+subset((A, B), X) :- !,
+	mem(A, X),
+	subset(B, X).
+subset(X, Y) :- mem(X, Y).

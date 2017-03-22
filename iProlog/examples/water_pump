@@ -1,0 +1,229 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rules for water station diagnosis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+load rules!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Declare operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+op(100, xfx, is_a)!
+op(100, xfx, pressure)!
+op(100, xfx, nominal_pressure)!
+op(100, xfx, pressure_status)!
+op(100, xfx, current)!
+op(100, xfx, nominal_current)!
+op(100, xfx, current_status)!
+op(100, xfx, input_line)!
+op(100, xfx, output_line)!
+op(100, xfx, status)!
+op(100, xfx, pump)!
+op(100, xfx, motor)!
+op(100, xfx, replacement)!
+
+dynamic(
+	status/2,
+	pressure_status/2,
+	current_status/2,
+	"Replacement permission granted"/0
+)!
+
+ask(X) :-
+	prin(X),
+	ratom(y),
+	assert(X).
+ask(_).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fault detection rules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"Line pressure is low":
+if	Line is_a line
+and	Line pressure X
+and 	Line nominal_pressure Y
+and	X < Y
+then	assert(Line pressure_status low)
+and	print(Line, " pressure is low").
+
+"Line pressure is normal":
+if	Line is_a line
+and	Line pressure X
+and 	Line nominal_pressure Y
+and	X >= Y
+then	assert(Line pressure_status normal).
+
+"Motor current is low":
+if	Motor is_a motor
+and	Motor current X
+and 	Motor nominal_current Y
+and	X < Y
+then	assert(Motor current_status low)
+and	print(Motor, " current is low").
+
+"Motor current is normal":
+if	Motor is_a motor
+and	Motor current X
+and 	Motor nominal_current Y
+and	X >= Y
+then	assert(Motor current_status normal).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fault isolation rules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"Block may be at fault":
+if	Block is_a block
+and	Block input_line InputLine
+and	Block output_line OutputLine
+and	InputLine pressure_status normal
+and	OutputLine pressure_status low
+then	assert(Block status bad)
+and	print(Block, " may be at fault").
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fault diagnosis rules - motor problem
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"Motor may have a problem":
+if	Block is_a block
+and 	Block status bad
+and	Block motor Motor
+and	Motor current_status low
+then	assert(Motor status bad)
+and	print(Motor, " may have a problem")
+and	ask("Replacement permission granted").
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fault diagnosis rules - pump problem
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"Pump may have a problem":
+if	Block is_a block
+and 	Block status bad
+and	Block pump Pump
+and	Block input_line InputLine
+and	Block output_line OutputLine
+and	InputLine pressure X
+and	OutputLine pressure Y
+and	X == Y
+then	assert(Pump status bad)
+and	print(Pump, " may have a problem")
+and	ask("Replacement permission granted").
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fault diagnosis rules - line problem
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"Line may have a problem":
+if	Block is_a block
+and 	Block status bad
+and	Block motor Motor
+and	Motor current_status normal
+and	Block input_line InputLine
+and	Block output_line OutputLine
+and	InputLine pressure X
+and	OutputLine pressure Y
+and	X < Y
+then	assert(OutputLine status bad)
+and	print(OutputLine, " may have a problem")
+and	ask("Replacement permission granted").
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fault response rules
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"Replace motor":
+if	"Replacement permission granted"
+and	Block is_a block
+and	Block status bad
+and	Block motor Motor
+and	Motor status bad
+and	motor replacement NewMotor
+then	retract(Block motor Motor)
+and	assert(Block motor NewMotor)
+and	print("Replace ", Motor).
+
+"Replace pump":
+if	"Replacement permission granted"
+and	Block is_a block
+and	Block status bad
+and	Block pump Pump
+and	Pump status bad
+and	pump replacement NewPump
+then	retract(Block pump Pump)
+and	assert(Block pump NewPump)
+and	print("Replace ", Pump).
+
+"Replace line":
+if	"Replacement permission granted"
+and	Block is_a block
+and	Block status bad
+and	Block output_line OutputLine
+and	OutputLine status bad
+and	line replacement NewLine
+then	retract(Block output_line OutputLine)
+and	assert(Block output_line NewLine)
+and	print("Replace ", OutputLine).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define a replacement
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+motor replacement Part2 :-
+	Part2 is_a motor,
+	not(motor(_, Part2)).
+pump replacement Part2 :-
+	Part2 is_a pump,
+	not(pump(_, Part2)).
+line replacement Part2 :-
+	Part2 is_a line,
+	not(input_line(_, Part2)),
+	not(output_line(_, Part2)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Working Memory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+block1 is_a block.
+block2 is_a block.
+
+motor1 is_a motor.
+motor2 is_a motor.
+motor3 is_a motor.
+
+pump1 is_a pump.
+pump2 is_a pump.
+pump3 is_a pump.
+
+line1 is_a line.
+line2 is_a line.
+line3 is_a line.
+line4 is_a line.
+
+block1 motor motor1.
+block1 pump pump1.
+block1 input_line line1.
+block1 output_line line2.
+
+block2 motor motor2.
+block2 pump pump2.
+block2 input_line line2.
+block2 output_line line3.
+
+motor1 nominal_current 1.
+motor2 nominal_current 1.
+
+line1 nominal_pressure 50.
+line2 nominal_pressure 100.
+line3 nominal_pressure 150.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+line1 pressure 50.
+line2 pressure 80.
+line3 pressure 120.
+
+motor1 current 1.
+motor2 current 1.

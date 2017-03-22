@@ -1,0 +1,1 @@
+pbm *skeletonise(pbm *image);

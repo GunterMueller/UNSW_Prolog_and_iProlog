@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>range</TITLE>
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>range - d&aelig;mon predicate applied to a new value when added</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><I>SlotName</I>:</P>
+
+<UL>
+<P><B>range </B><I>predicate</I></P>
+</UL>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>The <B>range</B> d&aelig;mon is invoked when a new value is added to
+a slot, either by the <B>add</B> or <B>replace</B> predicates. The d&aelig;mon
+is implemented by a predicate which is applied to <B>new value</B>.</P>
+
+<UL>
+<LI>If the predicate succeeds, the new value is added.</LI>
+
+<LI>If the predicate fails, and a <B>help</B> d&aelig;mon is also present,
+then the <B>help</B> d&aelig;mon is invoked. Nothing is added when the
+range d&aelig;mon fails.</LI>
+</UL>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>Most of the slots in the <A HREF="cylinder.pro">cylinder </A>and <A HREF="patient.pro">patient
+</A>examples have range and help d&aelig;mons.</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="add.html">add</A>, <A HREF="help.html">help</A>, <A HREF="replace.html">replace</A>,
+new value</P>
+</UL>
+
+</BODY>
+</HTML>

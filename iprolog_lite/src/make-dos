@@ -1,0 +1,25 @@
+dos-gcc -o prolog.exe \
+	atom.c \
+	chartype.c \
+	dcg.c \
+	dump.c \
+	eval.c \
+	evloop.c \
+	files.c \
+	lex.c \
+	main.c \
+	make.c \
+	mem.c \
+	out.c \
+	p_compare.c \
+	p_db.c \
+	p_lists.c \
+	p_math.c \
+	p_meta.c \
+	p_system.c \
+	p_unix.c \
+	pred.c \
+	prove.c \
+	read.c \
+	unify.c
+	

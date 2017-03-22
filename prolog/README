@@ -1,0 +1,62 @@
+			UNSW Prolog (version 4.2)
+
+The Prolog tape is 1600 bpi and can be loaded by
+
+	tar tvb 20
+
+
+The top level directory contains:
+
+	READ_ME - this file
+	help - directory containing help files used by help system
+	lib - a library of sample Prolog programs
+	manual - directory containing the UNSW Prolog manual (troff)
+	prolog.1 - man(1) entry
+	prolog.lib - a file automatically loaded by Prolog at startup
+	srce - C source directory
+
+
+To install prolog,
+	change the path names in prolog.lib to suit your local system
+	cd srce
+	change path names in g.h and Makefile to suit
+	If you are not BSD unix, remove the line:
+		#define BSD
+	  from the file "g.h"
+	make install
+
+
+If PRINC_VAR is defined in g.h then Prolog will allow unification
+on principal functors of terms (see lib/family for an example).
+This is added at only marginal loss of speed, but itis very convenient
+in some applications. If you want to stick to a standard Prolog
+system, remove this definition.
+
+Other user definable globals are PROFILING, DFLT_ED, DFLT_SHELL, HZ and
+MEM_AVAIL.
+
+If PROFILING is defined you will be able to profile your prolog program.
+ie you will be able to find out among other things how much time is spent
+inside each predicate.  For a full description see the help directory under
+profiling. DFLT_ED is the default editor and DFLT_SHELL is the default shell
+used when the built in predicate "sh" is called. HZ is your line frequency in
+cycles per second. MEM_AVAIL controls how large the chunks are that the
+memory management routines grab.  Use 1 if main memory is limited ( < 400 K ).
+use 2 otherwise. If your not sure, use 1.
+
+The link command in srce/Makefile contains a -n flag.
+If you have a PDP-11 with separate I & D spaces change
+this is -i.
+
+WARNING (Non-Bell Unix and PDP-11 systems):
+There may be some differences between our system
+and yours.
+
+To guard against this, there are '#ifdef BSD' statements
+You may wish to remove, or redefine these statements.
+
+Some Berkeley distributions may also have a bug in "ungetc(c)".
+This is supposed to return c, but some systems return 0 instead.
+A copy of ungetc.c has been included which does the right thing.
+This is included in the file "lex.c". If your system
+does the right thing, you may wish to remove this #include.

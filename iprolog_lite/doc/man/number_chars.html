@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>number_chars - interconvert numbers and lists of characters</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>number_chars(+<I>Number</I>, ?<I>List</I>) <BR>
+number_chars(?<I>Number</I>, +<I>List</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P>If <B><I>Number</I></B>is instanitated, <B><I>List </I></B>is unified
+with the list of single character atoms that make up <B><I>Number</I></B>'s
+digits.</P>
+
+<P>If <B><I>List </I></B>is instantiated to a list of single character
+atoms, they are combined to form a single number which is unified with
+<B><I>Number</I></B>.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>number_chars(123.4, ['1', '2', '3', '.', '4'])?<BR>
+</P>
+</UL>
+
+</BODY>
+</HTML>

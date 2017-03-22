@@ -1,0 +1,28 @@
+lens(Age, Prescription, Astgmatism, TearProduction) is
+	if true then none because lens($, $, $, $).
+
+go :-
+	rdr(lens(young, myope, not_astigmatic, reduced)),			% 1  none
+	rdr(lens(young, myope, not_astigmatic, normal)),			% 2  soft
+	rdr(lens(young, myope, astigmatic, reduced)),				% 3  none
+	rdr(lens(young, myope, astigmatic, normal)),				% 4  hard
+	rdr(lens(young, hypermetrope, not_astigmatic, reduced)),		% 5  none
+	rdr(lens(young, hypermetrope, not_astigmatic, normal)),			% 6  soft
+	rdr(lens(young, hypermetrope, astigmatic, reduced)),			% 7  none
+	rdr(lens(young, hypermetrope, astigmatic, normal)),			% 8  hard
+	rdr(lens(pre_presbyopic, myope, not_astigmatic, reduced)),		% 9  none
+	rdr(lens(pre_presbyopic, myope, not_astigmatic, normal)),		% 10 soft
+	rdr(lens(pre_presbyopic, myope, astigmatic, reduced)),			% 11 none
+	rdr(lens(pre_presbyopic, myope, astigmatic, normal)),			% 12 hard
+	rdr(lens(pre_presbyopic, hypermetrope, not_astigmatic, reduced)),	% 13 none
+	rdr(lens(pre_presbyopic, hypermetrope, not_astigmatic, normal)),	% 14 soft
+	rdr(lens(pre_presbyopic, hypermetrope, astigmatic, reduced)),		% 15 none
+	rdr(lens(pre_presbyopic, hypermetrope, astigmatic, normal)),		% 16 none
+	rdr(lens(presbyopic, myope, not_astigmatic, reduced)),			% 17 none
+	rdr(lens(presbyopic, myope, not_astigmatic, normal)),			% 18 none
+	rdr(lens(presbyopic, myope, astigmatic, reduced)),			% 19 none
+	rdr(lens(presbyopic, myope, astigmatic, normal)),			% 20 hard
+	rdr(lens(presbyopic, hypermetrope, not_astigmatic, reduced)),		% 21 none
+	rdr(lens(presbyopic, hypermetrope, not_astigmatic, normal)),		% 22 soft
+	rdr(lens(presbyopic, hypermetrope, astigmatic, reduced)),		% 23 none
+	rdr(lens(presbyopic, hypermetrope, astigmatic, normal)).		% 24 none

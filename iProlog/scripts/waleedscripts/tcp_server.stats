@@ -1,0 +1,14 @@
+Summary information: 
+  max_num_concurrent_children:        100
+  current_num_children:               4
+  clients_accepted:                   5
+  log_file:                           tcp_server.log
+  using_log_file:                     0
+  pid_file:                           tcp_server.pid
+  config_file:                        tcp_server.conf
+  scoreboard_frequency:               120
+  default_buff_size:                  512
+  sighups:                            0
+  sigchlds:                           1
+  sigalrms:                           2
+

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+select
+</TITLE><META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+<META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>
+select
+</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P>
+select(List, timeout, Ready_stream)
+</P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>
+
+	Select blocks for at most timeout milli seconds until one of the input
+	streams contained in List are ready for reading.The stream, closest
+	to the front of the list, that has been found to be ready is then
+	unified with Ready_stream. If no stream was ready, the call fails.
+	To block indefinately timeout may be set equal to -1.
+	Note that this predicate avoids busy waiting.
+
+	(Unfortunately this is not available on Sys V Unix)
+
+</P>
+</UL>
+
+</BODY>
+</HTML>

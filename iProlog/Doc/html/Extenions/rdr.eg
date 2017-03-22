@@ -1,0 +1,116 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Remove all propositions from database before starting rdr	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+try_retract(X) :- retract(X is _), !.
+try_retract(_).
+
+clear_all([]).
+clear_all([A|B]) :-
+	try_retract(A),
+	clear_all(B).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Put this cases propositions into database for rdr		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+assert_all([]).
+assert_all([A|B]) :- assert(A is true), assert_all(B).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Set up database and call rdr, returning conclusion only		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+run(Case) is rule :-
+	propositions(P),
+	clear_all(P),
+ 	case(Case, Attr),
+	assert_all(Attr).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%				Case differences			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+case_diff(OldCase, NewCase, X) :-
+	member(X, NewCase),
+	not(member(X, OldCase)).
+case_diff(OldCase, NewCase, X \= true) :-
+	member(X, OldCase),
+	not(member(X, NewCase)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This routine is just an interactive hook to call "case_diff" and ask	%
+% if the condition that's been generated is wanted in the new rule.	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rdr_cond(OldCase, NewCase, Cond) :-
+	case(OldCase, OldAttr),
+	case(NewCase, NewAttr), !,
+	case_diff(OldAttr, NewAttr, Cond),
+	prin("Is ", Cond, " correct"),
+	ratom(y).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A call to "findall" will return a list of conditions for the new RDR.	%
+% "list2cond" turns this list into a conjunction.			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+list2cond([A], A) :- !.
+list2cond([A|B], A and C) :- list2cond(B, C).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	   Print an rdr. Requires "print_if" file to be loaded		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+show_rule :-
+	clause(rule is X, _),
+	print_if(X, 0),
+	nl.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	   	Interactive running and maintaining of rdr		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rdr(NewCase) :-
+ 	(Conclusion because _) is run(NewCase),
+	prin("Is ", Conclusion, " the correct conclusion"),
+	(ratom(n) ->
+		prin("What is the correct conclusion"),
+		ratom(D),
+		corner_stone_case(OldCase),
+		findall(Cond, rdr_cond(OldCase, NewCase, Cond), List),
+		list2cond(List, NewConditions),
+		add_rdr(if NewConditions then D because NewCase),
+		print("\nThe new rdr is:\n"),
+		show_rule
+	| true
+	).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Sample data for RDR				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+propositions([a,b,c,d,e,f,g,h,i,j,k]).
+
+case(1,  [a,b,d]).
+case(2,  [a,b,c,e]).
+case(3,  [a,c,d]).
+case(4,  [a,b,c,d,f]).
+case(5,  [a,c,d,e,f]).
+case(6,  [a,b,c,d,f,g,h]).
+case(7,  [a,b,c,d,f,h,i]).
+case(8,  [a,b,c,d,h,i]).
+case(9,  [a,b,c,d,f,g,i,k]).
+case(10, [a,c,d,e]).
+
+rule is
+if true then null except
+	if a and b then x because 1 except
+		(if c then y because 2 except
+			if e \= true and f then x because 4 except
+				(if g then z because 6
+				else if h then z because 7)
+			else if h then z because 8)
+	else if a then z because 3 except
+		if e and f then y because 5.
+

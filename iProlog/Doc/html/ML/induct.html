@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <TITLE>Induct/RDR Algorithm</TITLE>
+</HEAD>
+<BODY>
+
+<H2>
+NAME</H2>
+
+<UL>induct - run the Induct/RDR algorithm over a training set</UL>
+
+<H2>
+SYNOPSIS</H2>
+
+<UL><B>induct(+<I>RelationName</I>)</B></UL>
+
+<H2>
+DESCRIPTION</H2>
+
+<UL>The <B>induct </B>function induces a set of ripple down rules from
+examples given as a relation in Prolog's database. The output is a <A HREF="/home/claude/iprolog/Doc/html/Frames/Frames.html">frame
+</A>that contains the new rule.
+
+<P>Like the other propositional learners, <B>induct </B>requires a mode
+declaration to specify the types of attributes that the relation has.
+
+<P>The mode declaration defines the range of values each attribute is allowed
+to take. The last attribute is always taken to be the class.</UL>
+
+<H2>
+EXAMPLE</H2>
+
+<UL>
+<UL>
+<PRE>mode object(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; size(small, medium, large),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; colour(red, blue, green),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; shape(wedge, brick, pillar, sphere),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; class(yes, no)
+).
+
+object(medium, blue, brick, yes).
+object(small, red, sphere, yes).
+object(large, green, pillar, yes).
+object(large, green, sphere, yes).
+
+object(small, red, wedge, no).
+object(large, red, wedge, no).
+object(large, red, pillar, no).
+
+: <B>induct(object)?
+rdr0
+</B>: <B>pf rdr0!
+</B>rdr0 isa [rdr] with
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; creator: induct(object);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; date: '97/10/21 - 10:52:37';
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n_examples: 7;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; errors: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; time: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule:&nbsp;
+object(Size, Colour, Shape, Class) :-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Class = yes unless
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Shape = wedge -> Class = no
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |Size = large , Colour = red -> Class = no).
+!</PRE>
+</UL>
+</UL>
+
+<H2>
+BUGS</H2>
+
+<UL>This implementation can't handle continuous attributes yet.</UL>
+
+<H2>
+SEE ALSO</H2>
+
+<UL><A HREF="id.html">id</A>, <A HREF="aq.html">aq</A></UL>
+
+</BODY>
+</HTML>

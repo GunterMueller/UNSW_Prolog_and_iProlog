@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>default daemon</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>default - sets a default value for a slot</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><I>SlotName</I>:</P>
+
+<UL>
+<P><B>default </B><I>term</I></P>
+</UL>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>When a request for a slot value fails to find the value in the instance
+frame, the inheritance hierarchy is searched. The <B>default </B>d&aelig;mon
+sets a default value for a slot.</P>
+
+<P><B>Note:</B> <B>default </B>has preceence over <B>if_needed</B> . That
+is, if a slot has both d&aelig;mons, the default value is selected. Also
+note that, unlike, <B>if_needed</B>, the term stored with the <B>default</B>
+facet is <I>not</I> evaluated.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>Some of the slots in the <A HREF="../../../../../../patient.pro">patient
+</A>example have <B>default </B>d&aelig;mons.</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="of.html">of</A>, <A HREF="if_needed.html">if_needed</A></P>
+</UL>
+
+</BODY>
+</HTML>

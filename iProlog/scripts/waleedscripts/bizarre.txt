@@ -1,0 +1,66 @@
+From waleed@cse.unsw.EDU.AU Wed Nov 13 16:02:48 2002 +1100
+Date: Wed, 13 Nov 2002 16:02:48 +1100 (EST)
+To: Cassandra Nock <chu@cse.unsw.EDU.AU>
+Subject: Correction to Phone List
+
+Hello Ms Nock,
+
+I hope you're having a really wonderful day.
+
+Anyway, for some bizarre reason, my phone number on the phone list seems
+to have been changed recently from 6922 to 6930. I do not know why or who
+did this, my phone number is (and remains) 6922.
+
+Would it be possible for you to correct the phone number on the official
+phone list? I've had several people tell me that it's only through some
+effort that they managed to retrieve my real phone number.
+
+Thanks for your help.
+
+Regards,
+
+
+Waleed.
+
+From chrisp@cse.unsw.edu.au Fri Feb 14 16:16:07 2003
+To: System Support <ss@cse.unsw.EDU.AU>
+Date: Fri, 14 Feb 2003 16:16:06 +1100 (EST)
+cc: Cassandra Nock <chu@cse.unsw.EDU.AU>, 
+Subject: waleed
+
+I was just on the phone to waleed and he informed that 6930 was no loger
+his extention. It's 6922...
+
+I got sladem to change the UDB entry but could we change the other bits
+and pieces that might have this ext in em please? like
+/usr/local/doc/phones/CSE and whatever database Admin might use?
+
+Cheers
+Chris
+
+From claired@cse.unsw.edu.au Fri Feb 14 16:59:26 2003
+To: Christopher Petrov <chrisp@cse.unsw.EDU.AU>
+Date: Fri, 14 Feb 2003 16:59:18 +1100
+Cc: c-staff@cse.unsw.edu.au, Cassandra Nock <chu@cse.unsw.EDU.AU>, Mohammed Waleed Kadous <waleed@cse.unsw.EDU.AU>
+Subject: Re: waleed
+
+Hi Chris, Cassandra, Waleed,
+
+SS bit done, ring command now shows Waleed's new number.
+
+Cheers,
+Claire (for ss)
+
+> From: Christopher Petrov <chrisp@cse.unsw.EDU.AU>
+> Date: Fri, 14 Feb 2003 16:16:06 +1100 (EST)
+> 
+> 
+> I was just on the phone to waleed and he informed that 6930 was no loger
+> his extention. It's 6922...
+> 
+> I got sladem to change the UDB entry but could we change the other bits
+> and pieces that might have this ext in em please? like
+> /usr/local/doc/phones/CSE and whatever database Admin might use?
+> 
+> Cheers
+> Chris

@@ -1,0 +1,77 @@
+aff :: {yes | ok | fine | no problem | sure | whatever you say};
+
+neg :: {no | never | not on your life | * off };
+
+museum ::
+
+	init ==>
+	[
+		Welcolme to the Powerhouse Museum and our exhibition
+		on the Universal Machine. We can talk about lot's of
+		things, including Alan Turing and his ideas on Artificial
+		Intelligence.
+	]
+
+	{* computers * | * universal *} ==>
+	[
+		#context(universal, [init])
+	]
+
+	{* control * | * information * | * processing *} ==>
+	[
+		#context(control, ^0)
+	]
+
+	{* simulation * | * visualisation *} ==>
+	[
+		#context(simulation, ^0)
+	]
+
+	{* communications * | * media *} ==>
+	[
+		#context(media, ^0)
+	]
+
+	{* AI * | * artificial intelligence *} ==>
+	[
+		#context(ai, ^0)
+	]
+
+	{ * interface * | * language *} ==>
+	[
+		#context(hci, ^0)
+	]
+
+	{* web * | * internet *} ==>
+	[
+		#context(www, ^0)
+	]
+
+	{* cyber * | * culture * | * cyborg *} ==>
+	[
+		#context(cyber, ^0)
+	]
+
+	{* alan * | * turing *} ==>
+	[
+		#context(turing, [init])
+	]
+
+	{* charles * | * babbage *} ==>
+	[
+		#context(babbage, [init])
+	]
+
+	{* robot * | * learning *} ==>
+	[
+		#context(stumpy, ^0)
+	]
+
+	* ==>
+	[
+		We have a great exhibit on Charles Babbage and
+		computers in general.
+	|
+		We can talk about other things, like Robotics and
+		Machine Learning.
+	]

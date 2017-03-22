@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>if_new daemon</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>if_new - d&aelig;mon predicate invoked when instance frame is created</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><I>SlotName</I>:</P>
+
+<UL>
+<P><B>if_new </B><I>predicate</I></P>
+</UL>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>The <B>if_new</B> d&aelig;mon is invoked when a new instance frameis
+created. When <B>isa</B> is used to create a frame, each of the slots in
+the inheritance hieararchy is searched for an <B>if_new</B> d&aelig;mon.
+Every <B>if_new</B> d&aelig;mon encountered is executed.</P>
+
+<P><B>Note: </B>the order of execution is top-down. That is, the <B>if_new</B>
+d&aelig;mons highest in the inheritance hierarchy are executed <I>first</I>.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>Some of the slots in the <A HREF="../../../../../../patient.pro">patient
+</A>examples have <B>if_new</B> d&aelig;mons.</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="isa.html">isa</A></P>
+</UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,26 @@
+geography ::
+
+	Wh~ * capital of * ==>
+	[
+		#is_defined(capital(first(^2))) -> The capital of ^2 is ^capital(first(^2)).
+	|
+		I don't know.
+	]
+
+	Wh~ * population of * ==>
+	[
+		#is_defined(population(first(^2))) ->
+			The population of ^2 is ^population(first(^2)) million.
+	|
+		I don't know.
+	]
+
+	The capital of * is * ==>
+	[
+		OK, the capital of ^1 is ^2. #(capital(first(^1)) has_value first(^2))
+	]
+
+	The population of * is * ==>
+	[
+		OK, the population of ^1 is ^2. #(population(first(^1)) has_value first(^2))
+	]

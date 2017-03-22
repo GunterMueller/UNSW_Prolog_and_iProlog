@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>remove</title>
+  <meta name="Author" content="Claude Sammut">
+</head>
+
+<body>
+<h2>NAME</h2>
+<ul>
+  <p>remove - remove a slot in a frame</p>
+</ul>
+
+<h2>SYNOPSIS</h2>
+<ul>
+  <p><b>remove </b><i>slot(frame)</i></p>
+</ul>
+
+<h2>DESCRIPTION</h2>
+<ul>
+  <p>A predicate that removes a slot from a frame.</p>
+
+  <p>Triggers the if_removed dæmon.</p>
+</ul>
+
+<h2>EXAMPLE</h2>
+<ul>
+  <p>Given the generic definition of <a href="cylinder.pro">cylinder</a>,
+  some instances can be defined as:</p>
+  <pre>c isa [cylinder] with [height: 2, radius: 4]!
+remove radius(c)?</pre>
+</ul>
+
+<h2>SEE ALSO</h2>
+<ul>
+  <p>if_removed</p>
+</ul>
+</body>
+</html>

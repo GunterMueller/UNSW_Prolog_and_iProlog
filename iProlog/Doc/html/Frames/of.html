@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>Of</title>
+  <meta name="Author" content="Claude Sammut">
+</head>
+
+<body>
+<h2>NAME</h2>
+<ul>
+  <p>slot-name - get the slot value of a frame</p>
+</ul>
+
+<h2>SYNOPSIS</h2>
+<ul>
+  <p>slot-name(object)</p>
+</ul>
+
+<h2>DESCRIPTION</h2>
+<ul>
+  <p><i>slot(frame) </i>retrieves the value of <i>slot</i> from <i>frame.
+  </i>If the value is not present in the instance frame then the inherited
+  value is obtained. If there is no inherited value, the call fails.</p>
+
+  <p>If <em>slot-name</em> appears without an argument, it is assumed that
+  the slot value is to be found in the current object.</p>
+</ul>
+
+<h2>EXAMPLE</h2>
+<ul>
+</ul>
+<pre>cylinder ako [] with
+[
+        height:
+        [
+                range           number(new value) and new value &gt; 0,
+                help            print("Height must be a positive number"),
+                if_needed       ask_user,
+                if_removed      remove volume,
+                cache           yes
+        ],
+        radius:
+        [
+                range           number(new value) and new value &gt; 0,
+                help            print("Radius must be a positive number"),
+                if_needed       ask_user,
+                if_removed      remove cross_section,
+                cache           yes
+        ],
+         cross_section:
+        [
+                if_needed       pi * radius ** 2,
+                if_removed      remove volume,
+                cache           yes
+        ],
+         volume:
+        [
+                if_needed       cross_section * height,
+                cache           yes
+        ]
+ ]!</pre>
+<pre>c isa [cylinder] with
+[
+       height: 2,
+       radius: 4
+]!
+
+: height(c)?
+2
+: volume(c)?
+100.531
+colour(c)?
+** no</pre>
+
+<p>When the value of volume is requested, <b>iProlog </b>first searches the
+instance frame <b><i>c</i></b> for a slot named <b><i>volume</i></b>. When
+this is not found it checks <b><i>c</i></b>'s <b>isa</b> slot and looks for
+volume in the generic <b><i>cylinder </i></b>frame. When found, the
+<b><i>if_needed</i></b> dæmon is triggered.</p>
+
+<h2>SEE ALSO</h2>
+<ul>
+  <p><a href="isa.html">isa</a>, <a href="range.html">range</a>, <a
+  href="help.html">help</a>, i<a href="if_needed.html">f_needed</a>,
+  if_removed, cache</p>
+</ul>
+<pre></pre>
+</body>
+</html>

@@ -1,0 +1,7 @@
+dynamic(memory/1)!
+
+exists(X) :- X(_).
+
+remember(_) :-
+	retract(memory(X)),
+	temp_context(recall, X).

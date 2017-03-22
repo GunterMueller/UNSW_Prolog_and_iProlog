@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>
+see
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="User-Agent: Mozilla/3.0Gold (Macintosh; I; 68K)">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>see - open a file for input</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>see(<I>FileName</I>)</B> </P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>If <B><I>FileName </I></B>is an open input stream, then it is made the
+current input stream. If <B><I>FileName</I></B> is an atom, it is taken
+to be a file name and </P>
+
+<UL>
+<LI>if there is an input stream currently associated with a file of that
+name then it is made the current input stream. (If more than one input
+stream is associated with <B><I>FileName</I></B>, one is chosen arbitrarily)
+</LI>
+
+<LI>otherwise, that file is opened, a stream created and and set to be
+the current input stream.</LI>
+</UL>
+</UL>
+
+</BODY>
+</HTML>

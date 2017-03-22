@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>concat
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>concat - concatenate a list of atomic elements</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>concat(+<I>List</I>, ?<I>Atom</I>) </B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<DL>
+<P>The members of list <B><I>List </I></B>are concatenated to form the
+atom <B><I>Atom</I></B>.</P>
+</DL>
+
+<P>The members of <B><I>List </I></B>must be atoms or integers. If <B><I>Atom
+</I></B>is instantiated then its value is compared with the result of the
+concatenation. </P>
+</UL>
+
+<H2>EXAMPLES</H2>
+
+<PRE>        concat([abc, def],  X)?
+        X = abcdef
+
+        concat([f, r, e, d, 12], X)?
+        X = fred12</PRE>
+
+<H2>COMPATIBILITY</H2>
+
+<UL>
+<P><B><I>Concat </I></B>is not in the ISO&nbsp;Prolog Standard</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="atom_concat.html">atom_concat</A></P>
+</UL>
+
+</BODY>
+</HTML>

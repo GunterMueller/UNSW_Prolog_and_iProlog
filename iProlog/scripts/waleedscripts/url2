@@ -1,0 +1,1 @@
+http://brin:8080/EDMSWebService.asmx/Documents_Search&rdql=Select+%3FY+From+*+Where+(%3FX%2C+%3COS%3AName%3E%2C+%3FY)+using+OS+for+%3Chttp%3A%2F%2Fwww.Neurocom.com.au%2FEDMS%2FSchemas%2FOperatingSystem%23%3E&contains=

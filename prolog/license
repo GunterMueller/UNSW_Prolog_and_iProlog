@@ -1,0 +1,49 @@
+.po 1i
+.sp 8
+.ps +2
+.sp 3
+.nf
+Claude Sammut
+Department of Computer Science
+University of New South Wales
+P.O. Box 1
+Kensington, N.S.W. 2033
+Australia
+.fi
+.sp 2
+Dear Dr. Sammut,
+.sp
+By this letter we agree to the following:
+.sp
+.in +4
+.ti -2
+\(bu The use of the UNSW Prolog software will be limited to
+educational and research purposes.
+.sp
+.ti -2
+\(bu We will not distribute the UNSW Prolog software without the
+author's (Claude Sammut) prior written permission.
+.sp
+.ti -2
+\(bu Copyright notices will be preserved in all the UNSW Prolog
+software
+.sp
+.ti -2
+\(bu There are no warranties, express or implied, with regard
+to the material provided. Accordingly, the author assumes no
+obligation to provide any assistance of any kind whatsoever,
+or to furnish any additional material.
+.sp
+.ti -2
+\(bu The UNSW Prolog Programmer's Manual distributed with the
+software may be copied freely.
+.sp
+.in -4
+Finally, it is understood that all ownership rights to the UNSW
+software lies with Claude Sammut and the University of New South Wales.
+.sp 3
+SIGNED:
+.sp 2
+DATE:
+.sp 2
+COMPANY:

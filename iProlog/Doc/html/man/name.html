@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>name
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>name - convert atoms to list of characters and vice-versa</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>name(+<I>Atomic</I>, -<I>CharList</I>) <BR>
+name(-<I>Atomic</I>, +<I>CharList</I>) </B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>If <B><I>Atomic </I></B>is an atom, integer or real then <B><I>CharList
+</I></B>is a list of the characters of the name of <B><I>Atomic </I></B>.</P>
+
+<P>If <B><I>Atomic </I></B>is instantiated to a variable, <B><I>CharList
+</I></B>must be instantiated to a list of characters. </P>
+</UL>
+
+<H2>EXAMPLES</H2>
+
+<UL>
+<UL>
+<PRE>name(product, [p, r, o, d, u, c t])</PRE>
+
+<PRE>**yes</PRE>
+
+<PRE>name(X, [f, r, e, d]).</PRE>
+
+<PRE>X = fred</PRE>
+</UL>
+</UL>
+
+</BODY>
+</HTML>

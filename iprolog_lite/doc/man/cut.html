@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>cut</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>cut - limit backtracking</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P>!</P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P>The cut symbol, '!', is inserted in aprogram just like a goal, but is
+not to be regarded as part of the logic of the program and should be ignored
+as far as the declarative semantics is concerned.</P>
+
+<P>When first encountered as a goal, cut succeeds immediately. If backtracking
+should later return to the cut, the effect is to fail the &quot;parent
+goal&quot;, ie. that goal which matched the head of the clause containing
+the cut, and caused the clause to be activated. In other words, the cut
+operation commits the system to all choices made since the parent goal
+was invoked, and causes other alternatives to be discarded. The goals thus
+rendered &quot;determinate&quot; are the parent goal itself, any goals
+occurring before the cut in the clause containing the cut, and any subgoals
+which were executed during the execution of those preceding goals.</P>
+</UL>
+
+<H2>EXAMPLES</H2>
+
+<UL>
+<UL>
+<PRE>member(X,[X|L]) :- !.
+member(X,[Y|L]) :- member(X,L).</PRE>
+</UL>
+
+<P>The only result produced by executing:</P>
+
+<UL>
+<PRE>member(X, [a, b, c]) ?</PRE>
+</UL>
+
+<P>is</P>
+
+<UL>
+<PRE>X = a</PRE>
+</UL>
+
+<P>the other two potential solutions being discarded.</P>
+
+<P>
+<HR WIDTH="100%"></P>
+
+<UL>
+<PRE>p(S,R) :- q(S,T), !, r(T,R).</PRE>
+</UL>
+
+<P>The procedure <B>p </B>only calls <B>r </B>for the first solution produced
+by <B>q</B>. Alternative solutions which <B>r</B> might produce are discarded.
+</P>
+</UL>
+
+</BODY>
+</HTML>

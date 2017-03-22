@@ -1,0 +1,5 @@
+f(X) :- match(X,
+		if answer << * >> then
+			respond << Sorry, I don't understand. >>
+			because []
+	).

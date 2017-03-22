@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>
+read
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="User-Agent: Mozilla/3.0Gold (Macintosh; I; 68K)">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>read - read tterm from the input stream</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>read(?<I>X</I>)</B></P>
+
+<P><B>read(+<I>Stream</I>, ?<I>X</I>) </B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>The next term, delimited by a &quot;fullstop&quot; (ie. a '.' followed
+by &lt;cr&gt; or a space), is read from the current or given input stream
+and unified with <B><I>X</I></B>.</P>
+
+<P>If input comes from the terminal, the user is prompted by &quot;&gt;
+&quot;. </P>
+
+<P>The syntax of the term must accord with current operator declarations.
+If a call <B>read(X)</B> causes the end of the stream to be reached, <B><I>X
+</I></B>is unified with the term <B><I>end_of_file</I></B>.</P>
+</UL>
+
+</BODY>
+</HTML>

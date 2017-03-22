@@ -1,0 +1,18 @@
+media ::
+
+	#new_topic(media, [], [])
+
+	init ==>
+	[
+		A media revolution is under way. The computer allows us
+		to combine words, sounds and pictures to form interactive
+		multimedia. It also allows us to create sounds and images
+		we sometimes find hard to distinguish from reality.
+	]
+
+	* ==>
+	[
+		There's a lot more interesting stuff on digital media
+		and communications. Don't miss it!
+		#pop_topic([init])
+	]

@@ -1,0 +1,180 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Sample data for RDR				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+propositions([
+	young, pre_presbyopic, presbyopic,		% age
+	myope, hypermetrope,				% prescription
+	astigmatic, not_astigmatic,			% astigmatism
+	reduced, normal					% tear production
+]).
+
+case(0, []).
+case(1, [young, myope, not_astigmatic, reduced]).			% none
+case(2, [young, myope, not_astigmatic, normal]).			% soft
+case(3, [young, myope, astigmatic, reduced]).				% none
+case(4, [young, myope, astigmatic, normal]).				% hard
+case(5, [young, hypermetrope, not_astigmatic, reduced]).		% none
+case(6, [young, hypermetrope, not_astigmatic, normal]).			% soft
+case(7, [young, hypermetrope, astigmatic, reduced]).			% none
+case(8, [young, hypermetrope, astigmatic, normal]).			% hard
+case(9, [pre_presbyopic, myope, not_astigmatic, reduced]).		% none
+case(10, [pre_presbyopic, myope, not_astigmatic, normal]).		% soft
+case(11, [pre_presbyopic, myope, astigmatic, reduced]).			% none
+case(12, [pre_presbyopic, myope, astigmatic, normal]).			% hard
+case(13, [pre_presbyopic, hypermetrope, not_astigmatic, reduced]).	% none
+case(14, [pre_presbyopic, hypermetrope, not_astigmatic, normal]).	% soft
+case(15, [pre_presbyopic, hypermetrope, astigmatic, reduced]).		% none
+case(16, [pre_presbyopic, hypermetrope, astigmatic, normal]).		% none
+case(17, [presbyopic, myope, not_astigmatic, reduced]).			% none
+case(18, [presbyopic, myope, not_astigmatic, normal]).			% none
+case(19, [presbyopic, myope, astigmatic, reduced]).			% none
+case(20, [presbyopic, myope, astigmatic, normal]).			% hard
+case(21, [presbyopic, hypermetrope, not_astigmatic, reduced]).		% none
+case(22, [presbyopic, hypermetrope, not_astigmatic, normal]).		% soft
+case(23, [presbyopic, hypermetrope, astigmatic, reduced]).		% none
+case(24, [presbyopic, hypermetrope, astigmatic, normal]).		% none
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 				Initial rule				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+rule is
+	if true then none because 0.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%			Trace of RDR execution				%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Case 1: [young, myope, not_astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 2: [young, myope, not_astigmatic, normal]
+Is none the correct conclusion (should be soft)? n
+What is the correct conclusion? soft
+Corner stone case is: []
+Is young correct? n
+Is myope correct? n
+Is not_astigmatic correct? y
+Is normal correct? y
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2
+
+Case 3: [young, myope, astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 4: [young, myope, astigmatic, normal]
+Is none the correct conclusion (should be hard)? n
+What is the correct conclusion? hard
+Corner stone case is: []
+Is young correct? n
+Is myope correct? y
+Is astigmatic correct? n
+Is normal correct? y
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2
+        else if myope and normal then hard because 4
+
+Case 5: [young, hypermetrope, not_astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 6: [young, hypermetrope, not_astigmatic, normal]
+Is soft the correct conclusion (should be soft)? y
+
+Case 7: [young, hypermetrope, astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 8: [young, hypermetrope, astigmatic, normal]
+Is none the correct conclusion (should be hard)? n
+What is the correct conclusion? hard
+Corner stone case is: []
+Is young correct? y
+Is hypermetrope correct? n
+Is astigmatic correct? n
+Is normal correct? y
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2
+        else if myope and normal then hard because 4
+        else if young and normal then hard because 8
+
+Case 9: [pre_presbyopic, myope, not_astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 10: [pre_presbyopic, myope, not_astigmatic, normal]
+Is soft the correct conclusion (should be soft)? y
+
+Case 11: [pre_presbyopic, myope, astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 12: [pre_presbyopic, myope, astigmatic, normal]
+Is hard the correct conclusion (should be hard)? y
+
+Case 13: [pre_presbyopic, hypermetrope, not_astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 14: [pre_presbyopic, hypermetrope, not_astigmatic, normal]
+Is soft the correct conclusion (should be soft)? y
+
+Case 15: [pre_presbyopic, hypermetrope, astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 16: [pre_presbyopic, hypermetrope, astigmatic, normal]
+Is none the correct conclusion (should be none)? y
+
+Case 17: [presbyopic, myope, not_astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 18: [presbyopic, myope, not_astigmatic, normal]
+Is soft the correct conclusion (should be none)? n
+What is the correct conclusion? none
+Corner stone case is: [young, myope, not_astigmatic, normal]
+Is presbyopic correct? y
+Is young \= true correct? n
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2 except
+                if presbyopic then none because 18
+        else if myope and normal then hard because 4
+        else if young and normal then hard because 8
+
+Case 19: [presbyopic, myope, astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 20: [presbyopic, myope, astigmatic, normal]
+Is hard the correct conclusion (should be hard)? y
+
+Case 21: [presbyopic, hypermetrope, not_astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 22: [presbyopic, hypermetrope, not_astigmatic, normal]
+Is none the correct conclusion (should be soft)? n
+What is the correct conclusion? soft
+Corner stone case is: [presbyopic, myope, not_astigmatic, normal]
+Is hypermetrope correct? n
+Is myope \= true correct? y
+
+The new rdr is:
+
+if true then none because 0 except
+        if not_astigmatic and normal then soft because 2 except
+                if presbyopic then none because 18 except
+                        if myope \= true then soft because 22
+        else if myope and normal then hard because 4
+        else if young and normal then hard because 8
+
+Case 23: [presbyopic, hypermetrope, astigmatic, reduced]
+Is none the correct conclusion (should be none)? y
+
+Case 24: [presbyopic, hypermetrope, astigmatic, normal]
+Is none the correct conclusion (should be none)? y

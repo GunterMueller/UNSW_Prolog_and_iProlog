@@ -1,0 +1,22 @@
+print_if(if A, N) :- !,
+	prin('if '),
+	print_if(A, N).
+print_if(A else B, N) :- !,
+	print_if(A, N),
+	nl,
+	tab(N),
+	prin('else '),
+	print_if(B, N).
+print_if(A then B, N) :- !,
+	N1 is N + 4,
+	prin(A),
+	prin(' then '),
+	print_if(B, N1).
+print_if(A except B, N) :- !,
+	prin(A),
+	print(' except'),
+	N1 is N + 4,
+	tab(N1),
+	print_if(B, N1).
+print_if(X, N) :-
+	prin(X).

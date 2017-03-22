@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>functor
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>functor </P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>functor(+<I>Term</I>, -<I>Functor</I>, -<I>A</I>rity)</B></P>
+
+<P><B>functor(-<I>Term</I>, +<I>Functor</I>, +<I>A</I>rity)</B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>The principal functor of term <B><I>Term </I></B>has name <B><I>Functor
+</I></B>and arity <B><I>Arity</I></B>, where <B><I>Functor </I></B>is either
+an atom or, provided <B><I>Arity</I></B>is 0, an integer.</P>
+
+<P>Either <B><I>Term </I></B>must be<B><I> </I></B>instantiated to a non-variable,
+or <B><I>Functor </I></B>and <B><I>Arity </I></B>must be instantiated to,
+respectively, either an atom and a non-negative integer or an integer and
+0. If these conditions are not satisfied, an error message is given.</P>
+
+<P>In the case where <B><I>Term </I></B>is initially instantiated to a
+variable, the result of the call is to instantiate <B><I>Term </I></B>to
+the most general term having the principal functor indicated. </P>
+</UL>
+
+</BODY>
+</HTML>

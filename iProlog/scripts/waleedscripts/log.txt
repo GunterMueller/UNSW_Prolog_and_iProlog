@@ -1,0 +1,58 @@
+Connecting to server ...
+Connected!
+
+Inca says:  Hello. How can I help you?
+
+You said: Can you check file sphere for me? 
+
+Inca says:  FileSphere is commercial-in-confidence. Tell me the password to proceed.
+
+You said: The password is honesty.
+
+Inca says: Ok, password accepted. Welcome to FileSphere. What would
+you like to know about your files?
+
+You said: how many files do I have?
+
+Inca says:  You have 44 documents.
+
+You said: what types of files do I have? 
+
+Inca says: You have documents of the following types: PDF, MsWord,
+MsPowerPoint, MsExcel, MP3, Image, EMail
+
+You said: how many word documents do I have? 
+
+Inca says:  You have 10 msword documents.
+
+You said: can you list my word documents please? 
+
+Inca says: You have the following msword documents: Proposal,
+Introduction to Authentication, Instal Manual, Functional
+Requirements, EULA, Business Requirements, User Reference Guide, Test
+Cases, Technical Requirements, SoftwareMaintenance
+
+You said: ok, coud you list my mp3s then? 
+
+Inca says: You have the following mp3 documents: King and queen of
+hearts, Invisible Man, Destiny, Born for you, Because Of You, Got to
+believe in magic, Your Love, The old songs, The Game Of Love, She's
+Out of My Life
+
+You said: How many mp3 files do I have in total?
+
+Inca says:  You have 10 mp3 documents.
+
+You said: and how many pdf documents do I have?
+
+Inca says:  You have 5 pdf documents.
+
+You said: tell me all about document 2.
+
+Inca says: Document 2 has the following properties: CreationDate is
+Oct 10 2000 10:02:29 AM, Type is PDF, LastAccessTime is
+126893282665152500, Name is handout.pdf, Extension is .pdf, Producer
+is Acrobat Distiller 4.05 for Windows, CreationTime is
+126156079560000000, ModDate is Oct 10 2000 10:02:29 AM, Size is 17665,
+Deleted is 0, about is 2, LastWriteTime is 126156079560000000,
+VersionCount is 1, Status is 0.

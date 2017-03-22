@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "lines in each file:"
+wc -l prog data
+set -v
+echo 'run!' | prolog prog

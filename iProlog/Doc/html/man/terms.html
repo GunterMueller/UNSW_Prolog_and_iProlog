@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <TITLE>terms
+</TITLE>
+</HEAD>
+<BODY>
+
+<H1>
+Syntax of Terms</H1>
+All data in Prolog are expressed as terms. A term is either a <A HREF="#Constants">constant</A>,
+a <A HREF="#Variables">variable </A>or a <A HREF="#Compound Terms">compound
+term</A>, including <A HREF="#Lists">lists</A>.
+<H2>
+<A NAME="White Space"></A>White Space</H2>
+
+<UL>
+<LI>
+White space consists of blanks, tabs and newline characters.</LI>
+
+<LI>
+White space can be placed anywhere before or after a term, operator, bracket,
+comma, etc.</LI>
+
+<LI>
+White space breaks an atom or integer.</LI>
+</UL>
+
+<H2>
+<A NAME="Comments"></A>Comments</H2>
+Comments are also considered white space since they are ignored as part
+of the program text. There are two kinds of comments:
+<UL>
+<LI>
+A'%' character indicates that everything following it on the line should
+be ignored.</LI>
+
+<LI>
+C style comments /* ... */ which can span several lines</LI>
+</UL>
+Comments cannot be nested.
+<H2>
+<A NAME="Constants"></A>Constants</H2>
+Constants include integers, floating point numbers and atoms such as:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fred&nbsp;&nbsp; prolog&nbsp;&nbsp; =&nbsp;&nbsp; &lt;=&nbsp; 'Hello there'&nbsp;&nbsp; []</PRE>
+The symbol for an atom can be any sequence of characters. Quotes should
+be used if there is a possibility of confusion with other symbols (such
+as variables, integers).
+<H2>
+<A NAME="Variables"></A>Variables</H2>
+All variables must begin with a capital letter or '_', e.g..
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G001
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _3
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _RESULT</PRE>
+If a variable is only needed once, it does not need a name Instead it may
+be written as an 'anonymous' variable indicated by a single underline character:
+'_'
+
+<P>A variable stands for some definite but unidentified object. Unlike
+other programming languages, a variable in Prolog is <I>not </I>a storage
+location. It is just name given to some value.
+<H2>
+<A NAME="Compound Terms"></A>Compound Terms</H2>
+Data structures in Prolog are built from compound terms. A compound term
+consists of a function name (also called the principal functor) and a sequence
+of one or more arguments. A compound term also has an "arity" i.e. the
+number of arguments. For example the compound term whose name is "point
+and which has an arity of 3, with arguments X, Y and Z, is written as:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; point(X, Y, Z)</PRE>
+Compound terms can be pictured as trees. For example, the term:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s(np(john), vp(v(likes), np(mary)))</PRE>
+would be pictured as the structure:
+<CENTER></CENTER>
+
+<CENTER><IMG SRC="man1.gif" BORDER=1 HEIGHT=158 WIDTH=192></CENTER>
+
+
+<P>For convenience, some compound terms can be written using operators.
+For example, the following notation
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X + Y
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (P | Q)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X &lt; Y +&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; P;</PRE>
+is used instead of:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; +(X, Y)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |(P, Q)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;(X, +(Y, X))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;(P)</PRE>
+Operators are described in more detail <A HREF="operators.html">elsewhere</A>.
+<H2>
+<A NAME="Lists"></A>Lists</H2>
+An important class of data structures are the lists. A list is either the
+atom:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; []</PRE>
+representing the empty list, or is a compound term with two arguments which
+are the head and tail of the list. A list of the first three natural numbers
+could be written as:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list(1, list(2, list(3, [])))</PRE>
+but this can be very cumbersome. Instead we use the special notation:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [1, 2, 3]</PRE>
+When the tail of the list is a variable, we use the following notation:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [X | L]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [a, b | L]</PRE>
+This says that X is the head of the first list and L is the tail. In the
+second list, "a" and "b" are the first two arguments and L is the remainder
+of the list.
+</BODY>
+</HTML>

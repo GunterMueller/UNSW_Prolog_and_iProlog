@@ -1,0 +1,22 @@
+To make iProlog:
+
+	cd src
+	make
+
+This will make everything. Note that xforms and netpbm libraries are needed
+for the full installation. If you do not want the GUI and image components,
+you can select the build you want by going into each subdirectory and making
+only the component you want.
+
+The directories are:
+
+	interp	- for a vanilla Prolog interpreter
+	KBS	- to add frames and RDRs
+	ML	- for some common symbolic machine learning algorithms
+	stats	- for a regression algorithm
+	ILP	- for a refinement rules based ILP learner
+	Probot	- a scripting language for conversationa agents
+	GUI	- a GUI frame browser
+	image	- for some image processing routines
+
+WARNING: the documentation and some example files are out of date.

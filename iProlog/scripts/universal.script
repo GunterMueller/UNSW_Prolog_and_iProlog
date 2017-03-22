@@ -1,0 +1,62 @@
+universal ::
+	#new_topic(universal, [], [])
+
+	init ==>
+	[
+		We can talk about computers. Do you like playing with
+		computers?
+	]
+
+	{<aff> | <neg>} ==> #goto(what_is_a_computer_0, [init])
+
+
+what_is_a_computer_0 ::
+	init ==>
+	[
+		Do you really know what a computer is?
+	]
+
+	* ==>
+	[
+		Well, have you ever played with a construction set,
+		like Lego or Meccano?
+		#goto(what_is_a_computer_1)
+	]
+
+
+what_is_a_computer_1 ::
+	<aff> ==>
+	[
+		OK, so you know that what you get is a collection of
+		building blocks and some plans. Right?
+		#goto(what_is_a_computer_2)
+	]
+
+	<neg> ==>
+	[
+		A construction set comes with a bunch of different kinds
+		of building blocks and usually a set of plans to show you
+		how to put the block together to make something like a
+		toy car or crane. Got it?
+		#goto(what_is_a_computer_2)
+	]
+
+
+what_is_a_computer_2 ::
+	* ==>
+	[
+		What you get out of the box is an incomplete machine. To
+		make a complete machine you need a set of plans for
+		putting the blocks together in a sensible way. OK?
+	|
+		A computer is just like a construction kit. Think of
+		the hardware, that's the stuff you can see and touch,
+		as a set of building blocks. These building blocks
+		are for manipulating information. You put the block
+		together by writing a program. That's like the
+		construction plans for the machine.
+	|
+		You can find out more about what computers are by
+		looking at other exhibits in this museum.
+		#pop_topic([init])
+	]

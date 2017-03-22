@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>=..
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>=.. - univ</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B><I>+Term </I>=.. ?<I>List</I></B></P>
+
+<P><B>?<I>Term</I></B><I> =.. +<B>List</B></I></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P><B><I>List </I></B>is a list whose head is the atom corresponding to
+the principal functor of <B><I>Term </I></B>and whose tail is the argument
+list of that functor in <B><I>Term</I></B>.</P>
+
+<P>If <B><I>Term </I></B>is instantiated to a variable, then <B><I>List
+</I></B>must be instantiated to a list of determinate length whose head
+is atomic (ie. an atom or integer). </P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<UL>
+<PRE>product(0, N, N - 1) =.. [product, 0, N, N - 1]</PRE>
+</UL>
+</UL>
+
+</BODY>
+</HTML>

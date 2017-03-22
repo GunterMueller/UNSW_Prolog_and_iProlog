@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Rules</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>RULES </H2>
+
+<P>The previous question can be restated as a general rule: </P>
+
+<PRE>        One person, Teacher, teaches another person, Student if
+                X lectures in a subject, Subject and
+                Student studies Subject.
+</PRE>
+
+<P>In Prolog this is written as: </P>
+
+<PRE>        teaches(Teacher, Student) :-
+                lectures(Teacher, Student),
+                studies(Student, Subject).
+</PRE>
+
+<P>This is also called a <I>clause</I>. Facts are <I>unit clauses</I> and
+rules are <I>non-unit clauses</I>. &quot;:-&quot; means &quot;if&quot;
+or &quot;is implied by&quot;. This symbol is often called the <I>neck</I>
+symbol. The left hand side of the neck is called the <I>head</I>. The right
+hand side of the neck is called the <I>body</I>. The comma, &quot;,&quot;,
+separating the goals is stands for <I>and</I>. </P>
+
+<P>Try this rule out: </P>
+
+<PRE>        more_advanced(Student1, Student2) :-
+                year(Student1, Year1),
+                year(Student2, Year2),
+                Year1 &gt; Year2.</PRE>
+
+<PRE>Note the use of the <I>predefined predicate</I> &quot;&gt;&quot;. </PRE>
+
+</BODY>
+</HTML>

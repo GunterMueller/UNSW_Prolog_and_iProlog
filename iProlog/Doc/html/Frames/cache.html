@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>cache daemon</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>cache - a flag to indicate if an if_needed value should be stored.</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><I>SlotName</I>:</P>
+
+<UL>
+<P><B>cache yes</B></P>
+</UL>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>Normally, when an <B>if_needed</B> d&aelig;mon is triggered, its value
+is returned and when the same d&aelig;mon is triggered again, the value
+is recomputed. If you wish the value to be remembered, add a cache flag
+to the slot. The next time and <B>if_needed</B> d&aelig;mon is triggered,
+its result will stored in the corresponding slot of the instance frame
+that invoked the <B>if_needed</B> d&aelig;mon.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>Some of the slots in the <A HREF="../../../../../../cylinder.pro">cylinder
+</A>and <A HREF="../../../../../../patient.pro">patient </A>examples have
+<B>cache </B>d&aelig;mons.</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="if_needed.html">if_needed</A></P>
+</UL>
+
+</BODY>
+</HTML>

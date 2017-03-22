@@ -1,0 +1,27 @@
+- Return values from topics called as predicates (the I got ^1, vs I got ^(^1) bug). 
+- Retracts at the end of functions cause segfaults. 
+- generic frames should be declared as dynamic. 
+
+Consider the following code: 
+
+map(_, [], []). 
+map(Function, [X|L], [Function(X)|Rest]) :-
+	map(Function, L, Rest). 
+ plus1(X) is X + 1.
+ map(plus1, [1,2,3], X)? 
+
+The above doesn't work. However: 
+
+map(_, [], []). 
+map(Function, [X|L], [Y|Rest]) :-
+	Y is Function(X), 
+	map(Function, L, Rest). 
+
+doesn't work. 
+
+using a backquote can cause crashes in date scripts. How to ensure lists of
+words passed from a #return actually match. 
+
+When calling frame() from another function that provides parameters,
+it crashes with a "Trying to ground an unbound variable". This occurs
+in interp/make.c. 

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>sub_atom - find sub strings of an atoms name</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>sub_atom(+<I>Atom</I>, +<I>N</I>, +<I>L</I>, ?<I>Sub</I>)
+<BR>
+sub_atom(+<I>Atom</I>, -<I>N</I>, -<I>L</I>, +<I>Sub</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P>The substring of <B><I>Atom</I></B>, beginning at character <B><I>N
+</I></B>with length <B><I>L</I></B>, is <B><I>Sub.</I></B></P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<PRE>: sub_atom(abcabc, N, L, ab)?
+
+N = 1
+L = 2
+
+N = 4
+L = 2</PRE>
+</UL>
+
+</BODY>
+</HTML>

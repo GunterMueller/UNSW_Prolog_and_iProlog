@@ -1,0 +1,9 @@
+cyber ::
+
+	#new_topic(cyber, [], [])
+
+	init ==>
+	[
+		Nothing on cyber culture yet.
+		#pop_topic([init])
+	]

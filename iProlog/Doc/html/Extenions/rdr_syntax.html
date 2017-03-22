@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<TITLE>RDR Syntax</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/4.0 (Unix)">
+	<META NAME="AUTHOR" CONTENT="Claude Sammut">
+	<META NAME="CREATED" CONTENT="19980228;1033400">
+	<META NAME="CHANGEDBY" CONTENT="Claude Sammut">
+	<META NAME="CHANGED" CONTENT="19980228;1043400">
+</HEAD>
+<BODY>
+<H1>RDR Syntax</H1>
+<UL>
+	<P>rule --&gt; <B>if</B> conjunction <B>then</B> conclusion<B>.<BR></B>rule
+	--&gt; <B>if</B> conjunction <B>then</B> conclusion <B>except
+	</B>rule<B>.<BR></B>rule --&gt; <B>if</B> conjunction <B>then</B>
+	conclusion <B>else</B> rule<B>.</B></P>
+	<P>conjunction --&gt; condition<B>.<BR></B>conjunction --&gt;
+	condition <B>and</B> conjunction<B>.</B></P>
+	<P>condition --&gt; <I>any Prolog predicate</I></P>
+	<P>conclusion --&gt; term<BR>conclusion --&gt; term <B>because </B>term</P>
+	<P>term --&gt; <I>any Prolog term</I></P>
+</UL>
+<H1>RDR Semantics</H1>
+<P>RDR's are essentially if-then-else statements that return values,
+eg.</P>
+<UL>
+	<PRE>X <B>is if </B>1 == 2 <B>then </B>2+3<B> else </B>4*5?</PRE>
+	<PRE>X = 20</PRE>
+</UL>
+<P>That is, <B>if</B> is a function. Note that the result in the <B>then</B>
+part of the statement is evaluated.</P>
+<P>The <B>except</B> part of the rule is evaluate if the conjunction
+of conditions succeeds, eg.</P>
+<UL>
+	<PRE>X <B>is if</B> 1 == 1 <B>then </B>2+3 <B>except if </B>2 &lt; 3 <B>then </B>4*5?</PRE>
+	<PRE>X = 20</PRE>
+</UL>
+<P>In this case, the result of the except part over-rides the
+original conclusion.</P>
+<H1>Operator Precedence Table</H1>
+<CENTER>
+	<TABLE BORDER=2 CELLPADDING=4 CELLSPACING=0>
+		<TR>
+			<TH>
+				<P ALIGN=CENTER>Associativity
+			</TH>
+			<TH>
+				<P ALIGN=CENTER>Precedence
+			</TH>
+			<TH>
+				<P ALIGN=CENTER>Operator
+			</TH>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>960
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>fx
+			</TD>
+			<TD>
+				<P>if
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>950
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>xfx
+			</TD>
+			<TD>
+				<P>else
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>850
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>xfx
+			</TD>
+			<TD>
+				<P>then
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>840
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>xfx
+			</TD>
+			<TD>
+				<P>except
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>830
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>xfx
+			</TD>
+			<TD>
+				<P>because
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>800
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>xfy
+			</TD>
+			<TD>
+				<P>or
+			</TD>
+		</TR>
+		<TR>
+			<TD>
+				<P ALIGN=CENTER>750
+			</TD>
+			<TD>
+				<P ALIGN=CENTER>xfy
+			</TD>
+			<TD>
+				<P>and
+			</TD>
+		</TR>
+	</TABLE>
+</CENTER>
+<P><BR><BR>
+</P>
+</BODY>
+</HTML>

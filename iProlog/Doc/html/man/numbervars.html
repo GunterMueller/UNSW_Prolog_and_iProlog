@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <TITLE>numbervars
+</TITLE>
+</HEAD>
+<BODY>
+
+<H2>
+NAME</H2>
+
+<UL>numbervars - make a non-ground term ground</UL>
+
+<H2>
+SYNOPSIS</H2>
+
+<UL><B>numbervars(+<I>Term</I>, +<I>FirstVar</I>, ?<I>LastVar</I>)</B></UL>
+
+<H2>
+DESCRIPTION</H2>
+
+<UL>Unifies each of the variables in term <B><I>Term </I></B>with a special
+term, so that 'write(<B><I>Term</I></B>)' prints each of those variables
+as "_I", where the Is are consecutive integers from <B><I>FirstVar </I></B>to
+<B><I>LastVar </I></B>- 1.
+
+<P><B><I>FirstVar </I></B>must be bound to an integer.</UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Claude Sammut">
+  <title>controlling execution</title>
+</head>
+
+<body>
+<h2>CONTROLLING EXECUTION</h2>
+If we were using full predicate logic as a programming language then it would
+be true that you need only provide a logical specification and the system
+would do the rest. However, for reasons of efficiency, Prolog implementations
+introduce simplifications which make it less than deal as a logic programming
+language. While improvements to the language are sought, we have to learn to
+live with some of its non-logical features.
+
+<p>Elsewhere, we drew a <a href="conjunctions.html#proof tree">proof tree</a>,
+which showed how Prolog searched for the answer to a simple query. The search
+method is called depth first because the system attempts to follow one path
+down as far as it can before backtracking and trying another one. Unless told
+otherwise, Prolog always backtracks when a failure occurs. Sometimes it is
+undesirable to attempt some alternatives.</p>
+
+<p>Suppose we wanted only the students of one of the courses which Ken
+teaches:</p>
+<pre>        lectures(ken, Subject), !, studies(Student, Subject)?</pre>
+The '!' is called the <i>cut. </i>The affect of the cut is limit the
+alternatives that Prolog can select. In the proof tree this looks like
+branches on the right hand side of the tree have been cut off. If the goals to
+the right of the cut fail then the entire clause fails and the the goal which
+caused this clause to be invoked also fails. That is, if the clause which
+failed has alternatives, these are not attempted.
+
+<center>
+</center>
+
+<center>
+<img src="intro3.gif" border="1" height="173" width="384"></center>
+</body>
+</html>

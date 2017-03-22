@@ -1,0 +1,10 @@
+p :-
+	respond << What is your name? >>,
+	rdr_chat(
+		if answer << My name is * >> then
+			respond << Your name is ^1 >>
+	).
+
+q :-
+	repeat,
+	rdr_chat(if true then respond << Sorry, I don't understand >> because << >>).

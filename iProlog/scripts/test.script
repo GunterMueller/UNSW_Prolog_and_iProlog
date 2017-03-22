@@ -1,0 +1,100 @@
+start ::
+	My <family> * ==>
+	[
+		Tell me more about your ^1.
+	]
+	
+	init ==>
+	[
+		Hello! How are you!
+		#goto(fred, [init])
+	]
+
+aff :: {yes | ok | fine | no problem | sure | whatever you say};
+
+neg :: {no | never | not on your life | * off };
+
+fred ::
+	init ==>
+	[
+		Do you want to play?
+	]
+
+	<aff> ==>
+	[
+		Great! Let's go.
+		#goto(foo)
+	]
+
+	<neg> ==>
+	[
+		Spoil sport!
+	]
+
+foo ::
+	My name is * ==>
+	[
+		Nice to meet you, ^1.	#putprop(conversant, name, ^1)
+	]
+
+	What is my name ==>
+	[
+		Your name is ^getprop(conversant, name).
+	]
+
+	I am * years old ==>
+	[
+		You're young!		#putprop(conversant, age, ^1)
+	]
+
+	How old am I ==>
+	[
+		You are ^getprop(conversant, age) years old.
+	]
+
+	* is my name ==>
+	[
+		A pleasure, ^1.		#putprop(conversant, name, ^1)
+	]
+
+bar ::
+	init ==>
+	[
+		Hi there! What's your name?
+	|
+		I really would like to know your name!
+	]
+
+	My name is * ==>
+	[
+		Nice to meet you, ^1.	#return(first(^1))
+	]
+
+	
+family :: {mother | father | sister | brother};
+
+sloppy :: * <np> * <verb> * <noun> * ==>
+[
+	The subject is ^2, the object is ^6 and the verb is ^4.
+	#(assert(action(^4, ^2, ^6)))
+]
+
+sent :: <np> <vp> ==> [s(^1, ^2)]
+
+np ::
+	<article> <noun> ==> [np(^1, ^2)]
+	<article> <adjectives> <noun> ==> [np(^1, ^2, ^3)]
+
+vp :: <verb> <np> ==> [vp(^1, ^2)]
+
+noun :: {boy | dog | ball} ==> [^1]
+
+adjective :: {fat | big | ugly} ==> [^1]
+
+verb :: {kicked | bit} ==> [^1]
+
+article :: {a | the} ==> [^1]
+
+adjectives :: 
+	<adjective> <adjectives> ==> [adj(^1, ^2)]
+	_ ;

@@ -1,0 +1,64 @@
+stumpy ::
+
+	#new_topic(stumpy, [], [])
+
+	init ==>
+	[
+		Have you seen Stumpy, the six-legged robot, learning to
+		walk?
+	]
+
+	<aff> ==>
+	[
+		I think Stumpy is cute. What did you think?
+		#goto(stumpy_clearn, [init])
+	]
+
+	<neg> ==>
+	[
+		You should go see it. It's fun. It's a insect-like robot
+		that learns how to walk. Do you want to know how it
+		learns?
+		#goto(stumpy_learn)
+	]
+
+
+stumpy_learn ::
+
+	init ==>
+	[
+		Do you want to know how it learns?
+	]
+
+	<aff> ==>
+	[
+		Stumpy starts out not knowing how to move its legs get
+		to forward motion, so it just begins by
+		trial-and-error. The robot drags a computer mouse
+		behind it. This is Stumpy's sensor to tell it if it's
+		moved forward or backward. If it moves forward, it gets
+		a positive reward, otherwise it gets a negative reward.
+		Stumpy remembers which sequence of actions lead to
+		positive rewards and tries to maximize the reward.
+		#goto(stumpy_exit, [init])
+	]
+
+	<neg> ==>
+	[
+		You're not much fun, are you!
+		#pop_topic([init])
+	]
+
+
+stumpt_exit ::
+
+	* ==>
+	[
+		Stumpy is an example of a computer system that can
+		learn. It's a very small step along the way to Alan
+		Turing's idea of computer that doesn't have to be
+		programmed, but can learn everything it needs to know,
+		either by a teacher showing the computer examples or by
+		learning on its own by experimenting like Stumpy does.
+		#pop_topic([init])
+   	]

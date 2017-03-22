@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>rdr</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>rdr - perform maintenance on RDRs</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>rdr(+<I>EvaluableTerm</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION</H2>
+
+<UL>
+<P><B><I>EvaluableTerm</I></B> must be a term that can be evaluated as
+a function and is implemented as a ripple-down rule. <B><I>Rdr</I></B>
+invokes an interactive session:</P>
+
+<OL>
+<LI><B>Rdr</B> evaluates the expression and asks the user if the result
+is correct.</LI>
+
+<LI>If the answer is <B>yes</B>, <B>rdr</B> succeeds and the call terminates.</LI>
+
+<LI>If the answer is <B>no</B>, <B>rdr</B> asks the user for the correct
+answer.</LI>
+
+<LI>It then lists a sequence of tests to be used in building a new rule
+to correctly classify the new case.</LI>
+
+<LI>If the user answers <B>yes</B> to a test, then it is included as one
+of the conditions in the new rule.</LI>
+
+<LI>If the user answers <B>no</B>, the test is discarded.</LI>
+
+<LI>When the list of test has been exhausted, the new rule is installed
+in the RDR and the call the <B>rdr</B> succeeds.</LI>
+</OL>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>Go <A HREF="rdr.lens.html">here </A>to see an example session with RDR.</P>
+</UL>
+
+<H2>BUGS</H2>
+
+<UL>
+<P>The user interface should be friendlier.</P>
+</UL>
+
+</BODY>
+</HTML>

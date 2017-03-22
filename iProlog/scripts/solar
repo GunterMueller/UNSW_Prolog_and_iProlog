@@ -1,0 +1,711 @@
+filter ::
+
+	* learn * ==>
+	[
+		I learned most of what I know about the Solar System from
+		NASA (http://www.nasa.gov), and from
+		The Nine Planets (http://www.anu.edu.au/Physics/nineplanets/).
+		Check them out.
+	]
+
+	* mercury *		==>	[#context(mercury, ^0)]
+	* venus *		==>	[#context(venus, ^0)]
+	* earth * moon *	==>	[#context(moon, ^0)]
+	* earth *		==>	[#context(earth, ^0)]
+	* mars *		==>	[#context(mars, ^0)]
+	* jupiter *		==>	[#context(jupiter, ^0)]
+	* saturn *		==>	[#context(saturn, ^0)]
+	* uranus *		==>	[#context(uranus, ^0)]
+	* neptune *		==>	[#context(neptune, ^0)]
+	* pluto *		==>	[#context(pluto, ^0)]
+	* sun *			==>	[#context(sun, ^0)]
+
+
+	* {planet|planets} * ==>
+	[
+		The planets orbiting our sun are: Mercury, Venus, Earth,
+		Mars, Jupiter, Saturn,  Uranus, Neptune and Pluto.
+	]
+	* {comet|comets} * ==>
+	[
+		Comets are often thought of a dirty snowballs left over
+		from the creation of the Solar System.  They have very
+		eccentric orbits taking them out past the orbet of Pluto.
+	]
+
+	* {oort | kuiper * belt } * ==>
+	[
+		The Oort Cloud is a spherical cloud of gas and comets
+		surrounding the Solar System.  Most comets we see are from
+		the Oort Cloud, but some are from the Kuiper Belt which
+		lies past the orbit of Neptune.
+	]
+
+	* { asteroid | asteroids } * ==>
+	[
+		Asteroids are much like huge rocks, or very small
+		satellites, orbiting the Sun.  Over 7000 of them have been
+		discovered.
+	]
+
+	* solar flare * ==>
+	[
+		Solar flares are really big.  They are like pieces of the
+		Sun caught in magnetic rivers and thrown from the sun.
+	]
+
+	* solar wind * ==>
+	[
+		Solar wind is all of the particles that managed to excape
+		the Sun and fly through the Solar System.  The solar wind
+		travels at about 450 kilometers per second.
+	]
+
+
+backup ::
+
+	* #more_responses(0) ==>
+	[
+		#cycle_responses(^0)
+	]
+
+	* ==>
+	[
+		What else can we talk about?
+	]
+
+
+sun ::
+
+	* mass * ==>
+	[
+		The Sun is 1,989,100 times ten to the twenty-fourth
+		kilograms. That is 33,2950 times as massive as Earth.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The Sun is so big that 1,304,000 Earths could fit inside.  It
+		has a volume of 1,412,000 times ten to the twelfth cubic
+		kilometers.
+	]
+
+	* { in | made } * ==>
+	[
+		The Sun is about 91 percent Hydrogen and 8.9 percent
+		Helium.  There is also Oxygen, Carbon, Neon, Nitrogen, and
+		many other elements in the Sun.
+	]
+
+	* sun * ==>
+	[
+		What would you like to know about the Sun?  I know how
+		massive it is, and how big it is, and I also know what it
+		is made of.
+	]
+
+
+mercury ::
+
+	* {moon|moons} * ==>
+	[
+		Mercury doesn't have any moons.
+	|
+		I told you, I doesn't have any moons.
+	|
+		Hey, bozo! Can't you remember a simple fact?
+	]
+
+	* mass *  ==>
+	[
+		Mercury has a mass of 0.3302 times ten to the twenty-fourth
+		kilograms.  That is about 5.53 percent of what Earth's mass
+		is.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		Mercury's volume is 6.085 times ten to the tenth cubic
+		kilometers.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		The radius of Mercury is 2440 kilometers, so it is 15330
+		kilometers around it.
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes Mercury 87 days, 23 hours, and 15 minutes to go
+		around the Sun.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		At it's closest, Perihelion, Mercury is 46 million
+		kilometers from the Sun, and at the farthest, Aphelion,
+		Mercury is 69 million kilometers from the Sun
+	]
+
+	* atmosphere *  ==>
+	[
+		Mercury has almost no atmosphere, but what is there is
+		thought to be 42 percent Oxygen, 29 percent Sodium, 22
+		percent Hydrogen, 6 percent Helium, and a little of some
+		other gasses.
+	]
+
+	* temperature *  ==>
+	[
+		The average temprature on Mercury is 440 K or about 167
+		degrees Celsius, but on the side facing the Sun it is much
+		much hotter.
+	]
+
+	* mercury * ==>
+	[
+		What would you like to know about the Mercury?
+	]
+
+
+venus ::
+
+	* {moon|moons} * ==>
+	[
+		Venus doesn't have any moons.
+	]
+
+	* mass * ==>
+	[
+		The mass of Venus is 4.869 times ten to the twenty-fourth
+		kilograms.  About 81.5 percent that of Earth.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Venus is 92.843 times ten to the tenth cubic
+		kilometers.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		It is 38026 kilometers around Venus or 12104 kilometers
+		straight through it.
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes Venus 224.7 days to go around the Sun
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Venus' Aphelion, the farthest distance from the Sun, is
+		108,900,000 kilometers, and Perihelion, the shortest
+		distance, is 107,500,000 kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Venus' atmosphere is very thick. It is mostly made of
+		78.084 percent Nitrogen, 20.946 percent Oxygen, and also
+		contains: Argon, Carbon Dioxide, and others.
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on Venus is 737 K or about 464
+		degrees Celsius.
+	]
+
+	* venus * ==>
+	[
+		What would you like to know about the Venus?
+	]
+
+
+earth ::
+
+	* {moon|moons} * ==>
+	[
+		  #context(moon, ^0)
+	]
+
+	* mass * ==>
+	[
+		The mass of Earth is 5.974 times ten to the twenty-fourth
+		kilograms.  Or about 13.17 trillion trillion pounds.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Earth is 108.321 times ten to the tenth cubic
+		killometers.  Enough that if it was all turned into grape
+		juice, you could fill 541.6 trillion billion two liter
+		bottles with it.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		The radius of Earth is 6378 kilometers at the equator.
+	]
+
+	* fast * around * sun * ==>
+	[
+		We are traveling about 107,000 kilometres per hour around
+		the Sun.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Earth's Aphelion, the farthest distance from the Sun, is
+		152,100,000 kilometers, and Perihelion, the shortest
+		distance, is 147,100,000 kilometers.  It takes light over
+		eight minutes to get from the Sun to Earth.
+	]
+
+	* atmosphere * ==>
+	[
+		Lucky for you, Earth's atmosphere is breathable.  It is
+		made of 78.084 percent Nitrogen, 20.946 percent Oxygen, and
+		also contains: Argon, Carbon Dioxide, Neon, and Helium.
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on Earth is just right at 288 K or
+		about 14.85 degrees Celsius.
+	]
+
+	* old * ==>
+	[
+		It's about 4.5 billion years old.
+	]
+
+	* earth * ==>
+	[
+		What would you like to know about the Earth?
+	]
+
+
+mars ::
+
+	* {moon|moons} * ==>
+	[
+		Mars has two satellites: Deimos and Phobos.  Which one
+		would you like to here about?
+	]
+
+	* mass *  ==>
+	[
+		The mass of Mars is 0.6419 times ten to the twenty-fourth
+		kilograms.  About 10.7 percent that of Earth.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Mars is 16.318 times ten to the tenth cubic
+		kilometers.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		It is 21300 kilometers around mars and 3390 kilometers to
+		the center of Mars, but I don't know why you would want to
+		go there.
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes about 1.9 Earth years for Mars to go around the
+		Sun once.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Mars' Aphelion, the farthest distance from the Sun, is
+		206600000 kilometers, and Perihelion, the shortest
+		distance, is 20660000 kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Mars' atmosphere is pretty thin.  It is mostly made of
+		Carbon Dioxide, 95.32 percent; Nitrogen, 2.7 percent;
+		Argon, 1.6 percent; Oxygen 0.13 percent; and a small amount
+		of other gasses.
+	]
+
+	 * temperature * ==>
+	[
+		The average temprature on Mars is a chilly 210 K or about -63
+		degrees Celsius.
+	]
+
+	* life * ==>
+	[
+		Recently scientists have discovered what might be fossils
+		of very primitive life forms on meteorites that are
+		supposed to have come from Mars.
+	]
+
+	* deimos * ==>
+	[
+		Deimos is the farther of the two.  It is 23436 kilometers
+		from Mars on average.  It takes about one and a quarter
+		days for it to make a full orbit.
+	]
+
+	* phobos * ==>
+	[
+		Phobos is much closer to Mars than Deimos at only 9377
+		kilometers.  Phobos takes about a third of a day for it to
+		orbit Mars.  I'll bet that would be a really neet to see it
+		slowly fly by.
+	]
+
+	* mars * ==>
+	[
+		What would you like to know about the Mars?
+	]
+
+
+jupiter ::
+
+	* {moon|moons} * ==>
+	[
+		Jupiter has 16 moons, but there are only four worth talking
+		about: Io, Europa, Ganymede, and Callisto.
+	]
+
+	* mass * ==>
+	[
+		The mass of Jupiter is 1898.6 times ten to the
+		twenty-fourth kilograms.  About 318 times that of Earth.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Jupiter is 143128 times ten to the tenth
+		cubic kilometers.  In other words: really, REALLY big.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		It is 439264 kilometers around jupiter or 139822 kilometers
+		straight through it.
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes jupiter 11.9 Earth years to go around the Sun
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Jupiter's Aphelion, the farthest distance from the Sun, is
+		816000000 kilometers, and Perihelion, the shortest
+		distance, is 740600000 kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Jupiter is extremely turbulent, and has Molecular hydrogen
+		89.8 percent, Helium 10.2 percent, and lots of other stuff.
+		Jupiter is like a really cold star.
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on Jupiter is 129 K or about -144
+		degrees Celsius.
+	]
+
+	* io * ==>
+	[
+		Io is 3630 kilometers in diameter and is rich in compounds.
+		It is volcanically active.
+	]
+
+	* europa * ==>
+	[
+		Europa is covered with ice and rock.  Many scientist
+		believe that it has liquid water on it and may harbor life.
+	]
+
+	* ganymede * ==>
+	[
+		Ganymede, like Europa and Callisto is covered with a layer
+		of ice.
+	]
+
+	* callisto * ==>
+	[
+		Callisto is the fourth of the Galilean satellites, very old
+		and covered with impact craters.
+	]
+
+	* jupiter * ==>
+	[
+		What would you like to know about the Jupiter?
+	]
+
+
+saturn ::
+
+	* {moon|moons} * ==>
+	[
+		Saturn has eight major satellites and ten lesser satellites.
+	]
+
+	* mass * ==>
+	[
+		The mass of Saturn is 568.46 times ten to the twenty-fourth
+		kilograms.  About 95 times that of Earth.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Saturn is 82713 times ten to the tenth cubic
+		kilometers.  Not a big a Jupiter, but still big in my book.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		Saturn has a radius of 54364 kilometers at the poles, and
+		60268 kilometers at the equator.
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes saturn almost 30 Earth years to go around the Sun.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Saturn's Aphelion, the farthest distance from the Sun, is
+		1506400000 kilometers, and Perihelion, the shortest
+		distance, is 1347600000 kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Saturn has a cool atmosphere with molecular hydrogen 96.3
+		percent, Helium 3.25 percent, that's a lot of hydrogen.
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on Saturn is 97 K or about -176
+		degrees Celsius.
+	]
+
+	* saturn * ==>
+	[
+		What would you like to know about the Saturn?
+	]
+
+
+uranus ::
+
+	* {moon|moons} * ==>
+	[
+		Uranus has five major satellites and ten lesser satellites.
+	]
+
+	* mass * ==>
+	[
+		The mass of Uranus is 86.83 times ten to the twenty-fourth
+		kilograms.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Uranus is 6833 times ten to the tenth cubic
+		kilometers.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		Uranus' average radius is 25362 kilometers
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes Uranus about 84 Earth years to go around the Sun.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Uranus's Aphelion, the farthest distance from the Sun, is
+		3005200000 kilometers, and Perihelion, the shortest
+		distance, is 2734000000 kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Uranus like the other gas giants is mostly made of
+		Molecular hydrogen 82 percent, Helium 15 percent, and
+		Methane 2 percent
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on Uranus is 58 K or about -215
+		degrees Celsius.
+	]
+
+	* uranus * ==>
+	[
+		What would you like to know about the Uranus?
+	]
+
+
+neptune ::
+
+	* {moon|moons} * ==>
+	[
+		Neptune has eight satellites.  Triton is by far the largest.
+	]
+
+	* mass * ==>
+	[
+		The mass of Neptune is 102.43 times ten to the
+		twenty-fourth kilograms.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of Neptune is 6254 times ten to the tenth cubic
+		kilometers.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		Neptune' average radius is 24624 kilometers
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes Neptune about 164 Earth years to go around the Sun.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Neptune's Aphelion, the farthest distance from the Sun, is
+		4535200000 kilometers, and Perihelion, the shortest distance, is
+		4458000000 kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Neptune atmosphere is mostly made of Molecular hydrogen 80 percent,
+		Helium 19 percent, and Methane 1.5 percent
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on Neptune is 58 K or about -215
+		degrees Celsius.
+	]
+
+	* neptune * ==>
+	[
+		What would you like to know about the Neptune?
+	]
+
+
+pluto ::
+
+	* {moon|moons} * ==>
+	[
+		Pluto only has one satellite, named Charon.
+	]
+
+	* mass * ==>
+	[
+		The mass of Pluto is .0125 times ten to the twenty-fourth
+		kilograms.  Our moon is actually much bigger than that.
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of pluto is .616 times ten to the tenth cubic kilometers.
+	]
+
+	* { around | diameter |  radius | circumference } * ==>
+	[
+		The average radius of Pluto is about 1137 kilometers.
+		That's not very big.
+	]
+
+	* { long * around * sun | year | orbit } * ==>
+	[
+		It takes pluto about two and a half centuries to go around
+		the Sun. It has a very eccentric orbit and for part of its
+		year, Pluto is inside Neptune's orbit.
+	]
+
+	* { perihelion | aphelion | from * sun } * ==>
+	[
+		Perihelion for Pluto is 4445.8 million kilometers, and Aphelion is
+		7381.2 million kilometers.
+	]
+
+	* atmosphere * ==>
+	[
+		Pluto's atmosphere is extreamly thin and contains Methane,
+		and Nitrogen.
+	]
+
+	* temperature * ==>
+	[
+		The average temprature on pluto is only 50 degrees Celsius above
+		absolute zero.
+	]
+
+	* pluto * ==>
+	[
+		Pluto is really interesting.  Most of the time it is the farthest
+		planet from the sun, but not always.
+	]
+
+
+moon ::
+
+	* mass * ==>
+	[
+		The mass of the moon is 0.07349 times ten to the
+		twenty-fourth kilograms
+	]
+
+	* { big | large | volume } * ==>
+	[
+		The volume of the moon is 2.1973 times ten to the tenth
+		cubic kilometers.
+	]
+
+	* { long * get | time * get } * ==>
+	[
+		The Apollo missions took about three days to reach the Moon.
+	]
+
+	* far * ==>
+	[
+		At it's closest the moon is 363300 kilometers from the
+		Earth, and at it's farthest it is 405500 kilometers.
+	]
+
+	* cheese * ==>
+	[
+		No, the moon is not made of cheese, but there may be enough
+		water on the moon that people will someday use it to drink
+		and to fuel spaceships.
+	]
+
+	* moon * ==>
+	[
+		I love to talk about Earth's moon.  What do you want to
+		hear about it?
+	]

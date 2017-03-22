@@ -1,0 +1,326 @@
+aff :: {yes | ok | fine | no problem | sure | whatever you say};
+
+neg :: {no | never | not on your life | * off };
+
+month :: 
+	{ 
+		january | february| march| april| may| june| july| august| september| october| november| december | 
+		jan | feb | mar | apr | may | jun | jul | aug | sep | oct | nov | dec 
+	}; 
+
+weekday :: { 
+		sun | mon | tue | wed | thu | fri | sat | 
+	     	sunday | monday | tuesday | wednesday | thursday | friday | saturday 
+}; 
+
+ordinalones :: { first | second | third | fourth | fifth | sixth | seventh | eighth | ninth }; 
+
+cardinalones :: { one | two | three | four | five | six | seven | eight | nine }; 
+
+ordinalteens :: { tenth | eleventh | twelfth | thirteenth | fourteenth | 
+	fifteenth | sixteenth | seventeenth | eighteenth | nineteenth
+	}; 
+
+cardinalteens :: {	
+	ten | eleven | twelve | thirteen | fourteen | fifteen | sixteen | seventeen
+	| eighteen | nineteen 
+	};
+
+cardinaltens :: {
+	twenty |  thirty |  forty | fifty |  sixty |  seventy | eighty | ninety
+	}; 
+
+cardinalslt100 :: { 
+	<cardinalones> | <cardinalteens> | <cardinaltens> <cardinalones> | <cardinaltens> }; 
+
+daysones :: { <ordinalones> | <cardinalones> }; 
+
+daysteens :: { <ordinalteens> | <cardinalteens> }; 
+	
+daystwenties :: { 
+	 twenty <daysones> | twenty-<daysones> | twenty 
+	}; 
+	
+daysthirties :: { 
+	thirty one | thirty-one | thirty-first | thirty first | thirtieth | thirty 
+	};
+
+daysofmonth :: {
+	<daysones> | <daysteens> | <daystwenties> | <daysthirties> 
+	}; 
+	
+hours :: 	{ 
+	<cardinalslt100> 
+	}; 	
+
+minutes :: { 
+	<cardinalslt100> | quarter | half 
+	}; 
+
+amids :: {	in the morning | am | a m }; 
+
+pmids :: { in the evening | in the afternoon | pm | p m }; 
+
+time :: 
+	<hours> <minutes> <amids> ==> 
+	[
+		 
+		#settime(time(parsecard(^1), parsecard(^2), 0 ))
+	]
+
+	<hours> <minutes> <pmids> ==>
+	[
+		#settime(time((parsecard(^1) + 12), ^(parsecard(^2)), 0))
+
+	]
+
+	<hours> <minutes> #(clearhour(parsecard(^1))) ==> 
+	[
+		#settime(defaulttime(parsecard(^1), parsecard(^2)))
+
+	]	
+
+	<hours> <minutes> ==> 
+	[
+		Do you mean ^(parsecard(^1)) : ^(parsecard(^2)) a.m. or p.m.? 
+	]
+
+	<hours> { oclock | o'clock } #(clearhour(parsecard(^1))) ==> 
+	[ 
+		#settime(defaulttime(parsecard(^1), 0))
+
+	]
+
+	<hours> { oclock | o'clock } ==> 
+	[ 
+		Do you mean ^1 a.m. or p.m.? 
+	]
+
+	<hours> <amids>  ==> 
+	[
+		#settime(time(^(parsecard(^1)), 0, 0))
+
+	]
+
+	<hours> <pmids>  ==>
+	[
+		 
+		#settime(time(parsecard(^1) + 12, 0, 0))
+
+	]
+
+	<minutes>  past <hours> <amids> ==> 
+	[
+		 #settime(time(^(parsecard(^2)), ^(parsecard(^1)), 0 ))
+	]
+
+	<minutes> past <hours> <pmids>  ==>
+	[
+		#settime(time(^(parsecard(^2) + 12), ^(parsecard(^1)), 0))
+	]		
+
+	<minutes> past <hours> #(clearhour(parsecard(^2))) ==> 
+	[
+	 	 #settime(defaulttime(parsecard(^2), parsecard(^1))))
+	]
+
+	<minutes> past <hours> ==> 
+	[
+		Do you mean ^(parsecard(^2)) : ^(parsecard(^1)) a.m. or p.m.? 
+	]
+	<minutes>  to <hours> <amids> ==> 
+	[
+		 #settime(minssub(^1, ^2, am))
+	]
+
+	<minutes> to <hours> <pmids>  ==>
+	[
+		 #settime(minssub(^1, ^2, pm))
+	]		
+
+	<minutes> to <hours> #(clearhour(parsecard(^2))) ==> 
+	[
+	 	 #settime(minssub(^1, ^2, default))
+	]
+
+	<minutes> to <hours> ==> 
+	[
+		Do you mean a.m. or p.m.? 
+	]
+	NOMOREALTS ==> [	
+		I didn't understand that one. Sorry. 
+	]
+	* ==> 
+	[
+		+INCA Recog Alt+
+	]
+
+date ::
+	today ==> 
+	[
+		#assert(idate(today))
+		#gotfact(idate)
+		#pop_topic([]) 
+	]
+
+	tomorrow ==> 
+	[
+		#assert(idate(tomorrow))
+		#gotfact(idate)
+		#pop_topic([])
+	]
+	
+	next <weekday> ==> 
+	[
+		#assert(idate(calcnextweekday(^1)))
+		#gotfact(idate)
+		#pop_topic([])
+	]
+
+	{ <cardinalslt100>  days from { now | today }}  ==> 
+	[	
+		#assert(idate(dateadd(parsecard(^1), today)))
+		#gotfact(idate)
+		#pop_topic([])
+	]
+
+	<daysofmonth> ==> 
+	[
+		#assert(idate(defaultdate(date(-1, -1, dayofm(^1)))))
+		#gotfact(idate)
+		#pop_topic([])
+	]
+	
+	<daysofmonth> <month> ==> 
+	[
+	 	#assert(idate(defaultdate(date(-1, pmonth(^2), dayofm(^1)))))
+		#gotfact(idate)
+		#pop_topic([])
+	]
+
+	<daysofmonth> of <month> ==> 
+	[
+	 	#assert(idate(defaultdate(date(-1, pmonth(^2), dayofm(^1))))) 
+		#gotfact(idate)
+		#pop_topic([])
+
+	]
+
+	NOMOREALTS ==> [	
+		I didn't understand that one. Sorry. 
+	]
+	* ==> 
+	[
+		+INCA Recog Alt+
+	]
+
+frontend :: 
+	#requirefacts([])
+	init ==> 
+	[
+		How can I help you? 	 	
+	]
+	
+	* appointment ==> 
+	[
+		#requirefacts([idate, idesc, itime])
+		#goto(getmoreinfo, [])
+	]
+
+	* appointment at <time> on <date> about * ==> 
+	[
+		#assert(idate(^2))
+		#assert(itime(^1)) 
+		#assert(idesc(^3))	
+		#goto(getmoreinfo, [])
+	]
+	* appointment on <date> at <time> about * ==> 
+	[
+		#assert(idate(^1))
+		#assert(itime(^2)) 
+		#assert(idesc(^3))	
+		#goto(getmoreinfo, [])
+	]
+
+	* appointment on <date> at <time> ==> 
+	[
+		#requirefacts([idesc])
+		#assert(idate(^1))
+		#asert(itime(^2)) 
+		#goto(getmoreinfo, [])
+	]
+
+
+	* appointment at <time> on <date> ==> 
+	[
+		#requirefacts([idesc])
+		#assert(idate(^2))
+		#asert(itime(^1)) 
+		#goto(getmoreinfo, [])
+	]
+
+	* appointment on <date> ==> 
+	[
+		#requirefacts([idesc, itime])
+		#assert(idate(^1))
+		#goto(getmoreinfo, [])
+	]
+
+	* appointment at <time> ==> 
+	[
+		#requirefacts([idate, idesc, idate])
+		#assert(itime(^1))
+		#goto(getmoreinfo, [])
+	]	
+
+
+getmoreinfo :: 
+	#new_topic(getmoreinfo, getmoreinfo, getmoreinfo)
+	#needfact(idate) ==> 
+	[
+		What is the date of the appointment? 
+		#new_topic(date, date, date)
+	]
+	#needfact(itime) ==> 
+	[
+		What time is the appointment? 
+		#new_topic(time, time, time)
+	]
+
+	#needfact(idesc) ==> 
+	[
+		What is the description of the appointment? 
+		#new_topic(desc, desc, desc)
+	]
+	* ==>
+	[
+		#goto(gotallinfo, [init])
+	]
+
+desc ::
+	* ==> 
+	[
+		#assert(idesc(^1))
+		#gotfact(idesc)
+		#pop_topic([])
+	]
+
+gotallinfo :: 
+	#new_topic(gotallinfo, gotallinfo, gotallinfo)
+	init ==> 
+	[
+		Shall I record this then? 
+		^ppdate(getidate) at ^pptime(getitime) about ^(getidesc)? 
+	]
+	<aff> ==> 
+	[
+		Done! 
+		#(writeoutfile)
+		#goto(frontend, [init])
+	
+	]
+	<neg> ==> 
+	[
+		Ok then. Sorry.
+		#goto(frontend, [init]) 
+	]

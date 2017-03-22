@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>
+tell
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="User-Agent: Mozilla/3.0Gold (Macintosh; I; 68K)">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>tell - set the current output stream</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>tell(?<I>FileName</I>)</B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>If <B><I>FileName</I></B>is an open output stream, then it is made the
+current output stream.</P>
+
+<P>If <B><I>FileName</I></B>is an atom, it is taken to be a file name and
+</P>
+
+<UL>
+<LI>if there is an output stream currently associated with a file of that
+name then it is made the current output stream. (If more than one output
+stream is associated with <B><I>FileName</I></B>, one is chosen arbitrarily);</LI>
+
+<LI>otherwise, that file is opened, a stream created and and set to be
+the current output stream.</LI>
+</UL>
+</UL>
+
+<H2>SEE ALSO</H2>
+
+<UL>
+<P><B><A HREF="telling.html">telling</A></B>, <B><A HREF="told.html">told</A></B></P>
+</UL>
+
+</BODY>
+</HTML>

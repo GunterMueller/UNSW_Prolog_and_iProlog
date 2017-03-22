@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>Ako</title>
+  <meta name="Author" content="Claude Sammut">
+</head>
+
+<body>
+<h2>NAME</h2>
+<ul>
+  <p>isa - create an instance frame</p>
+</ul>
+
+<h2>SYNOPSIS</h2>
+<ul>
+  <p>new-instance-frame<b> isa </b>instance-frame-name [<b>with
+  </b><i>slot-list</i>]!</p>
+</ul>
+
+<h2>DESCRIPTION</h2>
+<ul>
+  <p>Create a new instanceframe with name <b><i>new-instance-frame</i></b>
+  and optionally with slot values defined by <b><i>slot-list</i></b>.
+  <b><i>Isa </i></b>is a 2-arity <i>predicate</i>.</p>
+
+  <p>The slot list consists of a slot name, followed by a ':'and a value.
+  Slot values are separated by ';'. The final slot value should be terminated
+  by a '!'.</p>
+
+  <p>Creation of a new instance frame triggers the <b><a
+  href="if_new.html">if_new</a></b> dæmon.</p>
+</ul>
+
+<h2>EXAMPLE</h2>
+<ul>
+  <p>Given the generic definition of <a href="cylinder.pro">cylinder</a>,
+  some instances can be defined as:</p>
+  <ul>
+  </ul>
+  <pre>c isa [cylinder] with [height: 2, radius: 4]!
+d isa [cylinder] with [colour: red]!
+e isa [cylinder]!</pre>
+</ul>
+
+<h2>SEE ALSO</h2>
+<ul>
+  <p><a href="ako.html">ako</a>, if_new</p>
+</ul>
+</body>
+</html>

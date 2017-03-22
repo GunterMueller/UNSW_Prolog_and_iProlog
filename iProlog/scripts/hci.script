@@ -1,0 +1,20 @@
+hci ::
+
+	#new_topic(hci, [], [])
+
+	init ==>
+	[
+		An interface is the boundary across which two systems
+		communicate. The human-computer interface is the
+		connecting point between a computer and the person
+		using it.
+	]
+
+	* ==>
+	[
+		In recent years the focus of computer interface design
+		has shifted from the machine to the user. A well-designed
+		interface helps people perform tasks. Most would agree
+		that there is room for improvement.
+		#pop_topic([init])
+	]

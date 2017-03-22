@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>findall</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>findall - find all solutions</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>findall(+<I>V</I>, +<I>P</I>, -<I>L</I>) </B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>Find all terms, <B><I>V</I></B>, such that <B><I>P</I> </B>is true.
+Append <B><I>V</I> </B>to the list, <B><I>L</I></B>. <B>Findall </B>uses
+backtracking to find all the solutions to <B><I>P</I></B>.</P>
+</UL>
+
+<H2>NOTE</H2>
+
+<UL>
+<P>This is the same as ISO Prolog's <B>bagof </B>predicate except that
+the additional &quot;^&quot; notation for existentially quantified variables
+is not required. All unbound variables in <B>P </B>are assumed to be existentially
+quantified. </P>
+</UL>
+
+</BODY>
+</HTML>

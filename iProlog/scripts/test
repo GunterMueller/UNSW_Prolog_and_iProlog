@@ -1,0 +1,86 @@
+aff :: {yes | ok | fine | no problem | sure | whatever you say};
+
+neg :: {no | never | not on your life | * off };
+
+fred ::
+	init ==>
+	[
+		Do you want to play?
+	]
+
+	<aff> ==>
+	[
+		Great! Let's go.
+	]
+
+	<neg> ==>
+	[
+		Spoil sport!
+	]
+
+foo ::
+	My name is * ==>
+	[
+		Nice to meet you, ^1.	#(add ^1 to name of conversant)
+	]
+
+	What is my name ==>
+	[
+		Your name is ^(name of conversant).
+	]
+
+	I am * years old ==>
+	[
+		You're young! #(add ^1 to age of conversant)
+	]
+
+	How old am I ==>
+	[
+		You are ^(age of conversant) years old.
+	]
+
+	* is my name ==>
+	[
+		A pleasure, ^1.		#(add ^1 to name of conversant)
+	]
+
+bar ::
+	hello ==>
+	[
+		Hi there!
+	]
+
+	
+family :: {mother | father | sister | brother};
+
+sloppy :: * <np> * <verb> * <noun> * ==>
+[
+	The subject is ^2, the object is ^6 and the verb is ^4.
+	#(assert(action(^4, ^2, ^6)))
+]
+
+sent :: <np> <vp> ==> [s(^1, ^2)]
+
+np ::
+	<article> <noun> ==> [np(^1, ^2)]
+	<article> <adjectives> <noun> ==> [np(^1, ^2, ^3)]
+
+vp :: <verb> <np> ==> [vp(^1, ^2)]
+
+noun :: {boy | dog | ball} ==> [^1]
+
+adjective :: {fat | big | ugly} ==> [^1]
+
+verb :: {kicked | bit} ==> [^1]
+
+article :: {a | the} ==> [^1]
+
+My <family> * ==>
+[
+	Tell me more about your ^1.
+]
+
+
+adjectives :: 
+	<adjective> <adjectives> ==> [adj(^1, ^2)]
+	_ ;

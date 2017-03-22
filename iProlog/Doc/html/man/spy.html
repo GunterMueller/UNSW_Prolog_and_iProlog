@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <TITLE>spy</TITLE>
+</HEAD>
+<BODY>
+
+<H2>
+NAME</H2>
+
+<UL>spy - spy on a procedure</UL>
+
+<H2>
+SYNOPSIS</H2>
+
+<UL><B>spy+<I>ProcName</I></B>
+
+<P><B>spy+<I>ProcList</I></B>
+
+<P><B>nospy+<I>ProcName</I></B>
+
+<P><B>nospy+<I>ProcList</I></B></UL>
+
+<H2>
+DESCRIPTION</H2>
+
+<UL>Enable tracing of procedure <B><I>ProcName</I></B>or all the procedures
+in <B><I>ProcList</I></B>.
+
+<P>To trace all the procedures in a module (i.e. a file loaded into Prolog),
+use:
+<UL>
+<PRE>file(FileName, Plist), spyPlist!</PRE>
+</UL>
+</UL>
+
+<H2>
+EXAMPLES</H2>
+
+<UL>Procedures may be individually traced enabling each call of the procedure
+to be displayed with the current values of its arguments.
+
+<P>Tracing of procedure P is enabled by the command:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spyP!</PRE>
+A number of procedures may be traced by the command:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spy[proc1, proc2, ...]!</PRE>
+Tracing is disabled by the command:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nospy P!</PRE>
+and more than one procedure may be untraced by:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; nospy [proc1, proc2, ...]!</PRE>
+At the beginning of a line output by the trace procedure, Prolog prints
+either of the following:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (#) CALL:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (#) EXIT:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (#) FAIL:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (#) REDO:</PRE>
+'CALL' indicates that a procedure is being called for the first time. A
+line beginning with 'EXIT' shows the interpreter exiting a clause after
+all the goals have been satisfied. 'FAIL' indicates an exit from a clause
+due to a failure in satisfying a goal. After a failure, Prolog will attempt
+to redo a procedure call if there are alternative clauses left in the procedure
+definition. This is shown by an 'REDO'.
+
+<P>A number is shown in parentheses before the trace message. This indicates
+the depth of procedure call nesting.
+
+<P>An example of tracing output is shown below:</UL>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; f(A, b) :- g(A).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g(A) :- A = a.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g(c).
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; spy[f, g]!
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; f(c, B)?
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (1) CALL: f(c, b) ?&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (2) CALL: g(c) ?&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (2) REDO: g(c) ?&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (2) EXIT: g(c) ?&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (1) EXIT: f(c, b) ?&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B = b</PRE>
+
+<H2>
+SEE ALSO</H2>
+
+<UL><A HREF="trace.html">trace</A>, <A HREF="trace.html">notrace</A></UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,46 @@
+range(person, name, atom(new value)).
+range(person, sex, new value in [male, female]).
+range(person, year_of_birth, year of current_date - 120 .. year of current_date).
+range(person, parents, new value must_be_a person).
+range(person, height, 10 .. 220).
+range(person, weight, 1 .. 150).
+range(person, occupation, atom(new value)).
+
+value(person, isa, [object]).
+
+if_removed(person, sex, print('Are you sure you want the sex removed?')).
+if_removed(person, occupation, print('I used to be a ', old value, '.')).
+
+if_added(person, weight, if new value > 100 then
+				print('Your ', this slot, ' is too high!')).
+
+if_replaced(person, sex, print('Are you sure you want a sex change?')).
+
+if_new(person, name, ask).
+
+if_needed(person, sex, ask).
+if_needed(person, year_of_birth, ask('Year of birth')).
+if_needed(person, age, year of current_date - year_of_birth of this person).
+if_needed(person, height, ask('What is the height of ', name of this person)).
+if_needed(person, weight, ask('What is the weight of ', name of this person)).
+if_needed(person, occupation, ask('What is the occupation')).
+
+help(person, name, print('The name should be a string.')).
+help(person, sex, print('Sex can only be male or female, not ', new value)).
+help(person, year_of_birth, print('Invalid year of birth.')).
+help(person, parents, print('The value in a parents slot must be a person.')).
+help(person, height,	if new value < 10 then
+				print(new value, 'cm is too short.'),
+			if new value > 220 then
+				print(new value, 'cm is too tall.'),
+			print('The height should be between 10 and 220cm.')).
+help(person, occupation, print('The occupation should be a string.')).
+
+multivalued(person, parents, yes).
+
+cache(person, name, yes).
+cache(person, sex, yes).
+cache(person, year_of_birth, yes).
+cache(person, age, yes).
+cache(person, weight, yes).
+cache(person, occupation, yes).

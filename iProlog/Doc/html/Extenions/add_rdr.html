@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<TITLE>add_rdr</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/4.0 (Unix)">
+	<META NAME="AUTHOR" CONTENT="Claude Sammut">
+	<META NAME="CREATED" CONTENT="19980228;1052700">
+	<META NAME="CHANGEDBY" CONTENT="Claude Sammut">
+	<META NAME="CHANGED" CONTENT="19980228;1055100">
+</HEAD>
+<BODY>
+<H2>NAME</H2>
+<UL>
+	<P>add_rdr - add a new rule to an RDR</P>
+</UL>
+<H2>SYNOPSIS</H2>
+<UL>
+	<P><B>add_rdr(+<I>Rule</I>)</B></P>
+</UL>
+<H2><B>DESCRIPTION</B></H2>
+<UL>
+	<P><B><I>Rule </I></B>must be a term of the form:</P>
+	<UL>
+		<P><B>if </B>condition <B>then </B>conclusion <B>because </B>case.</P>
+	</UL>
+	<P><B>Add_rdr</B> must only be called after an RDR has been
+	evaluated. <B><I>iProlog</I></B> keeps track of the last rule tested
+	in an RDR. When <B>add_rdr</B> is called, the new rule is insert
+	into the RDR after the last rule tested.</P>
+	<UL>
+		<LI>If the last rule succeeded, the new rule is added as an
+		exception (except clause). 
+		<LI><P>If the last rule failed, the new rule is added as an
+		alternative (except clause). 
+		</P>
+	</UL>
+</UL>
+<H2>EXAMPLE</H2>
+<UL>
+	<P>Go <A HREF="rdr.eg">here </A>to see a complete example of
+	constructing a custom RDR maintenance tool in Prolog that invokes
+	<B>add_rdr.</B></P>
+</UL>
+</BODY>
+</HTML>

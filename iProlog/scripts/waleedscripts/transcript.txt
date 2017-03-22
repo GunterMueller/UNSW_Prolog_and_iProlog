@@ -1,0 +1,45 @@
+Inca says:  Hello. How can I help you?
+You said: I don't know. 
+Inca says:  I can handle news, appointments, email, weather, exchange rates and translations.
+You said: ok, what's the news?
+Inca says:  Do you want local, international or computer news?
+You said: computer news, please. 
+Inca says:  Headlines are: Drake on Drake: ET Life A Certainty; Liberty Alliance Releases Specifications; Will BEEP Simplify Network Programming?; Pop-up Ads Coming to A TV Near You; 
+You said: ok, i'm not interested in any of those. 
+Inca says:  Sorry I couldn't help. Anything else I can do for you?
+You said: well, what appointments do I have? 
+Inca says:  You have the following appointments: On Tuesday 16 July 2002 from 5 oclock pm until 6 oclock pm about meeting  --  On Friday 19 July 2002 from 4 oclock pm until 5 oclock pm about nothing  --    On Monday 22 July 2002 from half past 4 pm until 5 oclock pm about testing of the interests of play  -- 
+You said: I want to make a new appointment. 
+Inca says:  What date is it on?
+You said: next wednesday.
+Inca says:  When does it start?
+You said: 1 oclock. 
+Inca says:  When does it end?
+You said: quarter past two. 
+Inca says:  What is it about?
+You said: brainstorming. 
+Inca says:  Recorded.
+You said: tell me again what appointments I have. 
+Inca says:  You have the following appointments: On Tuesday 16 July 2002 from 5 oclock pm until 6 oclock pm about meeting  --  On Friday 19 July 2002 from 4 oclock pm until 5 oclock pm about nothing  --    On Monday 22 July 2002 from half past 4 pm until 5 oclock pm about testing of the interests of play  --  On Wednesday 17 July 2002 from 1 oclock pm until quarter past 2 pm about brainstorming  -- 
+You said: thanks. 
+Inca says:  You are most welcome. Is there anything else I can do for you?
+You said: What's the weather going to be like today? 
+Inca says:    Dry. Cool to mild. Light to moderate northwest to northeast winds.      
+You said: And what's the exchange rate for japanese yen? 
+Inca says:  One Australian dollar is  65.3393 yen
+You said: thanks again. 
+Inca says:  You are most welcome. Is there anything else I can do for you?
+You said: Can you translate something for me? 
+Inca says:  I can translate to french, german or spanish. Probably the easiest way is to say something like: Translate blah into french.
+You said: ok - translate I am really tired into french. 
+Inca says:  I think it's roughly: je suis vraiment fatigue. 
+You said: what time is it now? 
+Inca says:  It is 4 53 pm on Tuesday 16 July 2002.
+You said: I gotta go. 
+Inca says:  Again, please?
+You said: what is your name?
+Inca says:  My name is Inca. I'm a personal assistant developed as part of the Smart Internet CRC.
+You said: ok. 
+Inca says:  Excuse me?
+You said: goodbye. 
+Inca says:  Ok. See you later!

@@ -1,0 +1,7 @@
+sh
+
+	Suspend Prolog and begin a new shell. When the shell is terminated, by
+	typing ^d, the Prolog session will resume.
+	If your system has more than one shell available, it is possible to
+	specify  which  shell is to be used by assigning the name of the
+	shell variable "SHELL" in the environment.

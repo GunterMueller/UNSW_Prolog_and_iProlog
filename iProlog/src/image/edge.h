@@ -1,0 +1,1 @@
+pgm *sobel(pgm *image);

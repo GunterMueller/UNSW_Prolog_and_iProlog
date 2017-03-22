@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>
+close
+</TITLE><META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+<META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>
+close
+</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P>
+close(Stream)
+</P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>
+
+	The stream corresponding to Stream is closed.
+
+For upward compatibility, this predicate also accepts an atom as its argument.
+If there is a single open stream with this atom as its associated file name,
+then this stream is closed. If there is more than one stream with the same file
+name, then one is selected arbitrarily and closed.
+
+</P>
+</UL>
+
+</BODY>
+</HTML>

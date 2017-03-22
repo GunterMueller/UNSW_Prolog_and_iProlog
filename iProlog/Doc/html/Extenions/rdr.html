@@ -1,0 +1,216 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H1>
+Ripple Down Rules</H1>
+
+<UL>
+<LI>
+<A HREF="#intro">Introduction to RDR's</A></LI>
+
+<LI>
+<B><I>iProlog </I></B>routines for handling RDRs</LI>
+
+<UL>
+<LI>
+<A HREF="rdr_syntax.html">Syntax</A></LI>
+
+<LI>
+<A HREF="rdr.pred.html">rdr</A></LI>
+
+<LI>
+<A HREF="add_rdr.html">add_rdr</A></LI>
+
+<LI>
+<A HREF="corner_stone_case.html">corner_stone_case</A></LI>
+</UL>
+
+<LI>
+<A HREF="rdr.lens.html">An example of building RDR's in <I>iProlog</I></A></LI>
+</UL>
+
+<H2>
+<A NAME="intro"></A>What are Ripple Down Rules?</H2>
+Knowledge acquisition for an expert system is often a continuing process
+because new knowledge may come to light or some things that used to be
+true are no longer true. This means that an expert system's rule set must
+be modified to reflect the new knowledge. A major problem in updating a
+rule set is to ensure that any modifications leave the rule set consistent.
+That is, we don't want changes to break already working rules.
+
+<P><I>Ripple down rules </I>were devised by Paul Compton to make it easier
+to maintain a knowledge base and keep all the rules consistent. We will
+use the following formulation of a ripple down rule:
+<UL><B>if </B><I>condition </I><B>then </B><I>conclusion </I><B>[because
+</B><I>case</I><B>]</B><I> </I><B>except</B>
+<UL><B>if </B>....</UL>
+<B>else if </B>...</UL>
+For example:
+<UL>
+<PRE>if a and b then c except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if d then e
+else if f and g then h</PRE>
+</UL>
+This is interpreted as "if a and b are true then we conclude c unless d
+is true. In that case we conclude e. Here are the outputs of the RDR under
+different conditions:
+<UL>
+<PRE>a and b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; => c
+a and b and d => e
+a and f and g => h</PRE>
+</UL>
+Notice that an RDR can always be rewritten as an ordinary <B>if-then-else</B>
+statement. The rule above would be:
+<UL>
+<PRE>if a and b then
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if d then e
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else c
+else if f and g then h</PRE>
+</UL>
+We use the exception conditions instead of the normal if-then-else form
+because this will make it easier for us to update rules.
+<H2>
+Building RDR's</H2>
+Ripple down rules are built interactively. Initially an RDR consists of
+a <I>default </I>rule, such as:
+<UL>
+<PRE>if true then normal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule 0</PRE>
+</UL>
+This simply says that no matter what, the expert system will always draw
+the conclusion normal. If this were a problem in medical diagnosis, this
+rule would work most of the time because most people are normal!
+
+<P>Now suppose that a person comes to the doctor with symptoms <I>a </I>and
+<I>b</I> and the doctor concludes that the patient has disease <I>c</I>.
+The RDR would conclude that this person is normal. To correct this, we
+add an exception rule:
+<UL>
+<PRE>if true then normal except&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c</PRE>
+</UL>
+This rule now works for this patient since the RDR would conclude that
+the person is normal except when the symptoms <I>a </I>and <I>b </I>are
+present.
+
+<P>Now suppose another patient with disease <I>h</I> comes along. He as
+symptoms <I>f</I> and <I>g</I>. Because there is no rule to cover these
+conditions, we still get a diagnosis of <I>normal</I>. This is because
+<I>true</I> is always true, so in the absence of any other rules, <I>normal</I>
+is the conclusion. How do we fix this? We add a new <I>else</I> part:
+<UL>
+<PRE>if true then normal except&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule 2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if f and g then h</PRE>
+</UL>
+This RDR now works for the new patient. Now suppose another patient comes
+to the doctor. This patient has symptoms <I>a, b</I> and <I>d</I>. The
+doctor concludes that the patient has disease <I>e</I>, but the RDR concludes
+<I>c</I> because of <I>a</I> and <I>b</I>. To fix this problem, we add
+another exception rule:
+<UL>
+<PRE>if true then normal except&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rule 3
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if d then e
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if f and g then h</PRE>
+</UL>
+This process is repeated for each case that is seen.
+
+<P>How do we know where to add a new rule? Here is the algorithm:
+<UL>
+<LI>
+if a rule fires, but produces an incorrect conclusion, we add an <I>except</I>
+branch.</LI>
+
+
+<P>For example, <B>rule 0</B>, above fires, but produces the wrong conclusion
+so an <I>except</I> branch is added. Similarly, in <B>rule 2</B>, the <I>a
+and b</I> condition succeeds when given the example <I>a and b and d</I>.
+It should not so we add the exception condition.
+<LI>
+if a rule fails to fire when it should, an <I>else</I> branch is added.</LI>
+
+
+<P>For example, in <B>rule 1</B> above, the <I>true</I> condition succeeds
+and then we test <I>a and b</I>. This fails so we add an <I>else</I> branch
+to handle the new case.</UL>
+
+<H2>
+Using Case Differences to Build Conditions</H2>
+How do we decide which conditions to add to a new rule? We would like to
+chose the conditions so that the new rule is as general as possible so
+that new cases can be diagnosed correctly. The interactive RDR methodology
+requires an expert to tell the system what conditions to use. However,
+the expert can get some help from the system.
+
+<P>An RDR system keeps track of which cases caused a rule to be created.
+Here is <B>rule 2 </B>above, rewritten with the associated cases:
+<UL>
+<PRE>if true then normal because [] except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c because [a, b]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if f and g then h because [f, g]</PRE>
+</UL>
+Now let's see what happens when we get case [a, b, d]. Initially it is
+classified as <I>d</I>, which is incorrect. Now what is the difference
+between the original case [a, b] and [a, b, d]? The new case has the additional
+condition <I>d</I>. So if we want to distinguish the two cases, we just
+look to see if <I>d</I> is present. Thus the new rule is:
+<UL>
+<PRE>if true then normal because [] except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c because [a, b]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if d then e because [a, b, d]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if f and g then h because [f, g]</PRE>
+</UL>
+Suppose that instead of the case [f, g] we had [a, f, g]. The RDR above
+would still produce the correct diagnosis, but the cases would be a little
+different.
+<UL>
+<PRE>if true then normal because [] except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c because [a, b]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if d then e because [a, b, d]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if f and g then h because [a, f, g]</PRE>
+</UL>
+According to this rule, the case [f, g] would be diagnosed as <I>h</I>.
+Suppose it should be diagnosed as <I>i</I>. What is the difference between
+the cases? The original case has an additional <I>a</I>. Thus the new rule
+could be:
+<UL>
+<PRE>if true then normal because [] except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if a and b then c because [a, b]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if d then e because [a, b, d]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if f and g then h because [a, f, g] except
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if not a then i because [f, g].</PRE>
+</UL>
+Thus, we can make a difference list of conditions from the old and new
+case like this:
+<UL>
+<LI>
+if the new case has any conditions not in the old case, add those extra
+conditions to the difference list.</LI>
+
+<LI>
+if the old case has any conditions not in the new case, add the <I>negation</I>
+of those conditions to the difference list.</LI>
+</UL>
+These differences can then be presented to the expert to select the best
+ones.
+
+<P><B><I>Note:</I></B> when attributes are numeric, we may have to do something
+else. For example, if case 1 has age 20 and case 2 has age 40, we might
+pick the mid point and build a condition age > 30.
+<H2>
+
+<HR WIDTH="100%"></H2>
+
+<H2>
+An Example of Coding RDR's in iProlog</H2>
+<A HREF="rdr.lens.html">Click here to see a full example of building an
+RDR</A>
+
+<P><A HREF="rdr.fn">Here is an alternative representation for the same
+problem</A>
+</BODY>
+</HTML>

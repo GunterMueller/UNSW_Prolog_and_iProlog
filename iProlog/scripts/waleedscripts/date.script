@@ -1,0 +1,76 @@
+month :: { january| february| march| april| may| june| july| august| september| october| november| december | 
+	jan | feb | mar | apr | may | jun | jul | aug | sep | oct | nov | dec 
+	}; 
+
+weekday :: { sun | mon | tue | wed | thu | fri | sat | 
+	     sunday | monday | tuesday | wednesday | thursday | friday | saturday }; 
+
+daysfirst :: {
+	first | second | third | fourth | fifth | sixth | seventh | eighth | ninth | 
+	one | two | three | four | five | six | seven | eight | nine
+	}; 
+
+daysteens :: {
+	tenth | eleventh | twelfth | thirteenth | fourteenth | 
+	fifteenth | sixteenth | seventeenth | eighteenth | nineteenth | 
+	ten | eleven | twelve | thirteen | fourteen | fifteen | sixteen | seventeen
+	eighteen | nineteen
+	}; 
+	
+daystwenties :: { 
+	twenty<daysfirst>  | twenty | twentieth
+	}; 
+	
+
+daysthirties :: { 
+	thirtieth | thirty | thirty-first | thirty first | thirty one | thirty-one
+	};
+
+daysofmonth :: {
+	<daysfirst> | <daysteens> |  <daystwenties>  | <daysthirties> 
+	}; 
+
+
+date ::
+	init ==> 
+	[
+		Hi there. I can parse dates. Throw something at me. 
+	]
+
+	today ==> 
+	[
+		I think you mean ^(today).
+	]
+
+	tomorrow ==> 
+	[
+		I think you mean ^(tomorrow). 
+	]
+	
+	next <weekday> ==> 
+	[
+		I think you mean ^(calcnextweekday(^1)). 
+	]
+
+	<daysofmonth> ==> 
+	[
+		I think you mean ^(defaultdate(date(-1, -1, dayofm(^1)))). 
+	]
+	
+	<daysofmonth> <month> ==> 
+	
+	[
+	 	I think you mean ^(defaultdate(date(-1, pmonth(^2), dayofm(^1))))
+	]
+
+	<daysofmonth> of <month> ==> 
+	
+	[
+	 	I think you mean ^(defaultdate(date(-1, pmonth(^2), dayofm(^1))))
+	]
+		
+	* ==> 
+	[
+		I didn't understand that one. Sorry. 
+	]
+

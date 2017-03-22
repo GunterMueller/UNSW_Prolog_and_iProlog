@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>
+ratom
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="User-Agent: Mozilla/3.0Gold (Macintosh; I; 68K)">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>ratom </P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>ratom(?<I>X</I>)</B></P>
+
+<P><B>ratom(+<I>Stream</I>, ?<I>X</I>) </B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>The next lexical token on the current or specified input stream is bound
+to <B><I>X</I></B>. eg,</P>
+
+<PRE>: ratom(X)?
+&gt; fred</PRE>
+
+<PRE>X = fred</PRE>
+
+<PRE>: ratom(X)?
+&gt; 123</PRE>
+
+<PRE>X = 123         % X is an integer</PRE>
+
+<PRE>: ratom(X)?
+&gt; &lt;=</PRE>
+
+<PRE>X = '&lt;='</PRE>
+
+<PRE>: ratom(X)?
+&gt; ,</PRE>
+
+<PRE>X = ',' </PRE>
+</UL>
+
+</BODY>
+</HTML>

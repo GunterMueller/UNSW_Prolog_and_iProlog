@@ -1,0 +1,4 @@
+
+set_output(Stream)
+
+	This makes Stream the current output stream.

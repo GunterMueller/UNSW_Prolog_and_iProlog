@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+   <TITLE>Lists</TITLE>
+</HEAD>
+<BODY>
+
+<H2>
+LISTS</H2>
+A very important type of recursive term is the list. The recursive definition
+of a list is: a list may be nil or it may be a term which has a head, which
+can be any term, and a tail which is another list. Using standard Prolog
+notation, we could define the list as:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_list(nil).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; is_list(list(Head, Tail)) :-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list(Tail).</PRE>
+A list of numbers [1, 2, 3] would look like:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; list(1, list(2, list(3, nil)))</PRE>
+Although this notation is consistent with the way Prolog treats all other
+data structures, it can be rather clumsy at times. Because lists are used
+so often, most Prolog implementations use the alternative, more convenient
+notation, [1, 2, 3]. Internally, Prolog still stores the list as if it
+were entered in the prefix form.
+
+<P>To get some idea of how the compact list notation works look at the
+following queries to Prolog and the answers the system returns:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [X, Y, Z] = [1, 2, 3]?
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X = 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y = 2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Z = 3</PRE>
+This query asks Prolog to match (or unify) the two terms on either side
+of the equals sign. If a variable appears in a position corresponding to
+an element in the second list then that variable is unified with the element.
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [X | Y] = [1, 2, 3]?
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X = 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y = [2, 3]</PRE>
+The most common procedure for processing a list is to find the first element,
+that is the head of the list, perform an operation on it and then repeat
+the process for all the elements remaining in the tail. The head and tail
+may be separated by using the vertical bar '|' to indicate that the term
+following the bar should unify with the tail of the list. Remember that
+the tail is usually also a list.
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [X | Y] = [1]?
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X = 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y = []</PRE>
+An empty list is written as '<TT>[]</TT>'. The end of a list is indicated
+by an empty tail. That is, the tail is <TT>[]</TT>. If necessary, several
+elements from the front of the list can be selected before matching the
+tail.
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [X, Y | Z] = [fred, jim, jill, mary]?
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X = fred
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y = jim
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Z = [jill, mary]</PRE>
+In this example there must be at least two elements in the list on the
+right in order for the goal to succeed. List elements can be as complex
+as desired.
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [X | Y] = [[a, f(e)], [n, m, [2]]]?
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X = [ a, f(e)]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y = [[n, m, [2]]]</PRE>
+This example shows how to put lists inside lists. The right hand list has
+two elements:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [a, f(e)]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [n, m, [2]]</PRE>
+Notice that Y is shown with an extra pair of brackets. That is because
+Y is the tail of the entire list, <TT>[n, m, [2] </TT>is just one element.
+
+<P>A term is a member of a list if the term is the same as the term which
+is the head of the list, or the term is a member of the tail of the list.
+In Prolog , this is expressed as:
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; member(X, [X | _]).
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; member(X, [_ | Y]) :- member(X, Y).</PRE>
+
+<H2>
+<A NAME="Writing Recursive Programs"></A>Writing Recursive Programs</H2>
+This simple example illustrates a few rules about writing programs which
+deal with recursive data structures:<I></I>
+
+<P><B><I>Only deal with one element at a time!</I></B>
+
+<P>Given the problem of specifying that a term is a member of a list, it
+might be tempting to think of the list as one single structure. This leads
+you to try and examine groups of elements. Always remember that lists and
+all other structures in Prolog are made of of smaller things. First write
+programs to deals with the smaller things and then worry about putting
+them together. In that spirit, the member program checks that head of the
+list before proceeding down the tail.<I></I>
+
+<P><B><I>Believe that the recursive program you are writing has already
+been written!</I></B>
+
+<P>The definition of member says that a term is a member of a list if the
+term is the same as the head or <I>it is a member of the tail of the list.
+</I>In the definition we are already assuming that we know how to find
+a member in the tail. This is one of the hardest concepts to get used to
+in writing recursive programs. If you work out how to deal with just one
+element then you can leave the rest to recursion if you pretend that the
+program is already complete.<I></I>
+
+<P><B><I>Write definitions not programs!</I></B>
+
+<P>If you are used to writing programs for conventions languages, the you
+are used to giving instructions on how to perform certain operations. In
+Prolog, you define relationships between objects and let the system do
+its best to construct object which satisfy the given relationship.
+<H2>
+See Also</H2>
+
+<UL><A HREF="recursive.html">Recursive Programs</A></UL>
+
+</BODY>
+</HTML>

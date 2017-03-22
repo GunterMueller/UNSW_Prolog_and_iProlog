@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title></title>
+</head>
+
+<body>
+<h1>An Example of Coding RDR's in iProlog</h1>
+
+<h2>Describing the problem</h2>
+
+<p>This example is about building a set of rules to determine if someone
+should wear contact lens and if so, if the lens should be hard or soft.</p>
+
+<p>The most convenient way of using RDR's in <b>iProlog</b> is to use them in
+conjunction with <a
+href="/home/claude/iprolog/Doc/html/Frames/Frames.html">frames</a>. So the
+first thing we do is define a generic frame to describe the type of object we
+are dealing with.</p>
+<pre>patient ako object with
+        age:
+                range
+                        new value in [young, pre_presbyopic, presbyopic];
+        prescription:
+                range
+                        new value in [myope, hypermetrope];
+        astigmatism:
+                range
+                        new value in [astigmatic, not_astigmatic];
+        tear_production:
+                range
+                        new value in [reduced, normal];
+        lens:
+                range
+                        new value in [none, soft, hard]
+                if_needed
+                        if true then none because case0!</pre>
+
+<p>It is not important to know what<i> presbyopic</i>, etc mean. They are
+just the names and optometrist would use describe a person's age, and other
+attributes.</p>
+
+<p>Given the values of the other attributes, we want to build an RDR that
+will return the correct value for <b><i>lens</i></b>, that is, what is the
+appropriate type of contact lens for this person. The RDR routines will
+construct a rule that will appear as an <b>if_needed</b> dæmon in the
+<b><i>lens </i></b>slot of the generic frame <b><i>patient</i></b>. We
+initialise the dæmon by inserting a dummy rule:</p>
+<ul>
+</ul>
+<pre>if true then none because case0</pre>
+
+<p>where case0 is a dummy case, as described below.<br>
+</p>
+<hr width="100%">
+
+<h2>Example Cases</h2>
+
+<p><a href="lens.cases.pro">Here</a> is a list of all the cases that will be
+entered into the RDR system.</p>
+
+<p></p>
+<hr width="100%">
+
+<h2>An RDR Session</h2>
+
+<p>We write a simple predicate to manage a session for entering a sequence of
+new cases.</p>
+<ul>
+</ul>
+<pre>go :-
+    value(X, isa, [patient]),
+    X \= case0,
+    rdr(lens of X),
+    print_daemon(patient, lens, if_needed).</pre>
+
+<p>When called as:</p>
+<ul>
+</ul>
+<pre>go?</pre>
+
+<p>This will backtrack through all patient cases, except the dummy
+<tt>case0</tt>, calling <b>rdr </b>on the <b><i>lens </i></b>slot. This call
+will evaluate <b><i>lens of X</i></b> and ask the user if the result is
+correct. If it is, the program will move to the next case. If it is not,
+<b>rdr </b>will ask the user for the correct result and then, the system
+looks at the differences between the <i>corner stone case</i>, ie. the case
+which caused the creation of the rule that fired and the new case. The system
+asks if each of the differences is relevant to distinguishing the cases.</p>
+
+<p>Each <i>yes</i> answer causes a condition to be added to a new rule. The
+new RDR is printed out when all the differences have been checked.</p>
+<pre>iProlog (17 February 2002)
+: <b>go?
+</b>New case: case1 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case2 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>n
+</b>What is the correct conclusion? <b>soft
+</b>Is age of this object = young correct? <b>n
+</b>Is prescription of this object = myope correct? <b>n
+</b>Is astigmatism of this object = not_astigmatic correct? <b>y
+</b>Is tear_production of this object = normal correct? <b>y
+
+</b>        if true then none because case0 except
+                if astigmatism of this object = not_astigmatic and tear_production of this object = normal then soft because case2
+
+New case: case3 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case4 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>n
+</b>What is the correct conclusion? <b>hard
+</b>Is age of this object = young correct? <b>n
+</b>Is prescription of this object = myope correct? <b>y
+</b>Is astigmatism of this object = astigmatic correct? <b>n
+</b>Is tear_production of this object = normal correct? <b>y
+
+</b>        if true then none because case0 except
+                if astigmatism of this object = not_astigmatic and tear_production of this object = normal then soft because case2
+                else if prescription of this object = myope and tear_production of this object = normal then hard because case4
+
+New case: case5 isa [patient] with
+        age: young;
+        prescription: hypermetrope;
+        astigmatism: not_astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case6 isa [patient] with
+        age: young;
+        prescription: hypermetrope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Old case: case2 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Is soft the correct conclusion? <b>y
+
+</b>New case: case7 isa [patient] with
+        age: young;
+        prescription: hypermetrope;
+        astigmatism: astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case8 isa [patient] with
+        age: young;
+        prescription: hypermetrope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>n
+</b>What is the correct conclusion? <b>hard
+</b>Is age of this object = young correct? <b>y
+</b>Is prescription of this object = hypermetrope correct? <b>n
+</b>Is astigmatism of this object = astigmatic correct? <b>n
+</b>Is tear_production of this object = normal correct? <b>y
+
+</b>        if true then none because case0 except
+                if astigmatism of this object = not_astigmatic and tear_production of this object = normal then soft because case2 except
+                else if prescription of this object = myope and tear_production of this object = normal then hard because case4
+                else if age of this object = young and tear_production of this object = normal then hard because case8
+
+New case: case9 isa [patient] with
+        age: pre_presbyopic;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case10 isa [patient] with
+        age: pre_presbyopic;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Old case: case2 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Is soft the correct conclusion? <b>y
+
+</b>New case: case11 isa [patient] with
+        age: pre_presbyopic;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case12 isa [patient] with
+        age: pre_presbyopic;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Old case: case4 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Is hard the correct conclusion? <b>y
+
+</b>New case: case13 isa [patient] with
+        age: pre_presbyopic;
+        prescription: hypermetrope;
+        astigmatism: not_astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case14 isa [patient] with
+        age: pre_presbyopic;
+        prescription: hypermetrope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Old case: case2 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Is soft the correct conclusion? <b>y
+
+</b>New case: case15 isa [patient] with
+        age: pre_presbyopic;
+        prescription: hypermetrope;
+        astigmatism: astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case16 isa [patient] with
+        age: pre_presbyopic;
+        prescription: hypermetrope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case17 isa [patient] with
+        age: presbyopic;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case18 isa [patient] with
+        age: presbyopic;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Old case: case2 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Is soft the correct conclusion? <b>n
+</b>What is the correct conclusion? <b>none
+</b>Is age of this object = presbyopic correct? <b>y
+
+</b>        if true then none because case0 except
+                if astigmatism of this object = not_astigmatic and tear_production of this object = normal then soft because case2 except
+                        if age of this object = presbyopic then none because case18
+                else if prescription of this object = myope and tear_production of this object = normal then hard because case4
+                else if age of this object = young and tear_production of this object = normal then hard because case8
+
+New case: case19 isa [patient] with
+        age: presbyopic;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case20 isa [patient] with
+        age: presbyopic;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Old case: case4 isa [patient] with
+        age: young;
+        prescription: myope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Is hard the correct conclusion? <b>y
+
+</b>New case: case21 isa [patient] with
+        age: presbyopic;
+        prescription: hypermetrope;
+        astigmatism: not_astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case22 isa [patient] with
+        age: presbyopic;
+        prescription: hypermetrope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Old case: case18 isa [patient] with
+        age: presbyopic;
+        prescription: myope;
+        astigmatism: not_astigmatic;
+        tear_production: normal!
+Is none the correct conclusion? <b>n
+</b>What is the correct conclusion? <b>soft
+</b>Is prescription of this object = hypermetrope correct? <b>n
+</b>Is prescription of this object \= myope correct? <b>y
+
+</b>        if true then none because case0 except
+                if astigmatism of this object = not_astigmatic and tear_production of this object = normal then soft because case2 except
+                        if age of this object = presbyopic then none because case18 except
+                                if prescription of this object \= myope then soft because case22
+                else if prescription of this object = myope and tear_production of this object = normal then hard because case4
+                else if age of this object = young and tear_production of this object = normal then hard because case8
+
+New case: case23 isa [patient] with
+        age: presbyopic;
+        prescription: hypermetrope;
+        astigmatism: astigmatic;
+        tear_production: reduced!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>New case: case24 isa [patient] with
+        age: presbyopic;
+        prescription: hypermetrope;
+        astigmatism: astigmatic;
+        tear_production: normal!
+Old case: case0 isa [patient]!
+Is none the correct conclusion? <b>y
+
+</b>** yes</pre>
+</body>
+</html>

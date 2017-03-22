@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE></TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.27 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>if_needed - d&aelig;mon function invoked when a computed value is needed</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><I>SlotName</I>:</P>
+
+<UL>
+<P><B>if_needed</B><I> predicate</I></P>
+</UL>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P>When a request for a slot value fails to find the value in the instance
+frame, the inheritance hierarchy is searched. The <B>if_needed</B> d&aelig;mon
+computes a value.</P>
+
+<P><B>Note:</B> the <B>if_needed</B> d&aelig;mon is a <I>function</I>.
+That is, it must be an expression that returns a value.</P>
+</UL>
+
+<H2>EXAMPLE</H2>
+
+<UL>
+<P>Most of the slots in the <A HREF="../../../../../../cylinder.pro">cylinder
+</A>and <A HREF="../../../../../../patient.pro">patient </A>examples have
+<B>if_needed </B>d&aelig;mons.</P>
+</UL>
+
+<H2>SEE&nbsp;ALSO</H2>
+
+<UL>
+<P><A HREF="of.html">of</A>, <A HREF="/home/claude/iprolog/Doc/html/Extenions/rdr.html">ripple-down
+rules</A>, <A HREF="default.html">default</A></P>
+</UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <title>Ako</title>
+  <meta name="Author" content="Claude Sammut">
+</head>
+
+<body>
+<h2>NAME</h2>
+<ul>
+  <p>has_value - add a value to a slot in a frame</p>
+</ul>
+
+<h2>SYNOPSIS</h2>
+
+<p><em>slot(object)</em> <strong>has_value</strong> <em>value</em></p>
+
+<h2>DESCRIPTION</h2>
+<ul>
+  <p>A predicate that adds a new value to a slot in a frame. If the slot is
+  not present, it is created. Slots can normally only contain a single value
+  unless they have been declared <a href="multivalued.html">multivalued</a>.
+  Triggers the <em>if_added </em>dæmon.</p>
+</ul>
+
+<h2>EXAMPLE</h2>
+<ul>
+  <p>Given the generic definition of <a href="cylinder.pro">cylinder</a>,
+  some instances can be defined as:</p>
+  <pre>c isa [cylinder] with [height: 2, radius: 4]!
+colour(c) has_value red?</pre>
+</ul>
+
+<h2>ERRORS</h2>
+<ul>
+  <p>If an attempt is made to add a value to an already existing slot that is
+  not declared multivalued, the call fails with an error.</p>
+</ul>
+
+<h2>SEE ALSO</h2>
+<ul>
+  <p><a href="multivalued.html">multivalued</a>, if_added</p>
+</ul>
+</body>
+</html>

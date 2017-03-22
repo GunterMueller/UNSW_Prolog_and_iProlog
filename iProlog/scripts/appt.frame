@@ -1,0 +1,124 @@
+date ako [] with
+[
+	year:
+	[
+		range		number,
+		default		year(current_date),
+		if_needed	ask_user("What year is it?"),
+		cache		true
+	],
+	month:
+	[
+		range		1..12
+	],
+	long_day:
+	[
+		range		[sunday, monday, tuesday, wednesday, thursday, friday, saturday]
+	],
+	day:
+	[
+		range		1..31
+	],
+	hour:
+	[
+		range		0..23
+	],
+	minutes:
+	[
+		range		0..59,
+		default		0
+	]
+]!
+
+current_date isa date with
+[
+	year:	2003,
+	month:	3,
+	day:	22
+]!
+
+
+appointment ako [] with
+[
+	subject:
+	[
+		range		atom,
+		help		print("Subject is a string"),
+		if_new		ask_user,
+		cache		true
+	],
+	location:
+	[
+		range		atom,
+		help		print("Location is a string"),
+		if_new		ask_user,
+		cache		true
+	],
+	start:
+	[
+		range		date
+	],
+	end:
+	[
+		range		date
+	]
+]!
+
+
+meeting ako appointment with
+[
+	attendees:
+	[
+		range		person,
+		multivalued	true,
+		if_new		ask_user("Who is the meeting with")
+	]
+]!
+
+
+person ako [] with
+[
+	name:
+	[
+		range		atom,
+		help		print("The name should be a string."),
+		if_needed	ask_user,
+		if_new		ask_user,
+		cache		true
+	],
+	sex:
+	[
+		range		[male, female],
+		help		print("Sex can only be male or female, not ", new_value),
+		if_needed	ask_user,
+		if_replaced	print("Are you sure you want a sex change?"),
+		if_removed	print("Are you sure you want the sex removed?"),
+		cache		true
+	],
+	year_of_birth:
+	[
+		range		year(current_date) - 120 .. year(current_date),
+		help		print("Invalid year of birth."),
+		if_needed	ask_user("Year of birth"),
+		cache		true
+	],
+	age:
+	[
+		cache		true,
+		if_needed	year(current_date) - year_of_birth
+	],
+	occupation:
+	[
+		range		atom,
+		help		print("The occupation should be a string."),
+		if_needed	ask_user("What is the occupation"),
+		cache		true,
+		if_removed	print("I used to be a ", old_value, ".")
+	],
+	schedule:
+	[
+		range		appointment,
+		multivalued	true,
+		help		print("An appointment must be an object")
+	]
+]!

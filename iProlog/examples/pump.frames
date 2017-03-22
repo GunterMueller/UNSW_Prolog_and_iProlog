@@ -1,0 +1,114 @@
+block ako object with
+	pump:
+		range
+				new value must_be_a pump;
+	motor:
+		range
+				new value must_be_a motor;
+	input_line:
+		range
+				new value must_be_a line;
+	output_line:
+		range
+				new value must_be_a line;
+	status:
+		range
+				new value in [good, bad]
+		if_needed
+				if	status of input_line of this block = normal
+				and	status of output_line of this block = low
+				then	bad;
+	diagnosis:
+		if_needed
+				if	status of motor of this block = low
+				then	replace motor of this block by make [motor]
+				and	'Motor replacement required',
+
+				if	pressure of input_line of this block = pressure of output_line of this block
+				then	replace pump of this block by make [pump]
+				and	'Pump replacement required',
+
+				if	pressure of input_line of this block < pressure of output_line of this block
+				then	replace output_line of this block by make [line]
+				and	'Line replacement required'!
+
+line ako object with
+	pressure:
+		range
+				0 .. 200
+		cache
+				yes
+		if_needed
+				ask;
+	nominal_presure:
+		range
+				0 .. 200
+		cache
+				yes
+		if_needed
+				ask;
+	status:
+		range
+				new value in [low, normal]
+		if_needed
+				if pressure of this line < nominal_pressure of this line
+				then low
+				else normal!
+
+motor ako object with
+	current:
+		range
+				0 .. 5;
+	nominal_current:
+		range
+				0 .. 5;
+	status:
+		range
+				new value in [low, normal]
+		if_needed
+				if current of this motor < nominal_current of this motor
+				then low
+				else normal!
+
+
+pump ako object!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+motor1 isa motor with
+	nominal_current: 1;
+	current: 1!
+
+motor2 isa motor with
+	nominal_current: 1;
+	current: 1!
+
+motor3 isa motor!
+
+pump1 isa pump!
+pump2 isa pump!
+pump3 isa pump!
+
+line1 isa line with
+	nominal_pressure: 50;
+	pressure: 50!
+
+line2 isa line with
+	nominal_pressure: 100;
+	pressure: 80!
+
+line3 isa line with
+	nominal_pressure: 150;
+	pressure: 120!
+
+block1 isa block with
+	pump: pump1;
+	motor: motor1;
+	input_line: line1;
+	output_line: line2!
+
+block2 isa block with
+	pump: pump2;
+	motor: motor2;
+	input_line: line2;
+	output_line: line3!

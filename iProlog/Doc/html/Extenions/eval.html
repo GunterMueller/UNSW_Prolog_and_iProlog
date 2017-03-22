@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.04 [en] (X11; I; Linux 2.0.27 i586) [Netscape]">
+</HEAD>
+<BODY>
+
+<H1>
+Functional Evaluation in iProlog</H1>
+iProlog implements a simple form of eager functional evaluation through
+an extension of the <B>is</B> built-in predicate. Programmers are allowed
+to define their own <B>is</B> clauses. For example:
+<UL>
+<PRE>: f(X) is X**2+3.
+: f(5)?
+28</PRE>
+</UL>
+<I>f</I> is defined as a function on <I>X</I> which returns the value <I>X^2+3.
+</I>Not that the iProlog interpreter knows the difference between a function
+and a predicate, so to evaluate a function it is only necessary to type
+the functional expression and the resulting value is printed on the terminal.
+
+<P>To invoke a function from within a function is easy:
+<UL>
+<PRE>: g(X) is f(X) * 2.
+: g(5)?
+56</PRE>
+</UL>
+To evaluate a function within a clause, use the <B>is </B>predicate:
+<UL>
+<PRE>: p(X, Y) :- Y is g(X).
+: p(5, X)?
+X = 56</PRE>
+</UL>
+Functions are really just a notational convenience, internally, the are
+implemented as if they were clauses whose last argument is always the output.
+Here is another example:
+<UL>
+<PRE>conc([], X) is X.
+conc([A|B], C) is [A|conc(B, C)].
+
+rev([]) is [].
+rev([A|B]) is conc(rev(B), [A]).
+
+rev([1, 2, 3])?
+[3, 2, 1]</PRE>
+</UL>
+
+<H2>
+Semantics</H2>
+In general, function definitions have the form:
+<UL>
+<PRE>F is X :- Conditions.
+F is Y :- Conditions.
+.....</PRE>
+</UL>
+The order of execution is:
+<OL>
+<LI>
+The function call is unified with <B><I>F</I></B>in the first clause.</LI>
+
+<LI>
+The <B><I>Conditions </I></B>are then processed as the body of a normal
+Prolog clause. That is, the conditions should consist of a comma separated
+list of Prolog literals. They are <B><I>not </I></B>function calls.</LI>
+
+<LI>
+Each clause is implicitly terminated by a cut. Thus, if either the unification
+with <B><I>F</I></B> fails or one of the conditions in the body of the
+clause fails, processing will move to the next clause. However, once one
+clause succeeds, iProlog will not backtrack to any remaining clause.</LI>
+</OL>
+
+<H2>
+A More Complex Example</H2>
+The following example is a simple implementation of Prospector's probabilistic
+reasoning. First, we define some rules:
+<UL>
+<PRE>op(850, xfx, -->)!
+
+rcib --> smir(20, 1).
+rcvp --> smir(4, 1).
+smir --> hype(300, 0.0001).
+hype --> fle(200, 0.0002).</PRE>
+</UL>
+The rule states that the presence of <I><B>rcib</B> </I>support the hypothesis
+that <B><I>smir</I></B> is present with sufficiency 20 and necessity 1.
+We need to define some prior probabilities:
+<UL>prior(rcib) is 0.5.
+<BR>prior(rcvp) is 0.5.
+<BR>prior(smir) is 0.03.
+<BR>prior(hype) is 0.01.
+<BR>prior(fle) is 0.005.</UL>
+
+
+<P>The posterior probabilities are essentially the inputs:
+<UL>
+<PRE>posterior(rcib) is 1.
+posterior(rcvp) is 1.</PRE>
+</UL>
+
+
+<P>The program for evaluating the probabilities is:
+<UL>
+<PRE>odds(P) is P / (1 - P).
+prob(O) is O / (1 + O).
+
+posterior(Consequent) is prob(M * odds(prior(Consequent))) :-
+&nbsp;&nbsp;&nbsp; Antecedent --> Consequent(LS, LN),
+&nbsp;&nbsp;&nbsp; M is odds_multiplier(prior(Antecedent), posterior(Antecedent), LS, LN).
+
+odds_multiplier(Prior, Posterior, LS, LN) is LS * (Posterior - Prior) / (1 - Prior) :-
+&nbsp;&nbsp;&nbsp; Prior &lt; Posterior.
+odds_multiplier(Prior, Posterior, LS, LN) is LN * (Prior - Posterior) / Prior :-
+&nbsp;&nbsp;&nbsp; Prior > Posterior.</PRE>
+</UL>
+The program is called as follows:
+<UL>
+<PRE>: posterior(fle)?
+0.342818</PRE>
+</UL>
+<A HREF="prosp.pro">Click here to get the code.</A>
+</BODY>
+</HTML>

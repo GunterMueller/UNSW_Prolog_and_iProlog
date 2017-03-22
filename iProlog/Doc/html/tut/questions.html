@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>Questions</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.01Gold (X11; I; Linux 2.0.18 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>QUESTIONS </H2>
+
+<P>Suppose we want to know if Jeff lectures in course 611. We can ask:
+</P>
+
+<PRE>        lectures(jeff, 611)?
+        ** yes                  output from Prolog
+</PRE>
+
+<P>We will follow the convention that a question is terminated by a question
+mark, &quot;?&quot;. Different Prolog implementations use different conventions.
+These are discussed in the appendices. To answer this question, Prolog
+consults its database to see if this is a known fact. Suppose we ask: </P>
+
+<PRE>        lectures(fred, 611)?
+        ** no                   output from Prolog
+</PRE>
+
+<P>Since Prolog is unable to find a fact which matches the question, the
+answer &quot;no&quot; is printed. This query is said to have <I>failed</I>.
+</P>
+
+<P>Go <A HREF="facts.html">here </A>to see the database.</P>
+
+</BODY>
+</HTML>

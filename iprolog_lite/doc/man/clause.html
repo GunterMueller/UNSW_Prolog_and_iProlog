@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>clause
+</TITLE>
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (X11; I; Linux 1.3.20 i586) [Netscape]">
+   <META NAME="Author" CONTENT="Claude Sammut">
+</HEAD>
+<BODY>
+
+<H2>NAME</H2>
+
+<UL>
+<P>clause - search for a clause in the database</P>
+</UL>
+
+<H2>SYNOPSIS</H2>
+
+<UL>
+<P><B>clause(+<I>Head</I>, ?<I>Body</I>) </B></P>
+</UL>
+
+<H2>DESCRIPTION </H2>
+
+<UL>
+<P><B><I>Head </I></B>must be bound to a non-variable term, and the current
+interpreted program is searched for clauses whose head matches <B><I>Head</I></B>.
+The head and body of those clauses are unified with <B><I>Head </I></B>and
+<B><I>Body </I></B>respectively. If one of the clauses is a unit clause,
+<B><I>Body </I></B>will be unified with <B>true</B>. </P>
+</UL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+digit ::
+	{ 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 };
+
+diary_entry ::
+
+	* appointment with * at * for * ==>
+	[
+		OK. Confirming your appointment at ^3 with ^2.
+		#make_appointment(first(^3), first(^4), first(^2))
+	]
+	
+	what * today ==>
+	[
+		You have an appointment with ^comment(appt)
+		at ^time(appt)
+	]
+	
+	* {length | long} * ==>
+	[
+		The appointment is for ^length_hour(appt) hours
+	]
+
+
+	* ==>
+	[
+		You said: ^0.
+	]
